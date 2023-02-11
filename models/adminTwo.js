@@ -4,6 +4,7 @@ const AdminTwo = new Schema({
   user: {
     type: Schema.Types.ObjectId,
     required: true,
+    index: true,
   },
   chatSessions: [
     {
@@ -11,8 +12,13 @@ const AdminTwo = new Schema({
       ref: "ChatSession",
     },
   ],
+  Institute: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    index: true,
+  },
 });
 
-const AdminTwoModel =mongoose.models.AdminTwo || mongoose.model("AdminTwo", AdminTwo);
-module.exports =  AdminTwoModel;
-
+const AdminTwoModel =
+  mongoose.models.AdminTwo || mongoose.model("AdminTwo", AdminTwo);
+module.exports = AdminTwoModel;
