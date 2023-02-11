@@ -14,7 +14,7 @@ export const SellerProduct = new Schema({
     type: String,
     default: "",
   },
-  price: [
+  priceList: [
     {
       quantity: {
         type: Number,
@@ -26,12 +26,18 @@ export const SellerProduct = new Schema({
       },
     },
   ],
-  productImage: {
+  productImageUrl: {
     type: String,
     required: true,
   },
+  Seller: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    ref: "Seller",
+  },
 });
 
-const SellerProductModel = mongoose.models.SellerProduct || mongoose.model("SellerProduct", SellerProduct);
-module.exports=SellerProductModel;
-
+const SellerProductModel =
+  mongoose.models.SellerProduct ||
+  mongoose.model("SellerProduct", SellerProduct);
+module.exports = SellerProductModel;
