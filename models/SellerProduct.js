@@ -35,6 +35,10 @@ export const SellerProduct = new Schema({
     required: true,
     ref: "Seller",
   },
+  visible: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const SellerProductModel =

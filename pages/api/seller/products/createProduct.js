@@ -5,8 +5,7 @@ const handler = async (req, res) => {
   try {
     if (req.method == "POST") {
       await dbConnect();
-      const { name, description, category, productImageUrl, priceList,sellerId } =
-        req.query;
+      const { name, description, category, productImageUrl, priceList,sellerId } =req.body;
       const newProduct = new SellerProduct({
         name: name,
         description: description,

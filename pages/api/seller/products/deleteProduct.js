@@ -3,7 +3,7 @@ import SellerProduct from "@/models/SellerProduct";
 import mongoose from "mongoose";
 const handler = async (req, res) => {
   try {
-    if (req.method == "POST") {
+    if (req.method == "GET") {
       await dbConnect();
       const { sellerId, productId } = req.query;
       const findProductAndDelete = await SellerProduct.findOneAndDelete({
