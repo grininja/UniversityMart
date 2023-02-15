@@ -1,6 +1,6 @@
 import mongoose, { mongo } from "mongoose";
 const { Schema } = mongoose;
-import ItemSchema from "./Item";
+
 export const AdminOneSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
@@ -15,8 +15,9 @@ export const AdminOneSchema = new Schema({
     required: true,
   },
   department: {
-    type: String,
+    type: Schema.Types.ObjectId,
     required: true,
+    ref: "Department",
   },
   cart: [{ type: Schema.Types.ObjectId, ref: "Item" }],
 });

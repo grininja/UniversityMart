@@ -28,6 +28,8 @@ const handler = async (req, res) => {
     }
   } catch (e) {
     console.error("api create institute thrown " + e);
+    return res.status(500).send({ message:"some error occured" });
+    
   }
 };
 

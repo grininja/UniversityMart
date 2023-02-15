@@ -32,7 +32,8 @@ const handler = async (req, res) => {
       return res.status(404).send({ message: "invalid request" });
     }
   } catch (e) {
-    res.status(500).send({ message: e.message });
+    console.log(e);
+    return res.status(500).send({ message:"some error occured" });
   }
 };
 

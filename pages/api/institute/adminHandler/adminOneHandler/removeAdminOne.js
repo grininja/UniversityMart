@@ -8,7 +8,7 @@ const handler = async (req, res) => {
       await dbConnect();
       const { userId, InstituteId } = req.query;
       await InstituteModel.updateOne(
-        { Institute: InstituteId },
+        { _id: InstituteId },
         {
           $pullAll: {
             admin1: [userId],
@@ -28,6 +28,8 @@ const handler = async (req, res) => {
     }
   } catch (e) {
     console.log("error occured in method remove adminOne", e);
+    return res.status(500).send({ message:"some error occured" });
+    
   }
 };
 

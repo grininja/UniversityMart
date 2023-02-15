@@ -23,8 +23,12 @@ export const ItemSchema = new Schema({
     required: true,
   },
   category: String,
+  department: {
+    type: Schema.Types.ObjectId,
+    ref: "Department",
+    required: true,
+  },
 });
 
 const Item = mongoose.models.Item || mongoose.model("Item", ItemSchema);
-module.exports =  Item;
-
+module.exports = Item;

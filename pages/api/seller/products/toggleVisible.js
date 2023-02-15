@@ -35,6 +35,7 @@ const handler = async (req, res) => {
     }
   } catch (e) {
     console.log("Exception caught: " + e);
+    return res.status(500).send({ message:"some error occured" });
   }
 };
 

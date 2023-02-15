@@ -38,6 +38,7 @@ const handler = async (req, res) => {
     }
   } catch (e) {
     console.log("exception occurred while creating seller: " + e);
+    return res.status(500).send({ message:"some error occured" });
   }
 };
 

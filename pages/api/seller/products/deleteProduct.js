@@ -16,6 +16,7 @@ const handler = async (req, res) => {
     }
   } catch (e) {
     console.log("exception occured in deleting product ", e);
+    return res.status(500).send({ message:"some error occured" });
   }
 };
 

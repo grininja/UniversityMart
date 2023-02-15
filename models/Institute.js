@@ -47,9 +47,15 @@ export const InstituteSchema = new Schema({
       ref: "User",
     },
   ],
-  departments: [String],
+  departments: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Department",
+      required: true,
+    },
+  ],
 });
 
-const Institute =mongoose.models.Institute || mongoose.model("Institute", InstituteSchema);
-module.exports =Institute;
-
+const Institute =
+  mongoose.models.Institute || mongoose.model("Institute", InstituteSchema);
+module.exports = Institute;

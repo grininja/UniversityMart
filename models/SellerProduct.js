@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
-export const SellerProduct = new Schema({
+const SellerProduct = new Schema({
   name: {
     type: String,
     required: true,
@@ -40,6 +40,8 @@ export const SellerProduct = new Schema({
     default: false,
   },
 });
+
+SellerProduct.index({ name: "text", description: "text" });
 
 const SellerProductModel =
   mongoose.models.SellerProduct ||
