@@ -1,7 +1,7 @@
 import mongoose, { mongo } from "mongoose";
 const { Schema } = mongoose;
 
-export const AdminOneSchema = new Schema({
+ const AdminOneSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
     ref: "User",
@@ -19,7 +19,12 @@ export const AdminOneSchema = new Schema({
     required: true,
     ref: "Department",
   },
-  cart: [{ type: Schema.Types.ObjectId, ref: "Item" }],
+  cart: [
+    {
+      product: { type: Schema.Types.ObjectId, ref: "Item", required: true },
+      quantity: { type: Number, min: 1, required: true },
+    },
+  ],
 });
 
 const AdminOne =
