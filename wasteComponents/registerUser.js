@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage, useFormik, useField } from "formik";
 import * as Yup from "yup";
-
-
+import dbConnect from "@/lib/mongoDb";
 
 const MyTextInput = ({ label, ...props }) => {
   const [field, meta] = useField(props);
@@ -17,20 +16,55 @@ const MyTextInput = ({ label, ...props }) => {
   );
 };
 
-const SignUpUniversity = () => {
+const MyUniversityDropdown = ({ label, ...props }) => {
+  const [field, meta] = useField(props);
+  const [universityList, setUniversityList] = useState(props.universityList);
+  return (
+    <>
+      {/* {universityList}
+       */}
+      <label htmlFor={props.id || props.name}>{label}</label>
+      <select className="option-select" name={props.name} {...field}>
+        {universityList.map((university) => {
+          <div>
+            {/* {university} */}
+            <option value="MNIT" label="MNIT">
+              MNIT
+            </option>
+          </div>;
+        })}
+      </select>
+      {meta.touched && meta.error ? (
+        <div className="error">{meta.error}</div>
+      ) : null}
+    </>
+  );
+};
+
+const SignUpFormUser = () => {
+  const [universityList, setUniversityList] = useState([
+    "Mnit jaipur",
+    "NIT TRICHY",
+  ]);
+
   return (
     <>
       <Formik
         initialValues={{
-          UniversityName: "",
+          firstName: "",
+          lastName: "",
           email: "",
           password: "",
+          university: "",
           confirmPassword: "",
-          universityWebUrl: "",
-          AffliationCode: "",
         }}
         validationSchema={Yup.object({
-          University: Yup.string().required("Required"),
+          firstName: Yup.string()
+            .max(15, "Must be 15 characters or less")
+            .required("Required"),
+          lastName: Yup.string()
+            .max(20, "Must be 20 characters or less")
+            .required("Required"),
           email: Yup.string()
             .email("Invalid email address")
             .required("Required"),
@@ -45,14 +79,8 @@ const SignUpUniversity = () => {
               "Both password need to be the same"
             ),
           }),
-          universityWebUrl: Yup.string()
-            .matches(
-              "((https?)://)?(www.)?[a-z0-9]+(.[a-z]{2,}){1,3}(#?/?[a-zA-Z0-9#]+)*/?(?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$",
-              "Enter correct url!"
-            )
-            .required("Please enter website"),
-          AffliationCode: Yup.string().required(
-            "Please enter university affliation code"
+          University: Yup.string("University").required(
+            "Please select a University"
           ),
         })}
         onSubmit={(values, { setSubmitting }) => {
@@ -64,10 +92,17 @@ const SignUpUniversity = () => {
       >
         <Form>
           <MyTextInput
-            label="UniversityName"
-            name="UniversityName"
+            label="First Name"
+            name="firstName"
             type="text"
-            placeholder="MNIT JAIPUR"
+            placeholder="Jane"
+          />
+
+          <MyTextInput
+            label="Last Name"
+            name="lastName"
+            type="text"
+            placeholder="Doe"
           />
 
           <MyTextInput
@@ -76,21 +111,6 @@ const SignUpUniversity = () => {
             type="email"
             placeholder="jane@formik.com"
           />
-
-          <MyTextInput
-            label="University Website"
-            name="universityWebUrl"
-            type="url"
-            placeholder="enter your website url"
-          />
-
-          <MyTextInput
-            labeel="Address"
-            name="Address"
-            type="text"
-            placeholder="Enter your Address"
-          />
-
           <MyTextInput
             label="Password"
             name="password"
@@ -104,6 +124,12 @@ const SignUpUniversity = () => {
             type="password"
             placeholder="confirm your password"
           />
+
+          <MyUniversityDropdown
+            label="University"
+            name="University"
+            universityList={universityList}
+          />
           <button type="submit">Submit</button>
         </Form>
       </Formik>
@@ -111,4 +137,4 @@ const SignUpUniversity = () => {
   );
 };
 
-export default SignUpUniversity;
+export default SignUpFormUser;

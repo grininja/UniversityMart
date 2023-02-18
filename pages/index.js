@@ -1,9 +1,10 @@
-import Head from "next/head";
-import Image from "next/image";
-import { Inter } from "@next/font/google";
-import SignUpFormUser from "@/components/Authentication/register";
-const inter = Inter({ subsets: ["latin"] });
-
-export default function Home() {
-  return <SignUpFormUser />;
+import Link from "next/link";
+export default function Home({ institutes }) {
+  return (
+    <ul>
+      <li>
+        <Link href="/loginuser">Login user</Link>
+      </li>
+    </ul>
+  );
 }

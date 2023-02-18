@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Formik, Form, Field, ErrorMessage, useFormik, useField } from "formik";
+import React, { useEffect } from "react";
+import { useFormik } from "formik";
 import * as Yup from "yup";
 import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
@@ -13,7 +13,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import apiCall from "@/helper/apiCall";
-
+import Autocomplete from "@mui/material/Autocomplete";
 function Copyright(props) {
   return (
     <Typography
@@ -38,15 +38,24 @@ const validationSchema = Yup.object({
   Institute: Yup.string().required("Required"),
 });
 
-const LoginUser = ({institutes}) => {
+export default function LoginUser(props) {
+  // console.log(props);
+  const [value, setValue] = React.useState("");
+  const [inputValue, setInputValue] = React.useState(" ");
   const formik = useFormik({
     initialValues: {
       email: "",
       Institute: "",
     },
     validationSchema: validationSchema,
-    onSubmit: async (values) => {},
+    onSubmit: async (values) => {
+      alert(values);
+    },
   });
+  const defaultProps = {
+    options: props.institutes,
+    getOptionLabel: (option) => option.name,
+  };
   return (
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: "100vh" }}>
@@ -102,18 +111,21 @@ const LoginUser = ({institutes}) => {
                 helperText={formik.touched.email && formik.errors.email}
               />
 
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="Institute"
-                label="University Name"
-                value={formik.values.Institute}
-                onChange={formik.handleChange}
-                error={
-                  formik.touched.Institute && Boolean(formik.errors.Institute)
-                }
-                helperText={formik.touched.Institute && formik.errors.Institute}
+              <Autocomplete
+                value={value}
+                onChange={(event, newValue) => {
+                  setValue(newValue);
+                }}
+                inputValue={inputValue}
+                onInputChange={(event, newInputValue) => {
+                  setInputValue(newInputValue);
+                }}
+                id="name"
+                {...defaultProps}
+                sx={{ width: 300 }}
+                renderInput={(params) => (
+                  <TextField {...params} label="University" />
+                )}
               />
 
               <Button
@@ -131,23 +143,25 @@ const LoginUser = ({institutes}) => {
       </Grid>
     </ThemeProvider>
   );
-};
-
-export async function getStaticProps() {
-  // Call an external API endpoint to get posts.
-  // You can use any data fetching library
-  const res = await fetch('https://.../posts')
-  const posts = await res.json()
-
-  // By returning { props: { posts } }, the Blog component
-  // will receive `posts` as a prop at build time
-  return {
-    props: {
-      institutes,
-    },
-  }
 }
 
-
-
-export default LoginUser;
+export async function getServerSideProps(context) {
+  try {
+    const res = await apiCall(
+      "http://localhost:3000/api/institute/getAllInstitutes",
+      "GET",
+      {},
+      ""
+    );
+    const institutes = await res.data.message;
+    console.log(institutes);
+    return {
+      props: {
+        institutes: institutes,
+      },
+    };
+  } catch (e) {
+    console.log(e);
+    return { props: { error: "something happened" } };
+  }
+}

@@ -4,7 +4,8 @@ const handler = async (req, res) => {
   try {
     if (req.method == "POST") {
       await dbConnect();
-      const { name, email, password, phone, address } = req.body;
+      const { name, email, password, phone, address, affliationCode } =
+        req.body;
       const check1 = await Institute.exists({ email: email });
       const check2 = await Institute.exists({ name: name });
       console.log(check1, check2);
@@ -17,6 +18,7 @@ const handler = async (req, res) => {
           password,
           phone,
           address,
+          affliationcode: affliationCode,
         });
         await createInstitute.save();
         return res
@@ -28,8 +30,7 @@ const handler = async (req, res) => {
     }
   } catch (e) {
     console.error("api create institute thrown " + e);
-    return res.status(500).send({ message:"some error occured" });
-    
+    return res.status(500).send({ message: "some error occured" });
   }
 };
 
