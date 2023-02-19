@@ -14,6 +14,39 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import apiCall from "@/helper/apiCall";
 import Autocomplete from "@mui/material/Autocomplete";
+import { signIn } from "next-auth/react";
+
+var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+
+const Login = ({ email, instituteName }) => (
+  <Button
+    onClick={async () => {
+      if (
+        email === null ||
+        email === undefined ||
+        email === "" ||
+        email.match(pattern) === null
+      ) {
+        alert("valid email is required");
+        return;
+      }
+      // const findAdmins = await apiCall(
+      //   `${process.env.BASE_URL}/api/institute/getAllAdmins`,
+      //   "GET",
+      //   {},
+      //   null
+      // );
+      await signIn("email", { email, callbackUrl: "http://localhost:3000" });
+    }}
+    fullWidth
+    variant="contained"
+    sx={{ mt: 3, mb: 2 }}
+    type="submit"
+  >
+    Submit
+  </Button>
+);
+
 function Copyright(props) {
   return (
     <Typography
@@ -34,24 +67,17 @@ function Copyright(props) {
 const theme = createTheme();
 
 const validationSchema = Yup.object({
-  email: Yup.string().email("Invalid email address").required("Required"),
-  Institute: Yup.string().required("Required"),
+  email: Yup.string("Enter your email")
+    .email("Enter a valid email")
+    .required("Email is required"),
+  // Institute: Yup.string().required("Required"),
 });
 
 export default function LoginUser(props) {
-  // console.log(props);
   const [value, setValue] = React.useState("");
   const [inputValue, setInputValue] = React.useState(" ");
-  const formik = useFormik({
-    initialValues: {
-      email: "",
-      Institute: "",
-    },
-    validationSchema: validationSchema,
-    onSubmit: async (values) => {
-      alert(values);
-    },
-  });
+  const [emailValue, setEmailValue] = React.useState("");
+  const [emailInputValue, setEmailInputValue] = React.useState("");
   const defaultProps = {
     options: props.institutes,
     getOptionLabel: (option) => option.name,
@@ -93,25 +119,21 @@ export default function LoginUser(props) {
             <Typography component="h1" variant="h5">
               Sign In
             </Typography>
-            <Box
-              component="form"
-              noValidate
-              onSubmit={formik.handleSubmit}
-              sx={{ mt: 1 }}
-            >
+            <Box component="form" noValidate sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
                 required
                 fullWidth
+                value={emailValue}
+                onChange={(event) => {
+                  setEmailValue(event.target.value);
+                }}
                 id="email"
                 label="Email Address"
-                value={formik.values.email}
-                onChange={formik.handleChange}
-                error={formik.touched.email && Boolean(formik.errors.email)}
-                helperText={formik.touched.email && formik.errors.email}
               />
 
               <Autocomplete
+                defaultValue={props.institutes[0]}
                 value={value}
                 onChange={(event, newValue) => {
                   setValue(newValue);
@@ -126,16 +148,9 @@ export default function LoginUser(props) {
                 renderInput={(params) => (
                   <TextField {...params} label="University" />
                 )}
+                getOptionLabel={(option) => option.name || ""}
               />
-
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                Submit
-              </Button>
+              <Login email={emailValue} instituteName={value} />
               <Copyright sx={{ mt: 5 }} />
             </Box>
           </Box>
