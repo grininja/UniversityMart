@@ -89,8 +89,7 @@ const SignUpUniversityPage = () => {
         },
         null
       );
-      console.log(response);
-      //   alert(response);
+      alert(response.data.message);
     },
   });
   return (

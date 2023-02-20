@@ -5,9 +5,14 @@ import clientPromise from "@/lib/mongoAdapter";
 import CredentialsProvider from "next-auth/providers/credentials";
 import dbConnect from "@/lib/mongoDb";
 import Institute from "@/models/Institute";
+import bcrypt from "bcrypt";
+
 export const authOptions = {
   adapter: MongoDBAdapter(clientPromise),
-  // Configure one or more authentication providers
+  session: {
+    strategy: "jwt",
+    maxAge: 3000,
+  },
   providers: [
     CredentialsProvider({
       name: "Institute Login",
@@ -15,15 +20,28 @@ export const authOptions = {
         await dbConnect();
         const findInstitute = await Institute.findOne({
           email: credentials.email,
-          password: credentials.password,
         });
+
         if (!findInstitute) {
           throw new Error("Couldn't find Institute");
         }
-        return findInstitute;
+        const res = await bcrypt.compare(
+          credentials.password,
+          findInstitute.password
+        );
+        // console.log(res);
+        if (res) {
+          return findInstitute;
+        } else {
+          throw new Error("Password mismatch");
+        }
       },
       credentials: {
-        email: { label: "email", type: "text ", placeholder: "jsmith" },
+        email: {
+          label: "email",
+          type: "text",
+          placeholder: "shubham@gmail.com",
+        },
         password: { label: "Password", type: "password" },
       },
     }),

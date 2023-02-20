@@ -14,7 +14,7 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import apiCall from "@/helper/apiCall";
 import Autocomplete from "@mui/material/Autocomplete";
-import { signIn } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 
 var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
 
@@ -28,6 +28,14 @@ const Login = ({ email, instituteName }) => (
         email.match(pattern) === null
       ) {
         alert("valid email is required");
+        return;
+      }
+      if (
+        instituteName === null ||
+        instituteName === undefined ||
+        instituteName === ""
+      ) {
+        alert("institute name is required");
         return;
       }
       // const findAdmins = await apiCall(
@@ -152,6 +160,13 @@ export default function LoginUser(props) {
               />
               <Login email={emailValue} instituteName={value} />
               <Copyright sx={{ mt: 5 }} />
+              <button
+                onClick={() =>
+                  signOut({ callbackUrl: "http://localhost:3000" })
+                }
+              >
+                Sign Out
+              </button>
             </Box>
           </Box>
         </Grid>
