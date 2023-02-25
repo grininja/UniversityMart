@@ -21,6 +21,7 @@
     "eslint": "8.32.0",
     "eslint-config-next": "13.1.2",
     "formik": "^2.2.9",
+    "formik-material-ui": "^4.0.0-alpha.2",
     "mongodb": "^4.14.0",
     "mongoose": "^6.8.4",
     "next": "13.1.2",

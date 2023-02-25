@@ -18,9 +18,27 @@ import { signIn, signOut } from "next-auth/react";
 
 var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
 
-const Login = ({ email, instituteName }) => (
+const roleOptions = [
+  {
+    label: "Admin1",
+    value: "admin1",
+  },
+  {
+    label: "Admin2",
+    value: "admin2",
+  },
+  {
+    label: "Admin3",
+    value: "dmin3",
+  },
+];
+
+const Login = ({ email, institute, role }) => (
   <Button
-    onClick={async () => {
+    onClick={async (e) => {
+      console.log(role);
+      console.log(institute);
+      e.preventDefault();
       if (
         email === null ||
         email === undefined ||
@@ -30,21 +48,30 @@ const Login = ({ email, instituteName }) => (
         alert("valid email is required");
         return;
       }
-      if (
-        instituteName === null ||
-        instituteName === undefined ||
-        instituteName === ""
-      ) {
+      if (institute === null || institute === undefined || institute === "") {
         alert("institute name is required");
         return;
       }
-      // const findAdmins = await apiCall(
-      //   `${process.env.BASE_URL}/api/institute/getAllAdmins`,
-      //   "GET",
-      //   {},
-      //   null
-      // );
-      await signIn("email", { email, callbackUrl: "http://localhost:3000" });
+      if (role === null || role === undefined || role === "") {
+        alert("role is required");
+        return;
+      }
+      const findInstitutewithadmin = await apiCall(
+        `/api/institute/checkAdminForInstitute?instituteName=${institute.name}&adminEmail=${email}&role=${role.value}`,
+        "GET",
+        {},
+        null
+      );
+      console.log(findInstitutewithadmin);
+      if (findInstitutewithadmin.data.message !== true) {
+        alert("User does not have admin permission");
+        return;
+      }
+
+      const result = await signIn("email", {
+        email,
+        callbackUrl: "http://localhost:3000",
+      });
     }}
     fullWidth
     variant="contained"
@@ -85,6 +112,7 @@ export default function LoginUser(props) {
   const [value, setValue] = React.useState("");
   const [inputValue, setInputValue] = React.useState(" ");
   const [emailValue, setEmailValue] = React.useState("");
+  const [roleValue, setRoleValue] = React.useState("");
   const [emailInputValue, setEmailInputValue] = React.useState("");
   const defaultProps = {
     options: props.institutes,
@@ -158,7 +186,22 @@ export default function LoginUser(props) {
                 )}
                 getOptionLabel={(option) => option.name || ""}
               />
-              <Login email={emailValue} instituteName={value} />
+              <Autocomplete
+                disablePortal
+                value={roleValue}
+                onChange={(event, newValue) => {
+                  setRoleValue(newValue);
+                }}
+                id="AdminSelection"
+                options={roleOptions}
+                sx={{ width: 300 }}
+                renderInput={(params) => (
+                  <TextField {...params} label="Admin" />
+                )}
+                getOptionLabel={(option) => option.value || ""}
+              />
+
+              <Login email={emailValue} institute={value} role={roleValue} />
               <Copyright sx={{ mt: 5 }} />
               <button
                 onClick={() =>
@@ -184,7 +227,7 @@ export async function getServerSideProps(context) {
       ""
     );
     const institutes = await res.data.message;
-    console.log(institutes);
+    // console.log(institutes);
     return {
       props: {
         institutes: institutes,

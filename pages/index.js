@@ -1,9 +1,14 @@
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
+import { useRouter } from "next/router";
 
 export default function Home() {
+  const router = useRouter();
   const { status } = useSession({
     required: false,
+    // onUnauthenticated() {
+    //   router.push("/authentication/loginInstitute");
+    // },
   });
   return (
     <div>

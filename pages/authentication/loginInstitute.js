@@ -41,10 +41,6 @@ const validationSchema = Yup.object({
 });
 
 const LoginInstituteForm = () => {
-//   const { status } = useSession({
-//     required: false,
-//   });
-//   console.log(status);
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
