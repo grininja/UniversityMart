@@ -23,6 +23,9 @@ export default function Home() {
         <li>
           <Link href="/authentication/loginInstitute">login university</Link>
         </li>
+        <li>
+          <Link href="/adminLayouts/WebAdmin/WebAdminDashboard">Dashboard</Link>
+        </li>
       </ul>
     </div>
   );

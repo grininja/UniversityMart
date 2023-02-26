@@ -1,13 +1,14 @@
 import dbConnect from "@/lib/mongoDb";
 import Department from "@/models/departMent";
 import InstituteModel from "@/models/Institute";
+import mongoose from "mongoose";
 const handler = async (req, res) => {
   try {
     if (req.method === "POST") {
       await dbConnect();
       const { name, instituteId } = req.body;
       const checkIfInstituteExists = await InstituteModel.find({
-        _id: instituteId,
+        _id: mongoose.Types.ObjectId(instituteId),
       });
       if (
         checkIfInstituteExists !== null &&
