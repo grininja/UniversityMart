@@ -10,6 +10,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useRouter } from "next/router";
 import apiCall from "../../../helper/apiCall";
 function Copyright(props) {
   return (
@@ -32,6 +33,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function CreateDepartment({ instituteName }) {
+  const router=useRouter();
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -56,6 +58,7 @@ export default function CreateDepartment({ instituteName }) {
       null
     );
     alert(CreateDepartment.data.message);
+    router.reload();
   };
 
   return (

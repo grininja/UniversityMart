@@ -20,7 +20,7 @@ const handler = async (req, res) => {
         _id: departmentId,
         Institute: instituteId,
       }).exec();
-      res.status(200).send({ message: "admin removed successfully" });
+      res.status(200).send({ message: "Department removed successfully" });
     } else {
       return res.status(400).send({ message: "Invalid Request" });
     }

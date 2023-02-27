@@ -9,6 +9,7 @@ import bcrypt from "bcrypt";
 
 export const authOptions = {
   adapter: MongoDBAdapter(clientPromise),
+  secret: process.env.AUTH_SECRET,
   session: {
     strategy: "jwt",
     maxAge: 3000,

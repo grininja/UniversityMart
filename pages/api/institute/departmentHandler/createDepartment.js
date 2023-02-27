@@ -7,6 +7,7 @@ const handler = async (req, res) => {
     if (req.method === "POST") {
       await dbConnect();
       const { name, instituteId } = req.body;
+      // console.log(name,instituteId)
       const checkIfInstituteExists = await InstituteModel.find({
         _id: mongoose.Types.ObjectId(instituteId),
       });
@@ -18,14 +19,14 @@ const handler = async (req, res) => {
       }
       const checkIfExists = await Department.find({
         name: name,
-        Institute: instituteId,
+        Institute: mongoose.Types.ObjectId(instituteId),
       });
       if (checkIfExists !== null && checkIfExists.length > 0) {
-        return res.status(400).send({ message: "Department already exists" });
+        return res.status(200).send({ message: "Department already exists" });
       }
       const createDepartment = new Department({
         name: name,
-        Institute: instituteId,
+        Institute: mongoose.Types.ObjectId(instituteId),
       });
       const newDepartment = await createDepartment.save();
       const addDepartment = await InstituteModel.updateOne(

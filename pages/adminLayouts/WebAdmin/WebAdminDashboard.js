@@ -5,10 +5,9 @@ import { useSession, signOut, getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Grid from "@mui/material/Unstable_Grid2";
 import CreateDepartment from "./CreateDepartmentForm";
-const WebAdminDashboard = (props) => {
-  console.log(props);
+import DepartmentItem from "./DepartmentItem";
+const WebAdminDashboard = () => {
   const [session, setSession] = useState();
-  console.log(session);
   const router = useRouter();
   const { status } = useSession({
     required: true,
@@ -30,7 +29,9 @@ const WebAdminDashboard = (props) => {
         <Grid xs={5}>
           {session && <CreateDepartment instituteName={session.user.name} />}
         </Grid>
-        <Grid xs={7}></Grid>
+        <Grid xs={7}>
+          {session && <DepartmentItem instituteName={session.user.name} />}
+        </Grid>
       </Grid>
     </Box>
   );

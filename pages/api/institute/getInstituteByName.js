@@ -6,9 +6,7 @@ const handler = async (req, res) => {
     if (req.method === "GET") {
       await dbConnect();
       const { name } = req.query;
-      // console.log(name);
       const instituteRes = await Institute.findOne({ name: name });
-      // console.log(instituteRes);
       return res.status(200).send({ message: instituteRes._id });
     } else {
       return res.status(400).send({ message: "Bad request" });
