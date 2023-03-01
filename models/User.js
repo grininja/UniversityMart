@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 export const UserSchema = new Schema({
   name: {
     type: String,
-    required: true,
+    // required: true,
   },
   email: {
     type: String,
@@ -13,11 +13,11 @@ export const UserSchema = new Schema({
   },
   password: {
     type: String,
-    required: true,
+    // required: true,
   },
   phone: {
     type: String,
-    required: true,
+    // required: true,
     index: true,
   },
   Institute: {

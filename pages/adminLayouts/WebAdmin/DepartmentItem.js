@@ -66,7 +66,7 @@ const Item = styled(Paper)(({ theme }) => ({
   lineHeight: "60px",
 }));
 
-const Departments = ({ instituteName }) => {
+const Departments = ({ departments, instituteId }) => {
   const router = useRouter();
   const { status } = useSession({
     required: true,
@@ -74,28 +74,6 @@ const Departments = ({ instituteName }) => {
       router.push("/authentication/loginInstitute");
     },
   });
-  const [departments, setDepartments] = useState([]);
-  const [instituteId, setInstituteId] = useState(null);
-  useEffect(() => {
-    (async () => {
-      const Institutedata = await apiCall(
-        `/api/institute/getInstituteByName?name=${instituteName}`,
-        "GET",
-        {},
-        null
-      );
-      const instituteId = Institutedata.data.message;
-      setInstituteId(instituteId);
-      const departMents = await apiCall(
-        `/api/institute/departmentHandler/getAllDepartments?InstituteId=${instituteId}`,
-        "GET",
-        {},
-        null
-      );
-      setDepartments(departMents.data.message);
-    })();
-  }, []);
-
   return (
     <div>
       {/* <Grid container spacing={2}> */}

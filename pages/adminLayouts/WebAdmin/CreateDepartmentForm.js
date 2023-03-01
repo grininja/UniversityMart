@@ -32,28 +32,28 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function CreateDepartment({ instituteName }) {
-  const router=useRouter();
+export default function CreateDepartment({ instituteId }) {
+  const router = useRouter();
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const findInstutitute = await apiCall(
-      `/api/institute/getInstituteByName?name=${instituteName}`,
-      "GET",
-      {},
-      null
-    );
-    if (findInstutitute === null) {
-      alert("Please try again");
-      return;
-    }
+    // const findInstutitute = await apiCall(
+    //   `/api/institute/getInstituteByName?name=${instituteName}`,
+    //   "GET",
+    //   {},
+    //   null
+    // );
+    // if (findInstutitute === null) {
+    //   alert("Please try again");
+    //   return;
+    // }
 
     const CreateDepartment = await apiCall(
       "/api/institute/departmentHandler/createDepartment",
       "POST",
       {
         name: data.get("departmentName"),
-        instituteId: findInstutitute.data.message,
+        instituteId: instituteId,
       },
       null
     );

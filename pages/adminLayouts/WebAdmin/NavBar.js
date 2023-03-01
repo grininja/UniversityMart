@@ -7,8 +7,8 @@ import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
-import { styled, alpha } from '@mui/material/styles';
-import InputBase from '@mui/material/InputBase';
+import { styled, alpha } from "@mui/material/styles";
+import InputBase from "@mui/material/InputBase";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
@@ -17,8 +17,14 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import SearchIcon from "@mui/icons-material/Search";
+import Link from "next/link";
 const drawerWidth = 240;
 const navItems = ["Home", "Admins", "Update Institute"];
+const linkItems = [
+  "/adminLayouts/WebAdmin/WebAdminDashboard",
+  "/adminLayouts/WebAdmin/ManageAdmins",
+  "/adminLayouts/WebAdmin/WebAdminDashboard",
+];
 
 function DrawerAppBar(props) {
   const { window } = props;
@@ -121,10 +127,12 @@ function DrawerAppBar(props) {
             />
           </Search>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            {navItems.map((item) => (
-              <Button key={item} sx={{ color: "#fff" }}>
-                {item}
-              </Button>
+            {navItems.map((item, index) => (
+              <Link href={linkItems[index]} key={index}>
+                <Button key={index} sx={{ color: "#fff" }}>
+                  {item}
+                </Button>
+              </Link>
             ))}
           </Box>
         </Toolbar>
@@ -151,9 +159,7 @@ function DrawerAppBar(props) {
       </Box>
       <Box component="main" sx={{ p: 3 }}>
         <Toolbar />
-        <Typography>
-         
-        </Typography>
+        <Typography></Typography>
       </Box>
     </Box>
   );
@@ -166,8 +172,5 @@ DrawerAppBar.propTypes = {
    */
   window: PropTypes.func,
 };
-
-
-
 
 export default DrawerAppBar;

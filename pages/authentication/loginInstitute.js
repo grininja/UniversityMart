@@ -53,7 +53,7 @@ const LoginInstituteForm = () => {
         redirect: false,
         email: values.email,
         password: values.password,
-        callbackUrl: "/",
+        callbackUrl: "/adminLayouts/WebAdmin/WebAdminDashboard",
       });
       console.log(status);
       if (status.ok) {
