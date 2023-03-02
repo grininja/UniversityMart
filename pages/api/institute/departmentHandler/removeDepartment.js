@@ -1,7 +1,8 @@
 import dbConnect from "@/lib/mongoDb";
 import Department from "@/models/departMent";
 import InstituteModel from "@/models/Institute";
-
+import AdminOneModel from "@/models/adminOne";
+import UserModel from "@/models/User";
 const handler = async (req, res) => {
   try {
     if (req.method === "GET") {
@@ -12,6 +13,24 @@ const handler = async (req, res) => {
         {
           $pullAll: {
             departments: [departmentId],
+          },
+        }
+      );
+      const findAllAdminOne = await AdminOneModel.find({
+        department: departmentId,
+      });
+      const admin1IDS = [];
+      for (let el in findAllAdminOne) {
+        admin1IDS.push(findAllAdminOne[el].user);
+        await UserModel.findByIdAndDelete(findAllAdminOne[el].user);
+        await AdminOneModel.findByIdAndDelete(findAllAdminOne[el]._id);
+      }
+
+      await InstituteModel.updateOne(
+        { _id: instituteId },
+        {
+          $pullAll: {
+            admin1: admin1IDS,
           },
         }
       );

@@ -61,7 +61,13 @@ const validationSchema = Yup.object({
   role: Yup.string("Enter your role").required("Role is required"),
 });
 
-const createAdminFunction = async (email, instituteId, role, department) => {
+const createAdminFunction = async (
+  email,
+  instituteId,
+  role,
+  department,
+  router
+) => {
   const user = await apiCall(
     "/api/manageUser/createUser",
     "POST",
@@ -85,6 +91,7 @@ const createAdminFunction = async (email, instituteId, role, department) => {
       null
     );
     alert(res.data.message);
+    router.reload();
   } else if (role === "admin2") {
     const res = await apiCall(
       `${process.env.BASE_URL}/api/institute/adminHandler/adminTwoHandler/createAdminTwo`,
@@ -93,8 +100,10 @@ const createAdminFunction = async (email, instituteId, role, department) => {
       null
     );
     alert(res.data.message);
+    router.reload();
   } else if (role === "admin3") {
     alert("methods not implemented for admin3");
+    router.reload();
   }
 };
 
@@ -118,7 +127,8 @@ export default function CreateAdmin({
       emailValue,
       instituteId,
       roleValue,
-      departMentValue
+      departMentValue,
+      router
     );
     // console.log(roleValue,emailValue,departMentValue)
   };
