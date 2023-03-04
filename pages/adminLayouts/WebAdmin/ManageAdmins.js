@@ -8,7 +8,14 @@ import CreateAdminForm from "./createAdminForm";
 import apiCall from "@/helper/apiCall";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
-const ManageAdminDashboard = ({ institueId, departments, instituteName }) => {
+import AdminItems from "./adminItems";
+const ManageAdminDashboard = ({
+  institueId,
+  departments,
+  instituteName,
+  adminOneDetails,
+  adminTwoDetails,
+}) => {
   const router = useRouter();
   const { status } = useSession({
     required: true,
@@ -30,7 +37,13 @@ const ManageAdminDashboard = ({ institueId, departments, instituteName }) => {
             />
           }
         </Grid>
-        <Grid xs={7}>{/* {session &&  />} */}</Grid>
+        <Grid xs={7}>
+          <AdminItems
+            adminOneDetails={adminOneDetails}
+            adminTwoDetails={adminTwoDetails}
+            instituteId={institueId}
+          />
+        </Grid>
       </Grid>
     </Box>
   );
@@ -51,12 +64,20 @@ export async function getServerSideProps(context) {
       {},
       null
     );
+    const allAdminsDetails = await apiCall(
+      `${process.env.BASE_URL}/api/institute/adminHandler/getAllAdminOneWithDetail`,
+      "GET",
+      {},
+      null
+    );
 
     return {
       props: {
         departments: departMents.data.message,
         institueId: findInstutitute.data.message,
         instituteName: session.user.name,
+        adminOneDetails: allAdminsDetails["data"]["adminOneDetails"],
+        adminTwoDetails: allAdminsDetails["data"]["adminTwoDetails"],
       },
     };
   } catch (e) {

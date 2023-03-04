@@ -89,13 +89,15 @@ const Departments = ({ departments, instituteId }) => {
                 gap: 2,
               }}
             >
-              {departments.map((department) => (
-                <ImgMediaCard
-                  Department={department}
-                  key={department._id}
-                  instituteId={instituteId}
-                />
-              ))}
+              {departments &&
+                departments.length > 0 &&
+                departments.map((department) => (
+                  <ImgMediaCard
+                    Department={department}
+                    key={department._id}
+                    instituteId={instituteId}
+                  />
+                ))}
             </Box>
           </ThemeProvider>
         </Grid>
