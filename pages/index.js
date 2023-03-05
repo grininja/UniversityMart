@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 
 ///////new imports/////////////////////
 import Head from "next/head";
-import { Layout as WebAdminDashboardLayout } from "../layouts/WebAdminDashboard/layout";
+import { Layout as AdminOneDashBoardLayout } from "../layouts/AdminOneDashboard/layout";
 
 ///////////////////////////////////////////////////////
 
@@ -219,6 +219,8 @@ const now = new Date();
 //   </>
 // );
 
-Home.getLayout = (page) => <WebAdminDashboardLayout>{page}</WebAdminDashboardLayout>;
+Home.getLayout = (page) => (
+  <AdminOneDashBoardLayout>{page}</AdminOneDashBoardLayout>
+);
 
 export default Home;

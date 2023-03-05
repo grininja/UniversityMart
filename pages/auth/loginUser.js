@@ -78,7 +78,7 @@ const Login = ({ email, institute, role }) => (
 
       const result = await signIn("email", {
         email,
-        callbackUrl: `${process.env.BASE_URL}`,
+        callbackUrl: `${process.env.BASE_URL}/AdminPages/AdminOne/Home`,
       });
     }}
     fullWidth
