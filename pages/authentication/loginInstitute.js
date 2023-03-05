@@ -15,7 +15,9 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import apiCall from "@/helper/apiCall";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-
+import { Alert, FormHelperText, Stack, Tab, Tabs } from "@mui/material";
+// import { useAuth } from 'src/hooks/use-auth';
+import { Layout as AuthLayout } from "../../layouts/auth/layout";
 function Copyright(props) {
   return (
     <Typography
@@ -40,7 +42,7 @@ const validationSchema = Yup.object({
   password: Yup.string().required("No password provided."),
 });
 
-const LoginInstituteForm = () => {
+const LoginInstituteFormPage = () => {
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
@@ -63,26 +65,11 @@ const LoginInstituteForm = () => {
   });
 
   return (
-    <ThemeProvider theme={theme}>
+    // <ThemeProvider theme={theme}>
+    <>
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
-        <Grid
-          item
-          xs={false}
-          sm={4}
-          md={7}
-          sx={{
-            backgroundImage:
-              "url(https://static.vecteezy.com/system/resources/previews/002/850/123/original/colorful-cartoon-school-supplies-icon-set-free-vector.jpg)",
-            backgroundRepeat: "no-repeat",
-            backgroundColor: (t) =>
-              t.palette.mode === "light"
-                ? t.palette.grey[50]
-                : t.palette.grey[900],
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
+     
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Box
             sx={{
@@ -158,8 +145,12 @@ const LoginInstituteForm = () => {
           </Box>
         </Grid>
       </Grid>
-    </ThemeProvider>
+    </>
   );
 };
 
-export default LoginInstituteForm;
+LoginInstituteFormPage.getLayout = (page) => (
+  <AuthLayout>{page}</AuthLayout>
+);
+
+export default LoginInstituteFormPage;

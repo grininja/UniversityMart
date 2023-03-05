@@ -50,7 +50,7 @@ const ManageAdminDashboard = ({
 };
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
-  console.log(session);
+
   try {
     const findInstutitute = await apiCall(
       `${process.env.BASE_URL}/api/institute/getInstituteByName?name=${session.user.name}`,

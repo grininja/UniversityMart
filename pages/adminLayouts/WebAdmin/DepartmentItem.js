@@ -76,7 +76,6 @@ const Departments = ({ departments, instituteId }) => {
   });
   return (
     <div>
-      {/* <Grid container spacing={2}> */}
       {[lightTheme].map((theme, index) => (
         <Grid item xs={12} key={index}>
           <ThemeProvider theme={theme}>

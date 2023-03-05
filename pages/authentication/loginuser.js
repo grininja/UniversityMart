@@ -70,7 +70,7 @@ const Login = ({ email, institute, role }) => (
 
       const result = await signIn("email", {
         email,
-        callbackUrl: "http://localhost:3000",
+        callbackUrl: `${process.env.BASE_URL}`,
       });
     }}
     fullWidth
@@ -205,7 +205,7 @@ export default function LoginUser(props) {
               <Copyright sx={{ mt: 5 }} />
               <button
                 onClick={() =>
-                  signOut({ callbackUrl: "http://localhost:3000" })
+                  signOut({ callbackUrl: `${process.env.BASE_URL}` })
                 }
               >
                 Sign Out
@@ -227,7 +227,6 @@ export async function getServerSideProps(context) {
       ""
     );
     const institutes = await res.data.message;
-    // console.log(institutes);
     return {
       props: {
         institutes: institutes,

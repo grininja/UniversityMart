@@ -20,7 +20,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { useRouter } from "next/router";
-function ImgMediaCard({ AdminDetail, instituteId, role ,router}) {
+function ImgMediaCard({ AdminDetail, instituteId, role, router }) {
   // const router = useRouter();
   return (
     <Card sx={{ maxWidth: 345 }}>
@@ -85,7 +85,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const AdminList = ({ AdminItems, role, instituteId }) => {
-  const router=useRouter();
+  const router = useRouter();
   return (
     <div>
       {[lightTheme].map((theme, index) => (
@@ -109,7 +109,6 @@ const AdminList = ({ AdminItems, role, instituteId }) => {
                     instituteId={instituteId}
                     role={role}
                     router={router}
-
                   />
                 ))}
             </Box>

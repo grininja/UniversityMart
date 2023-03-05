@@ -27,10 +27,10 @@ export const OrderRequest = new Schema({
   status: {
     type: String,
     default: "Pending",
-    index:true,
+    index: true,
   },
 });
 
-const OrderRequestModel = mongoose.models.OrderRequest || mongoose.model("OrderRequest", OrderRequest);
-module.exports=OrderRequestModel;
-
+const OrderRequestModel =
+  mongoose.models.OrderRequest || mongoose.model("OrderRequest", OrderRequest);
+module.exports = OrderRequestModel;

@@ -61,7 +61,7 @@ const validationSchema = Yup.object({
     .required("Required"),
   address: Yup.string().required("Required"),
 });
-
+///old one
 const SignUpUniversityPage = () => {
   const formik = useFormik({
     initialValues: {

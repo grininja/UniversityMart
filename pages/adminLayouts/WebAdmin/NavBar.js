@@ -18,6 +18,8 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import SearchIcon from "@mui/icons-material/Search";
 import Link from "next/link";
+import SendIcon from "@mui/icons-material/Send";
+import { signIn, signOut, useSession } from "next-auth/react";
 const drawerWidth = 240;
 const navItems = ["Home", "Admins", "Update Institute"];
 const linkItems = [
@@ -135,6 +137,13 @@ function DrawerAppBar(props) {
               </Link>
             ))}
           </Box>
+          <Button
+            variant="contained"
+            endIcon={<SendIcon />}
+            onClick={() => signOut({ callbackUrl: `${process.env.BASE_URL}` })}
+          >
+            SignOut
+          </Button>
         </Toolbar>
       </AppBar>
       <Box component="nav">
