@@ -16,8 +16,8 @@ import {
   Unstable_Grid2 as Grid,
 } from "@mui/material";
 import { Layout as WebAdminDashboard } from "../../../layouts/WebAdminDashboard/layout";
-import DepartmentCard from "../../../sections/AdminOne/department-card";
-import { CompaniesSearch } from "../../../sections/AdminOne/department-search";
+import DepartmentCard from "../../../sections/WebAdmin/department-card";
+import { CompaniesSearch } from "../../../sections/WebAdmin/department-search";
 
 const Page = ({ departments, instituteName, institueId }) => {
   return (
@@ -98,20 +98,20 @@ export async function getServerSideProps(context) {
       {},
       null
     );
-    const allAdminsDetails = await apiCall(
-      `${process.env.BASE_URL}/api/institute/adminHandler/getAllAdminOneWithDetail`,
-      "GET",
-      {},
-      null
-    );
+    // const allAdminsDetails = await apiCall(
+    //   `${process.env.BASE_URL}/api/institute/adminHandler/getAllAdminOneWithDetail`,
+    //   "GET",
+    //   {},
+    //   null
+    // );
 
     return {
       props: {
         departments: departMents.data.message,
         institueId: findInstutitute.data.message,
         instituteName: session.user.name,
-        adminOneDetails: allAdminsDetails["data"]["adminOneDetails"],
-        adminTwoDetails: allAdminsDetails["data"]["adminTwoDetails"],
+        // adminOneDetails: allAdminsDetails["data"]["adminOneDetails"],
+        // adminTwoDetails: allAdminsDetails["data"]["adminTwoDetails"],
       },
     };
   } catch (e) {

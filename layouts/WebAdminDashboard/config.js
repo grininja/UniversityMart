@@ -63,15 +63,15 @@ export const items = [
   //     </SvgIcon>
   //   ),
   // },
-  {
-    title: "Signout",
-    path: "/auth/registerInstitute",
-    icon: (
-      <SvgIcon fontSize="small">
-        <UserPlusIcon />
-      </SvgIcon>
-    ),
-  },
+  // {
+  //   title: "Signout",
+  //   path: "/auth/registerInstitute",
+  //   icon: (
+  //     <SvgIcon fontSize="small">
+  //       <UserPlusIcon />
+  //     </SvgIcon>
+  //   ),
+  // },
   // {
   //   title: "Error",
   //   path: "/404",

@@ -7,7 +7,7 @@ import {
   Unstable_Grid2 as Grid,
 } from "@mui/material";
 import { Layout as WebAdminDashboard } from "../../../layouts/WebAdminDashboard/layout";
-import { AccountProfile } from "../../../sections/AdminOne/account-profile";
+import { AccountProfile } from "../../../sections/WebAdmin/account-profile";
 import { AccountProfileDetails } from "../../../sections/account/account-profile-details";
 
 const Page = () => (

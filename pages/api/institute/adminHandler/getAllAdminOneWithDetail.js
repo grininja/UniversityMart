@@ -21,6 +21,7 @@ const handler = async (req, res) => {
           email: userDetail.email,
           name: userDetail.name,
           phone: userDetail.phone,
+          role: "admin1",
         });
       }
       for (let el in allAdminTwo) {
@@ -31,15 +32,14 @@ const handler = async (req, res) => {
           email: userDetail.email,
           name: userDetail.name,
           phone: userDetail.phone,
+          role: "admin2",
         });
       }
 
-      return res
-        .status(200)
-        .send({
-          adminOneDetails: adminOneDetails,
-          adminTwoDetails: adminTwoDetails,
-        });
+      return res.status(200).send({
+        adminOneDetails: adminOneDetails,
+        adminTwoDetails: adminTwoDetails,
+      });
     } else {
       return res.status(400).send({ message: "Bad Request" });
     }
@@ -48,6 +48,5 @@ const handler = async (req, res) => {
     return res.status(404).send({ message: "something went wrong" });
   }
 };
-
 
 export default handler;

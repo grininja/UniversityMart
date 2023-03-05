@@ -1,9 +1,10 @@
 import { useCallback, useMemo, useState } from "react";
 import Head from "next/head";
-import { subDays, subHours } from "date-fns";
-import ArrowDownOnSquareIcon from "@heroicons/react/24/solid/ArrowDownOnSquareIcon";
-import ArrowUpOnSquareIcon from "@heroicons/react/24/solid/ArrowUpOnSquareIcon";
+import { authOptions } from "../../api/auth/[...nextauth]";
+import { getServerSession } from "next-auth/next";
+import apiCall from "@/helper/apiCall";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
+import { useRouter } from "next/router";
 import {
   Box,
   Button,
@@ -14,173 +15,40 @@ import {
 } from "@mui/material";
 import { useSelection } from "../../../hooks/use-selection";
 import { Layout as WebAdminDashboard } from "../../../layouts/WebAdminDashboard/layout";
-import { CustomersTable } from "../../../sections/customer/customers-table";
-import { CustomersSearch } from "../../../sections/customer/customers-search";
+import { AdminTable } from "../../../sections/WebAdmin/admin-table";
+import { AdminSearch } from "../../../sections/WebAdmin/admin-search";
 import { applyPagination } from "../../../utils/apply-pagination";
 
 const now = new Date();
 
-const data = [
-  {
-    id: "5e887ac47eed253091be10cb",
-    address: {
-      city: "Cleveland",
-      country: "USA",
-      state: "Ohio",
-      street: "2849 Fulton Street",
-    },
-    avatar: "/assets/avatars/avatar-carson-darrin.png",
-    createdAt: subDays(subHours(now, 7), 1).getTime(),
-    email: "carson.darrin@devias.io",
-    name: "Carson Darrin",
-    phone: "304-428-3097",
-  },
-  {
-    id: "5e887b209c28ac3dd97f6db5",
-    address: {
-      city: "Atlanta",
-      country: "USA",
-      state: "Georgia",
-      street: "1865  Pleasant Hill Road",
-    },
-    avatar: "/assets/avatars/avatar-fran-perez.png",
-    createdAt: subDays(subHours(now, 1), 2).getTime(),
-    email: "fran.perez@devias.io",
-    name: "Fran Perez",
-    phone: "712-351-5711",
-  },
-  {
-    id: "5e887b7602bdbc4dbb234b27",
-    address: {
-      city: "North Canton",
-      country: "USA",
-      state: "Ohio",
-      street: "4894  Lakeland Park Drive",
-    },
-    avatar: "/assets/avatars/avatar-jie-yan-song.png",
-    createdAt: subDays(subHours(now, 4), 2).getTime(),
-    email: "jie.yan.song@devias.io",
-    name: "Jie Yan Song",
-    phone: "770-635-2682",
-  },
-  {
-    id: "5e86809283e28b96d2d38537",
-    address: {
-      city: "Madrid",
-      country: "Spain",
-      name: "Anika Visser",
-      street: "4158  Hedge Street",
-    },
-    avatar: "/assets/avatars/avatar-anika-visser.png",
-    createdAt: subDays(subHours(now, 11), 2).getTime(),
-    email: "anika.visser@devias.io",
-    name: "Anika Visser",
-    phone: "908-691-3242",
-  },
-  {
-    id: "5e86805e2bafd54f66cc95c3",
-    address: {
-      city: "San Diego",
-      country: "USA",
-      state: "California",
-      street: "75247",
-    },
-    avatar: "/assets/avatars/avatar-miron-vitold.png",
-    createdAt: subDays(subHours(now, 7), 3).getTime(),
-    email: "miron.vitold@devias.io",
-    name: "Miron Vitold",
-    phone: "972-333-4106",
-  },
-  {
-    id: "5e887a1fbefd7938eea9c981",
-    address: {
-      city: "Berkeley",
-      country: "USA",
-      state: "California",
-      street: "317 Angus Road",
-    },
-    avatar: "/assets/avatars/avatar-penjani-inyene.png",
-    createdAt: subDays(subHours(now, 5), 4).getTime(),
-    email: "penjani.inyene@devias.io",
-    name: "Penjani Inyene",
-    phone: "858-602-3409",
-  },
-  {
-    id: "5e887d0b3d090c1b8f162003",
-    address: {
-      city: "Carson City",
-      country: "USA",
-      state: "Nevada",
-      street: "2188  Armbrester Drive",
-    },
-    avatar: "/assets/avatars/avatar-omar-darboe.png",
-    createdAt: subDays(subHours(now, 15), 4).getTime(),
-    email: "omar.darobe@devias.io",
-    name: "Omar Darobe",
-    phone: "415-907-2647",
-  },
-  {
-    id: "5e88792be2d4cfb4bf0971d9",
-    address: {
-      city: "Los Angeles",
-      country: "USA",
-      state: "California",
-      street: "1798  Hickory Ridge Drive",
-    },
-    avatar: "/assets/avatars/avatar-siegbert-gottfried.png",
-    createdAt: subDays(subHours(now, 2), 5).getTime(),
-    email: "siegbert.gottfried@devias.io",
-    name: "Siegbert Gottfried",
-    phone: "702-661-1654",
-  },
-  {
-    id: "5e8877da9a65442b11551975",
-    address: {
-      city: "Murray",
-      country: "USA",
-      state: "Utah",
-      street: "3934  Wildrose Lane",
-    },
-    avatar: "/assets/avatars/avatar-iulia-albu.png",
-    createdAt: subDays(subHours(now, 8), 6).getTime(),
-    email: "iulia.albu@devias.io",
-    name: "Iulia Albu",
-    phone: "313-812-8947",
-  },
-  {
-    id: "5e8680e60cba5019c5ca6fda",
-    address: {
-      city: "Salt Lake City",
-      country: "USA",
-      state: "Utah",
-      street: "368 Lamberts Branch Road",
-    },
-    avatar: "/assets/avatars/avatar-nasimiyu-danai.png",
-    createdAt: subDays(subHours(now, 1), 9).getTime(),
-    email: "nasimiyu.danai@devias.io",
-    name: "Nasimiyu Danai",
-    phone: "801-301-7894",
-  },
-];
+let data = [];
 
-const useCustomers = (page, rowsPerPage) => {
+const useAdmins = (page, rowsPerPage) => {
   return useMemo(() => {
     return applyPagination(data, page, rowsPerPage);
   }, [page, rowsPerPage]);
 };
 
-const useCustomerIds = (customers) => {
+const useCustomerIds = (admins) => {
   return useMemo(() => {
-    return customers.map((customer) => customer.id);
-  }, [customers]);
+    return admins.map((customer) => customer.id);
+  }, [admins]);
 };
 
-const Page = () => {
+const Page = ({
+  departments,
+  institueId,
+  instituteName,
+  adminOneDetails,
+  adminTwoDetails,
+}) => {
+  const router = useRouter();
+  data = adminOneDetails.concat(adminTwoDetails);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const customers = useCustomers(page, rowsPerPage);
-  const customersIds = useCustomerIds(customers);
-  const customersSelection = useSelection(customersIds);
+  const admins = useAdmins(page, rowsPerPage);
+  const AdminsIds = useCustomerIds(admins);
+  const AdminsSelection = useSelection(AdminsIds);
 
   const handlePageChange = useCallback((event, value) => {
     setPage(value);
@@ -193,7 +61,7 @@ const Page = () => {
   return (
     <>
       <Head>
-        <title>Customers | UniversityMart</title>
+        <title>Admins | UniversityMart</title>
       </Head>
       <Box
         component="main"
@@ -206,9 +74,9 @@ const Page = () => {
           <Stack spacing={3}>
             <Stack direction="row" justifyContent="space-between" spacing={4}>
               <Stack spacing={1}>
-                <Typography variant="h4">Customers</Typography>
+                <Typography variant="h4">Admins</Typography>
                 <Stack alignItems="center" direction="row" spacing={1}>
-                  <Button
+                  {/* <Button
                     color="inherit"
                     startIcon={
                       <SvgIcon fontSize="small">
@@ -227,7 +95,7 @@ const Page = () => {
                     }
                   >
                     Export
-                  </Button>
+                  </Button> */}
                 </Stack>
               </Stack>
               <div>
@@ -238,24 +106,26 @@ const Page = () => {
                     </SvgIcon>
                   }
                   variant="contained"
+                  href="/AdminPages/WebAdmin/CreateAdmin"
                 >
                   Add
                 </Button>
               </div>
             </Stack>
-            <CustomersSearch />
-            <CustomersTable
+            <AdminSearch />
+            <AdminTable
               count={data.length}
-              items={customers}
-              onDeselectAll={customersSelection.handleDeselectAll}
-              onDeselectOne={customersSelection.handleDeselectOne}
+              items={admins}
+              onDeselectAll={AdminsSelection.handleDeselectAll}
+              onDeselectOne={AdminsSelection.handleDeselectOne}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}
-              onSelectAll={customersSelection.handleSelectAll}
-              onSelectOne={customersSelection.handleSelectOne}
+              onSelectAll={AdminsSelection.handleSelectAll}
+              onSelectOne={AdminsSelection.handleSelectOne}
               page={page}
               rowsPerPage={rowsPerPage}
-              selected={customersSelection.selected}
+              selected={AdminsSelection.selected}
+              instituteId={institueId}
             />
           </Stack>
         </Container>
@@ -267,3 +137,41 @@ const Page = () => {
 Page.getLayout = (page) => <WebAdminDashboard>{page}</WebAdminDashboard>;
 
 export default Page;
+
+export async function getServerSideProps(context) {
+  const session = await getServerSession(context.req, context.res, authOptions);
+  // console.log(session);
+  try {
+    const findInstutitute = await apiCall(
+      `${process.env.BASE_URL}/api/institute/getInstituteByName?name=${session.user.name}`,
+      "GET",
+      {},
+      null
+    );
+    const departMents = await apiCall(
+      `${process.env.BASE_URL}/api/institute/departmentHandler/getAllDepartments?InstituteId=${findInstutitute.data.message}`,
+      "GET",
+      {},
+      null
+    );
+    const allAdminsDetails = await apiCall(
+      `${process.env.BASE_URL}/api/institute/adminHandler/getAllAdminOneWithDetail`,
+      "GET",
+      {},
+      null
+    );
+
+    return {
+      props: {
+        departments: departMents.data.message,
+        institueId: findInstutitute.data.message,
+        instituteName: session.user.name,
+        adminOneDetails: allAdminsDetails["data"]["adminOneDetails"],
+        adminTwoDetails: allAdminsDetails["data"]["adminTwoDetails"],
+      },
+    };
+  } catch (e) {
+    console.log(e);
+    return { props: { error: "something happened" } };
+  }
+}
