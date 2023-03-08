@@ -1,4 +1,4 @@
-import { authOptions } from "../../api/auth/[...nextauth]";
+import { authOptions } from "../../../api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 import apiCall from "@/helper/apiCall";
 import * as Yup from "yup";
@@ -21,7 +21,7 @@ import {
 
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { Layout as AdminOneDashBoardLayout } from "../../../layouts/AdminOneDashboard/layout";
+import { Layout as AdminOneDashBoardLayout } from "../../../../layouts/AdminOneDashboard/layout";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
@@ -56,7 +56,7 @@ import { useState } from "react";
 //                 onChange={(event) => {
 //                   setfilepath(event.target.files[0]);
 //                   // console.log(event.target.files[0]);
-//                   const imageUrl=URL.createObjectURL(event.target.files[0])
+//                   const imageUrl=URL.EditObjectURL(event.target.files[0])
 //                   console.log(imageUrl);
 //                 }}
 //               />
@@ -83,16 +83,15 @@ import { useState } from "react";
 //   );
 // };
 
-const CreateItem = ({ adminOneId, InstituteId }) => {
-  // console.log(adminOneId+" "+InstituteId);
-  const router=useRouter();
+const EditItem = ({ adminOneId, InstituteId, Item }) => {
+  const router = useRouter();
   const formik = useFormik({
     initialValues: {
-      name: "",
-      photo: "",
-      quantity: 0,
-      description: "",
-      category: "",
+      name: Item.name,
+      photo: Item.photo,
+      quantity: Item.quantity,
+      description: Item.description,
+      category: Item.category,
     },
     validationSchema: Yup.object({
       name: Yup.string().max(255).required("Product name is required"),
@@ -106,22 +105,21 @@ const CreateItem = ({ adminOneId, InstituteId }) => {
     onSubmit: async (values, helpers) => {
       try {
         const res = await apiCall(
-          `${process.env.BASE_URL}/api/adminOneRequests/productHandler/addItem`,
+          `${process.env.BASE_URL}/api/adminOneRequests/productHandler/updateItem`,
           "POST",
           {
+            ItemId: Item._id,
             name: values.name,
             description: values.description,
             photoUrl: values.photo,
             quantity: values.quantity,
             category: values.category,
-            adminOneId: adminOneId,
-            InstituteId: InstituteId,
+            departMentId: Item.department,
           },
           null
         );
         alert(res.data.message);
         router.reload();
-
       } catch (err) {
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: err.message });
@@ -208,7 +206,7 @@ const CreateItem = ({ adminOneId, InstituteId }) => {
 };
 
 const Page = (props) => {
-  const { InstituteId, DepartmentId, AdminOneId } = props;
+  const { InstituteId, DepartmentId, AdminOneId, product } = props;
   const router = useRouter();
   const { status } = useSession({
     required: true,
@@ -220,7 +218,7 @@ const Page = (props) => {
   return (
     <div>
       <Head>
-        <title>Create Item | UniversityMart</title>
+        <title>Edit Item | UniversityMart</title>
       </Head>
       <Box
         component="main"
@@ -232,7 +230,7 @@ const Page = (props) => {
         <Container maxWidth="lg">
           <Stack spacing={3}>
             <div>
-              <Typography variant="h4">Create Item</Typography>
+              <Typography variant="h4">Edit Item</Typography>
             </div>
             <div>
               <Grid container spacing={3}>
@@ -240,9 +238,10 @@ const Page = (props) => {
                   {/* <UploadPicture /> */}
                 </Grid>
                 <Grid xs={12} md={6} lg={8}>
-                  <CreateItem
+                  <EditItem
                     adminOneId={AdminOneId}
                     InstituteId={InstituteId}
+                    Item={product}
                   />
                 </Grid>
               </Grid>
@@ -262,10 +261,17 @@ export default Page;
 
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
+  console.log(context.query.pid);
 
   try {
     const getAdminOne = await apiCall(
       `${process.env.BASE_URL}/api/institute/adminHandler/adminOneHandler/adminOneByEmail?=${session.user.email}`,
+      "GET",
+      {},
+      null
+    );
+    const getItem = await apiCall(
+      `${process.env.BASE_URL}/api/adminOneRequests/productHandler/getSingleItem?ItemId=${context.query.pid}`,
       "GET",
       {},
       null
@@ -276,6 +282,7 @@ export async function getServerSideProps(context) {
         InstituteId: getAdminOne.data.message.Institute,
         DepartmentId: getAdminOne.data.message.department,
         AdminOneId: getAdminOne.data.message._id,
+        product: getItem.data.message,
       },
     };
   } catch (e) {

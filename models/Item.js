@@ -16,7 +16,7 @@ export const ItemSchema = new Schema({
   },
   photo: {
     type: String,
-    required: true,
+    // required: true,
   },
   quantity: {
     type: Number,

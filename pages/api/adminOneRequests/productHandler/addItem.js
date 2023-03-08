@@ -43,6 +43,7 @@ const handler = async (req, res) => {
     }
   } catch (e) {
     console.log("exception occurred in creating item", e);
+    return res.status(500).send({ message: "some error" });
   }
 };
 

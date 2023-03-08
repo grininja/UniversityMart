@@ -3,8 +3,9 @@ import ArrowDownOnSquareIcon from "@heroicons/react/24/solid/ArrowDownOnSquareIc
 import ClockIcon from "@heroicons/react/24/solid/ClockIcon";
 import TrashIcon from "@heroicons/react/24/solid/TrashIcon";
 import PencilIcon from "@heroicons/react/24/solid/PencilIcon";
-import apiCall from "@/helper/apiCall";
+import ArchiveBoxIcon from "@heroicons/react/24/solid/ArchiveBoxIcon";
 import { useRouter } from "next/router";
+
 import {
   Avatar,
   Box,
@@ -16,10 +17,11 @@ import {
   Typography,
   Button,
 } from "@mui/material";
+import apiCall from "@/helper/apiCall";
 
-const DepartmentCard = (props) => {
+export const ItemCard = (props) => {
+  const { item } = props;
   const router = useRouter();
-  const { department, instituteName, instituteId } = props;
   return (
     <Card
       sx={{
@@ -36,16 +38,13 @@ const DepartmentCard = (props) => {
             pb: 3,
           }}
         >
-          {/* <Avatar
-            src={department.logo}
-            variant="square"
-          /> */}
+          <Avatar src={item.photo} variant="square" />
         </Box>
         <Typography align="center" gutterBottom variant="h5">
-          {department.name}
+          {item.name}
         </Typography>
         <Typography align="center" variant="body1">
-          {instituteName}
+          {item.description}
         </Typography>
       </CardContent>
       <Box sx={{ flexGrow: 1 }} />
@@ -65,11 +64,23 @@ const DepartmentCard = (props) => {
                 <PencilIcon />
               </SvgIcon>
             }
+            onClick={async () => {
+              router.push(`/AdminPages/AdminOne/EditItem/${item._id}`);
+              // router.reload();
+            }}
           >
             <Typography color="text.secondary" display="inline" variant="body2">
               Edit
             </Typography>
           </Button>
+        </Stack>
+        <Stack alignItems="center" direction="row" spacing={1}>
+          <SvgIcon color="action" fontSize="small">
+            <ArchiveBoxIcon />
+          </SvgIcon>
+          <Typography color="text.secondary" display="inline" variant="body2">
+            {item.quantity}
+          </Typography>
         </Stack>
         <Stack alignItems="center" direction="row" spacing={1}>
           <Button
@@ -80,14 +91,10 @@ const DepartmentCard = (props) => {
               </SvgIcon>
             }
             onClick={async () => {
-              const deleteRes = await apiCall(
-                `${process.env.BASE_URL}/api/institute/departmentHandler/removeDepartment?departmentId=${department._id}&instituteId=${instituteId}`,
-                "GET",
-                {},
-                null
+              const res = await apiCall(
+                `${process.env.BASE_URL}/api/adminOneRequests/productHandler/removeItem?ItemId=${item._id}&departMentId=${item.department}`
               );
-              console.log(deleteRes);
-              alert(deleteRes.data.message);
+              alert(res.data.message);
               router.reload();
             }}
           >
@@ -101,8 +108,6 @@ const DepartmentCard = (props) => {
   );
 };
 
-export default DepartmentCard;
-
-// departmentCard.propTypes = {
-//   department: PropTypes.object.isRequired,
-// };
+ItemCard.propTypes = {
+  item: PropTypes.object.isRequired,
+};
