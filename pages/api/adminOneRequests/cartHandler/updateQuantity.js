@@ -12,8 +12,10 @@ const handler = async (req, res) => {
         cart: { $elemMatch: { product: ItemId } },
       });
       if (checkIfAlreadyInCart !== null && checkIfAlreadyInCart.length > 0) {
-        if (checkIfAlreadyInCart[0].cart[0].quantity === 1) {
-          return res.status(200).send({ message: "Can not reduce quantity" });
+        if (ItemQuantity <= 0) {
+          return res
+            .status(200)
+            .send({ message: "Quantity should be atleast 1" });
         }
         await AdminOne.updateOne(
           {

@@ -6,7 +6,6 @@ const handler = async (req, res) => {
     if (req.method === "GET") {
       await dbConnect();
       const { ItemId, departmentId, adminOneId } = req.query;
-      // console.log(ItemId,departmentId,adminOneId);
       await AdminOne.update(
         {
           _id: adminOneId,

@@ -4,6 +4,7 @@ import ArrowDownOnSquareIcon from "@heroicons/react/24/solid/ArrowDownOnSquareIc
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 import apiCall from "@/helper/apiCall";
 import { useSession } from "next-auth/react";
+import PaperAirplaneIcon from "@heroicons/react/24/solid/PaperAirplaneIcon";
 import {
   Box,
   Button,
@@ -13,6 +14,10 @@ import {
   SvgIcon,
   Typography,
   Unstable_Grid2 as Grid,
+  Select,
+  InputLabel,
+  MenuItem,
+  TextField,
 } from "@mui/material";
 import { Layout as AdminOneDashBoardLayout } from "../../../layouts/AdminOneDashboard/layout";
 import { CartItem } from "../../../sections/AdminOne/cart-item";
@@ -20,9 +25,12 @@ import { CartItem } from "../../../sections/AdminOne/cart-item";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 import { useRouter } from "next/router";
+import { useState } from "react";
 const Page = (props) => {
   const { AdminOneId, cartItems, DepartmentId, InstituteId } = props;
-  console.log(cartItems);
+  // console.log(cartItems);
+  const [remarksValue, setRemarksValue] = useState("");
+  const [tagValue, setTagValue] = useState("");
   const router = useRouter();
   const { status } = useSession({
     required: true,
@@ -45,8 +53,86 @@ const Page = (props) => {
       >
         <Container maxWidth="xl">
           <Stack spacing={3}>
+            <Stack direction="row" justifyContent="space-between" spacing={4}>
+              <Stack spacing={3} direction="row">
+                <Typography variant="h4">Cart Items</Typography>
+                <Stack alignItems="center" direction="row" spacing={1}>
+                  <InputLabel id="demo-simple-select-helper-label">
+                    Tag
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-helper-label"
+                    id="demo-simple-select-helper"
+                    value={tagValue}
+                    label="Age"
+                    onChange={(event) => {
+                      setTagValue(event.target.value);
+                    }}
+                  >
+                    <MenuItem value="Urgent">Urgent</MenuItem>
+                    <MenuItem value="Non Urgent">Non-Urgent</MenuItem>
+                  </Select>
+                </Stack>
+                <Stack alignItems="center" direction="row" spacing={1}>
+                  <TextField
+                    fullWidth
+                    label="Remarks"
+                    name="Remarks"
+                    onChange={(event) => {
+                      setRemarksValue(event.target.value);
+                    }}
+                    required
+                    value={remarksValue}
+                  />
+                </Stack>
+              </Stack>
+              <div>
+                <Button
+                  startIcon={
+                    <SvgIcon fontSize="small">
+                      <PaperAirplaneIcon />
+                    </SvgIcon>
+                  }
+                  variant="contained"
+                  onClick={async () => {
+                    let productList = [];
+                    for (let i = 0; i < cartItems.length; i++) {
+                      var product = cartItems[i];
+                      productList.push({
+                        detail: {
+                          itemId: cartItems[i].detail._id,
+                          category: product.detail.category,
+                          department: product.detail.department,
+                          name: product.detail.name,
+                          photo: product.detail.photo,
+                        },
+                        quantity: product.quantity,
+                      });
+                    }
+                    const createOrderResult = await apiCall(
+                      `${process.env.BASE_URL}/api/adminOneRequests/OrderHandler/createOrder`,
+                      "POST",
+                      {
+                        products: productList,
+                        Institute: InstituteId,
+                        adminInitiated: AdminOneId,
+                        tag: tagValue,
+                        remarks: remarksValue,
+                        status: "Pending",
+                        department: DepartmentId,
+                      },
+                      null
+                    );
+
+                    alert(createOrderResult.data.message);
+                  }}
+                >
+                  Checkout
+                </Button>
+              </div>
+            </Stack>
             {/* <ItemSearch /> */}
-            <Typography variant="h4">Cart Items</Typography>
+
             <Grid container spacing={3}>
               {cartItems.map((product) => (
                 <Grid xs={12} md={6} lg={4} key={product._id}>

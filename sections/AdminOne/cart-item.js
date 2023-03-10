@@ -5,7 +5,7 @@ import TrashIcon from "@heroicons/react/24/solid/TrashIcon";
 import PencilIcon from "@heroicons/react/24/solid/PencilIcon";
 import ArchiveBoxIcon from "@heroicons/react/24/solid/ArchiveBoxIcon";
 import { useRouter } from "next/router";
-
+import { useState } from "react";
 import {
   Avatar,
   Box,
@@ -16,15 +16,14 @@ import {
   SvgIcon,
   Typography,
   Button,
+  TextField,
 } from "@mui/material";
 import apiCall from "@/helper/apiCall";
 
 export const CartItem = (props) => {
   const { item, AdminOne, Department, Institute } = props;
   const router = useRouter();
-  // console.log(item.detail._id);
-  // console.log(AdminOne)
-  // console.log(Department)
+  const [QuantityValue, setQuantityValue] = useState(item.quantity);
   return (
     <Card
       sx={{
@@ -75,6 +74,16 @@ export const CartItem = (props) => {
         sx={{ p: 2 }}
       >
         <Stack alignItems="center" direction="row" spacing={1}>
+          <TextField
+            fullWidth
+            label="Quantity"
+            name="Quantity"
+            onChange={(event) => {
+              setQuantityValue(event.target.value);
+            }}
+            required
+            value={QuantityValue}
+          />
           <Button
             color="inherit"
             startIcon={
@@ -83,8 +92,19 @@ export const CartItem = (props) => {
               </SvgIcon>
             }
             onClick={async () => {
-              //   router.push(`/AdminPages/AdminOne/EditItem/${item._id}`);
-              // router.reload();
+              const res = await apiCall(
+                `${process.env.BASE_URL}/api/adminOneRequests/cartHandler/updateQuantity`,
+                "POST",
+                {
+                  ItemId: item.detail._id,
+                  departmentId: Department,
+                  adminOneId: AdminOne,
+                  ItemQuantity: QuantityValue,
+                },
+                null
+              );
+              alert(res.data.message);
+              router.reload();
             }}
           >
             <Typography color="text.secondary" display="inline" variant="body2">

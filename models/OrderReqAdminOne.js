@@ -2,10 +2,25 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 import ItemSchema from "./Item";
 export const OrderRequest = new Schema({
-  products: [{ type: Schema.Types.ObjectId, ref: "Item" }],
-  university: {
+  products: [
+    {
+      detail: {
+        itemId: { type: Schema.Types.ObjectId, ref: "Item" },
+        category: { type: String, required: true },
+        department: { type: Schema.Types.ObjectId, ref: "Department" },
+        name: { type: Schema.Types.String, required: true },
+        photo: { type: Schema.Types.String },
+      },
+      quantity: { type: Schema.Types.Number, required: true },
+    },
+  ],
+  Institute: {
     type: Schema.Types.ObjectId,
     ref: "Institute",
+  },
+  Department:{
+    type:Schema.Types.ObjectId,
+    ref:"Department",
   },
   adminInitiated: {
     type: Schema.Types.ObjectId,
@@ -15,15 +30,13 @@ export const OrderRequest = new Schema({
     type: String,
     defaultValue: "Non-Urgent",
   },
-  remarks: [
-    {
-      text: String,
-      person: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-      },
-    },
-  ],
+
+  remarksAdminOne: {
+    type: String,
+  },
+  remarksAdminTwo: {
+    type: String,
+  },
   status: {
     type: String,
     default: "Pending",
