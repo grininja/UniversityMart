@@ -20,21 +20,10 @@ import { ItemSearch } from "../../../sections/AdminOne/item-search";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 
-const companies = [
-  {
-    id: "2569ce0d517a7f06d3ea1f24",
-    createdAt: "27/03/2019",
-    description:
-      "Dropbox is a file hosting service that offers cloud storage, file synchronization, a personal cloud.",
-    logo: "/assets/logos/logo-dropbox.png",
-    title: "Dropbox",
-    downloads: "594",
-    quantity: 10,
-  },
-];
+
 
 const Page = (props) => {
-  const { itemsList, InstituteId, DepartmentId } = props;
+  const { itemsList, InstituteId, DepartmentId,AdminOneId } = props;
   console.log(itemsList);
   const { status } = useSession({
     required: true,
@@ -101,7 +90,7 @@ const Page = (props) => {
             <Grid container spacing={3}>
               {itemsList.map((product) => (
                 <Grid xs={12} md={6} lg={4} key={product._id}>
-                  <ItemCard item={product} />
+                  <ItemCard item={product} AdminOne={AdminOneId}/>
                 </Grid>
               ))}
             </Grid>
@@ -145,6 +134,7 @@ export async function getServerSideProps(context) {
         itemsList: allItems.data.items,
         InstituteId: getAdminOne.data.message.Institute,
         DepartmentId: getAdminOne.data.message.department,
+        AdminOneId: getAdminOne.data.message._id,
       },
     };
   } catch (e) {

@@ -19,9 +19,12 @@ import {
 } from "@mui/material";
 import apiCall from "@/helper/apiCall";
 
-export const ItemCard = (props) => {
-  const { item, AdminOne } = props;
+export const CartItem = (props) => {
+  const { item, AdminOne, Department, Institute } = props;
   const router = useRouter();
+  // console.log(item.detail._id);
+  // console.log(AdminOne)
+  // console.log(Department)
   return (
     <Card
       sx={{
@@ -31,24 +34,36 @@ export const ItemCard = (props) => {
       }}
     >
       <CardContent>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            pb: 3,
-          }}
+        <Stack
+          alignItems="center"
+          direction="row"
+          justifyContent="space-between"
+          spacing={2}
+          sx={{ p: 2 }}
         >
-          <Avatar src={item.photo} variant="square" />
-        </Box>
-        <Typography align="center" gutterBottom variant="h5">
-          {item.name}
-        </Typography>
-        <Typography align="center" variant="body1">
-          {item.description}
-        </Typography>
-        <Typography color="text.secondary" align="center" variant="body1">
-          Quantity: {item.quantity}
-        </Typography>
+          <Stack alignItems="center" direction="row" spacing={1}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                pb: 3,
+              }}
+            >
+              <Avatar src={item.photo} variant="square" />
+            </Box>
+          </Stack>
+          <Stack alignItems="center" direction="column" spacing={1}>
+            <Typography align="center" gutterBottom variant="h5">
+              {item.detail.name}
+            </Typography>
+            <Typography align="center" variant="body1">
+              {item.detail.description}
+            </Typography>
+            <Typography color="text.secondary" align="center" variant="body1">
+              Quantity: {item.quantity}
+            </Typography>
+          </Stack>
+        </Stack>
       </CardContent>
       <Box sx={{ flexGrow: 1 }} />
       <Divider />
@@ -68,12 +83,12 @@ export const ItemCard = (props) => {
               </SvgIcon>
             }
             onClick={async () => {
-              router.push(`/AdminPages/AdminOne/EditItem/${item._id}`);
+              //   router.push(`/AdminPages/AdminOne/EditItem/${item._id}`);
               // router.reload();
             }}
           >
             <Typography color="text.secondary" display="inline" variant="body2">
-              Edit
+              Edit Quantity
             </Typography>
           </Button>
         </Stack>
@@ -82,50 +97,19 @@ export const ItemCard = (props) => {
             color="inherit"
             startIcon={
               <SvgIcon color="action" fontSize="small">
-                <ArchiveBoxIcon />
-              </SvgIcon>
-            }
-            onClick={async () => {
-              const res = await apiCall(
-                `${process.env.BASE_URL}/api/adminOneRequests/cartHandler/addToCart`,
-                "POST",
-                {
-                  ItemId: item._id,
-                  departmentId: item.department,
-                  quantity: 1,
-                  adminOneId: AdminOne,
-                },
-                null
-              );
-              alert(res.data.message);
-
-              router.reload();
-            }}
-          >
-            <Typography color="text.secondary" display="inline" variant="body2">
-              Add to Cart
-            </Typography>
-          </Button>
-        </Stack>
-        <Stack alignItems="center" direction="row" spacing={1}>
-          <Button
-            variant="outlined"
-            color="error"
-            startIcon={
-              <SvgIcon color="action" fontSize="small">
                 <TrashIcon />
               </SvgIcon>
             }
             onClick={async () => {
               const res = await apiCall(
-                `${process.env.BASE_URL}/api/adminOneRequests/productHandler/removeItem?ItemId=${item._id}&departMentId=${item.department}`
+                `${process.env.BASE_URL}/api/adminOneRequests/cartHandler/removeFromCart?ItemId=${item.detail._id}&departmentId=${Department}&adminOneId=${AdminOne}`
               );
               alert(res.data.message);
               router.reload();
             }}
           >
-            <Typography color="inherit" display="inline" variant="body2">
-              Delete
+            <Typography color="text.secondary" display="inline" variant="body2">
+              Remove from Cart
             </Typography>
           </Button>
         </Stack>
@@ -134,6 +118,6 @@ export const ItemCard = (props) => {
   );
 };
 
-ItemCard.propTypes = {
+CartItem.propTypes = {
   item: PropTypes.object.isRequired,
 };

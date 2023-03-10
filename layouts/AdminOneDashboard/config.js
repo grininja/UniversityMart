@@ -6,6 +6,7 @@ import UserIcon from "@heroicons/react/24/solid/UserIcon";
 import UserPlusIcon from "@heroicons/react/24/solid/UserPlusIcon";
 import UsersIcon from "@heroicons/react/24/solid/UsersIcon";
 import XCircleIcon from "@heroicons/react/24/solid/XCircleIcon";
+import ShoppingCartIcon from "@heroicons/react/24/solid/ShoppingCartIcon";
 import { SvgIcon } from "@mui/material";
 
 export const items = [
@@ -37,6 +38,16 @@ export const items = [
     ),
   },
   {
+    title: "Cart",
+    path: "/AdminPages/AdminOne/Cart",
+    icon: (
+      <SvgIcon fontSize="small">
+        <ShoppingCartIcon />
+      </SvgIcon>
+    ),
+  },
+
+  {
     title: "Department Items",
     path: "/AdminPages/AdminOne/Items",
     icon: (
@@ -54,5 +65,4 @@ export const items = [
       </SvgIcon>
     ),
   },
-
 ];

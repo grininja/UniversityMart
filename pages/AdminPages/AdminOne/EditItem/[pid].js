@@ -131,7 +131,7 @@ const EditItem = ({ adminOneId, InstituteId, Item }) => {
   return (
     <form autoComplete="off" noValidate onSubmit={formik.handleSubmit}>
       <Card>
-        <CardHeader subheader="" title="Enter product detailss  " />
+        <CardHeader subheader="" title="Enter product details  " />
         <CardContent sx={{ pt: 0 }}>
           <Box sx={{ m: -1.5 }}>
             <Grid container spacing={3}>
