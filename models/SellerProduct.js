@@ -14,21 +14,12 @@ const SellerProduct = new Schema({
     type: String,
     default: "",
   },
-  priceList: [
-    {
-      quantity: {
-        type: Number,
-        required: true,
-      },
-      price: {
-        type: Number,
-        required: true,
-      },
-    },
-  ],
+  price: {
+    type: Number,
+    required: true,
+  },
   productImageUrl: {
     type: String,
-    required: true,
   },
   Seller: {
     type: Schema.Types.ObjectId,

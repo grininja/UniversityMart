@@ -5,14 +5,23 @@ const handler = async (req, res) => {
   try {
     if (req.method == "POST") {
       await dbConnect();
-      const { name, description, category, productImageUrl, priceList,sellerId } =req.body;
+      const {
+        name,
+        description,
+        category,
+        productImageUrl,
+        pricePerItem,
+        sellerId,
+        visible,
+      } = req.body;
       const newProduct = new SellerProduct({
         name: name,
         description: description,
         category: category,
         productImageUrl: productImageUrl,
-        priceList: priceList,
-        Seller:sellerId,
+        price: pricePerItem,
+        Seller: sellerId,
+        visible: visible,
       });
       await newProduct.save();
       return res.status(200).send({ message: "product listed successfully" });
@@ -21,7 +30,7 @@ const handler = async (req, res) => {
     }
   } catch (e) {
     console.log("exception occured in adding product ", e);
-    return res.status(500).send({ message:"some error occured" });
+    return res.status(500).send({ message: "some error occured" });
   }
 };
 

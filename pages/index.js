@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 
 ///////new imports/////////////////////
 import Head from "next/head";
-import { Layout as AdminOneDashBoardLayout } from "../layouts/AdminOneDashboard/layout";
+import { Layout as SellerDashboard } from "../layouts/SellerDashboard/layout";
 
 ///////////////////////////////////////////////////////
 
@@ -220,7 +220,7 @@ const now = new Date();
 // );
 
 Home.getLayout = (page) => (
-  <AdminOneDashBoardLayout>{page}</AdminOneDashBoardLayout>
+  <SellerDashboard>{page}</SellerDashboard>
 );
 
 export default Home;
