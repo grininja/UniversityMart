@@ -30,6 +30,7 @@ const Page = (props) => {
   const { AdminOneId, cartItems, DepartmentId, InstituteId } = props;
   // console.log(cartItems);
   const [remarksValue, setRemarksValue] = useState("");
+  // console.log(InstituteId);
   const [tagValue, setTagValue] = useState("");
   const router = useRouter();
   const { status } = useSession({
@@ -118,7 +119,7 @@ const Page = (props) => {
                         adminInitiated: AdminOneId,
                         tag: tagValue,
                         remarks: remarksValue,
-                        status: "Pending",
+                        status: "pending",
                         department: DepartmentId,
                       },
                       null
@@ -134,16 +135,18 @@ const Page = (props) => {
             {/* <ItemSearch /> */}
 
             <Grid container spacing={3}>
-              {cartItems.map((product) => (
-                <Grid xs={12} md={6} lg={4} key={product._id}>
-                  <CartItem
-                    item={product}
-                    AdminOne={AdminOneId}
-                    Department={DepartmentId}
-                    Institute={InstituteId}
-                  />
-                </Grid>
-              ))}
+              {cartItems &&
+                cartItems.length > 0 &&
+                cartItems.map((product) => (
+                  <Grid xs={12} md={6} lg={4} key={product._id}>
+                    <CartItem
+                      item={product}
+                      AdminOne={AdminOneId}
+                      Department={DepartmentId}
+                      Institute={InstituteId}
+                    />
+                  </Grid>
+                ))}
             </Grid>
           </Stack>
         </Container>

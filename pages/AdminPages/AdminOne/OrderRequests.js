@@ -12,12 +12,16 @@ import {
   SvgIcon,
   Typography,
 } from "@mui/material";
-import { useSelection } from "../hooks/use-selection";
-import { Layout as DashboardLayout } from "../layouts/dashboard/layout";
-import { CustomersTable } from "../sections/customer/customers-table";
-import { CustomersSearch } from "../sections/customer/customers-search";
-import { applyPagination } from "../utils/apply-pagination";
-
+import { useSelection } from "../../../hooks/use-selection";
+import apiCall from "@/helper/apiCall";
+import { useSession } from "next-auth/react";
+import { Layout as AdminOneDashBoardLayout } from "../../../layouts/AdminOneDashboard/layout";
+import { OrderTable } from "../../../sections/AdminOne/orderrequest-table";
+import { OrderSearch } from "../../../sections/AdminOne/orderrequest-search";
+import { applyPagination } from "../../../utils/apply-pagination";
+import { authOptions } from "../../api/auth/[...nextauth]";
+import { getServerSession } from "next-auth/next";
+import { useRouter } from "next/router";
 const now = new Date();
 
 const data = [
@@ -175,13 +179,21 @@ const useCustomerIds = (customers) => {
   }, [customers]);
 };
 
-const Page = () => {
+const Page = (props) => {
+  const router = useRouter();
+  const { InstituteId, DepartmentId, AdminOneId, Orders } = props;
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const customers = useCustomers(page, rowsPerPage);
-  const customersIds = useCustomerIds(customers);
-  const customersSelection = useSelection(customersIds);
-
+  // console.log(Orders)
+  // const customers = useCustomers(page, rowsPerPage);
+  // const customersIds = useCustomerIds(customers);
+  // const customersSelection = useSelection(customersIds);
+  const { status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      router.push("/auth/loginUser");
+    },
+  });
   const handlePageChange = useCallback((event, value) => {
     setPage(value);
   }, []);
@@ -193,7 +205,7 @@ const Page = () => {
   return (
     <>
       <Head>
-        <title>Customers | UniversityMart</title>
+        <title>OrderRequests | UniversityMart</title>
       </Head>
       <Box
         component="main"
@@ -206,9 +218,9 @@ const Page = () => {
           <Stack spacing={3}>
             <Stack direction="row" justifyContent="space-between" spacing={4}>
               <Stack spacing={1}>
-                <Typography variant="h4">Customers</Typography>
+                <Typography variant="h4">Order Requests</Typography>
                 <Stack alignItems="center" direction="row" spacing={1}>
-                  <Button
+                  {/* <Button
                     color="inherit"
                     startIcon={
                       <SvgIcon fontSize="small">
@@ -217,8 +229,8 @@ const Page = () => {
                     }
                   >
                     Import
-                  </Button>
-                  <Button
+                  </Button> */}
+                  {/* <Button
                     color="inherit"
                     startIcon={
                       <SvgIcon fontSize="small">
@@ -227,7 +239,7 @@ const Page = () => {
                     }
                   >
                     Export
-                  </Button>
+                  </Button> */}
                 </Stack>
               </Stack>
               <div>
@@ -243,20 +255,20 @@ const Page = () => {
                 </Button>
               </div>
             </Stack>
-            <CustomersSearch />
-            <CustomersTable
-              count={data.length}
-              items={customers}
-              onDeselectAll={customersSelection.handleDeselectAll}
-              onDeselectOne={customersSelection.handleDeselectOne}
-              onPageChange={handlePageChange}
-              onRowsPerPageChange={handleRowsPerPageChange}
-              onSelectAll={customersSelection.handleSelectAll}
-              onSelectOne={customersSelection.handleSelectOne}
-              page={page}
-              rowsPerPage={rowsPerPage}
-              selected={customersSelection.selected}
-            />
+            <OrderSearch />
+            {Orders && Orders.length > 0 && (
+              <OrderTable
+                count={Orders.length}
+                items={Orders}
+                onPageChange={handlePageChange}
+                onRowsPerPageChange={handleRowsPerPageChange}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                instituteId={InstituteId}
+                departmentId={DepartmentId}
+                adminOneId={AdminOneId}
+              />
+            )}
           </Stack>
         </Container>
       </Box>
@@ -264,6 +276,36 @@ const Page = () => {
   );
 };
 
-Page.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+Page.getLayout = (page) => (
+  <AdminOneDashBoardLayout>{page}</AdminOneDashBoardLayout>
+);
+
+export async function getServerSideProps(context) {
+  const session = await getServerSession(context.req, context.res, authOptions);
+  // console.log(session);
+  try {
+    const getAdminOne = await apiCall(
+      `${process.env.BASE_URL}/api/institute/adminHandler/adminOneHandler/adminOneByEmail?=${session.user.email}`,
+      "GET",
+      {},
+      null
+    );
+    const allOrders = await apiCall(
+      `${process.env.BASE_URL}/api/adminOneRequests/OrderHandler/getAllOrder?DepartmentId=${getAdminOne.data.message.department}`
+    );
+    // console.log(allOrders.data.message);
+    return {
+      props: {
+        InstituteId: getAdminOne.data.message.Institute,
+        DepartmentId: getAdminOne.data.message.department,
+        AdminOneId: getAdminOne.data.message._id,
+        Orders: allOrders.data.message,
+      },
+    };
+  } catch (e) {
+    console.log(e);
+    return { props: { error: "something happened" } };
+  }
+}
 
 export default Page;

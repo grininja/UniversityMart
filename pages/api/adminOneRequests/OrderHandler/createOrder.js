@@ -8,17 +8,17 @@ const handler = async (req, res) => {
       await dbConnect();
       const {
         products,
-        InstituteId,
+        Institute,
         adminInitiated,
         tag,
         remarks,
         status,
         department,
       } = req.body;
-      console.log(department);
+      // console.log(InstituteId);
       const newOrder = new OrderReqAdminOneModel({
         products: products,
-        Institute: InstituteId,
+        Institute: Institute,
         adminInitiated: adminInitiated,
         tag: tag,
         remarksAdminOne: remarks,

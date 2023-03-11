@@ -24,7 +24,7 @@ import { getServerSession } from "next-auth/next";
 
 const Page = (props) => {
   const { itemsList, InstituteId, DepartmentId,AdminOneId } = props;
-  console.log(itemsList);
+  // console.log(itemsList);
   const { status } = useSession({
     required: true,
     onUnauthenticated() {

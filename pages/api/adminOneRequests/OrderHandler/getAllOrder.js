@@ -8,6 +8,7 @@ const handler = async (req, res) => {
       const allOrders = await OrderReqAdminOneModel.find({
         Department: DepartmentId,
       });
+      // console.log(allOrders);
       return res.status(200).send({ message: allOrders });
     } else {
       return res.status(400).send({ message: "Bad Request" });

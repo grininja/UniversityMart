@@ -20,18 +20,24 @@ import apiCall from "@/helper/apiCall";
 import TrashIcon from "@heroicons/react/24/solid/TrashIcon";
 import { Scrollbar } from "../../components/scrollbar";
 import { getInitials } from "../../utils/get-initials";
+import Link from "next/link";
+import { SeverityPill } from "../../components/severity-pill";
 
-export const AdminTable = (props) => {
+const statusMap = {
+  pending: "warning",
+  delivered: "success",
+  refunded: "error",
+};
+
+export const OrderTable = (props) => {
   const {
     count = 0,
     items = [],
-    onDeselectAll,
-    onDeselectOne,
     onPageChange = () => {},
     onRowsPerPageChange,
-    onSelectAll,
-    onSelectOne,
     instituteId,
+    departmentId,
+    itemOneId,
     page = 0,
     rowsPerPage = 0,
     selected = [],
@@ -47,104 +53,61 @@ export const AdminTable = (props) => {
           <Table>
             <TableHead>
               <TableRow>
-                {/* <TableCell padding="checkbox">
-                  <Checkbox
-                    checked={selectedAll}
-                    indeterminate={selectedSome}
-                    onChange={(event) => {
-                      if (event.target.checked) {
-                        onSelectAll?.();
-                      } else {
-                        onDeselectAll?.();
-                      }
-                    }}
-                  /> */}
-                {/* </TableCell> */}
-                <TableCell>Name</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Role</TableCell>
-                <TableCell>Phone</TableCell>
+                <TableCell>OrderId</TableCell>
+                <TableCell>Remarks</TableCell>
+                <TableCell>Tag</TableCell>
+                <TableCell>Status</TableCell>
                 <TableCell>Delete</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.map((admin) => {
-                const isSelected = selected.includes(admin.id);
-                // const createdAt = format(admin.createdAt, "dd/MM/yyyy");
-
-                return (
-                  <TableRow hover key={admin.id} selected={isSelected}>
-                    {/* <TableCell padding="checkbox">
-                      <Checkbox
-                        checked={isSelected}
-                        onChange={(event) => {
-                          if (event.target.checked) {
-                            onSelectOne?.(admin.id);
-                          } else {
-                            onDeselectOne?.(admin.id);
+              {items &&
+                items.length > 0 &&
+                items.map((item) => {
+                  const isSelected = selected.includes(item.id);
+                  return (
+                    <TableRow hover key={item.id}>
+                      <TableCell>
+                        <Stack alignItems="center" direction="row" spacing={2}>
+                          <Typography variant="subtitle2">
+                            <Link href={`/AdminPages/AdminOne/OrderDetails/${item._id}`}>
+                              {item._id}
+                            </Link>
+                          </Typography>
+                        </Stack>
+                      </TableCell>
+                      <TableCell>{item.remarksAdminOne}</TableCell>
+                      <TableCell>{item.tag}</TableCell>
+                      <TableCell>
+                        <SeverityPill color={statusMap[item.status]}>
+                          {item.status}
+                        </SeverityPill>
+                      </TableCell>
+                      {/* <TableCell>{createdAt}</TableCell> */}
+                      <TableCell>
+                        <Button
+                          color="inherit"
+                          startIcon={
+                            <SvgIcon color="action" fontSize="small">
+                              <TrashIcon />
+                            </SvgIcon>
                           }
-                        }}
-                      />
-                    </TableCell> */}
-                    <TableCell>
-                      <Stack alignItems="center" direction="row" spacing={2}>
-                        <Avatar src={admin.avatar}>
-                          {getInitials(admin.name)}
-                        </Avatar>
-                        <Typography variant="subtitle2">
-                          {admin.name}
-                        </Typography>
-                      </Stack>
-                    </TableCell>
-                    <TableCell>{admin.email}</TableCell>
-                    <TableCell>
-                      {/* {admin.address.city}, {admin.address.state},{" "}
-                      {admin.address.country} */}
-                      {admin.role}
-                    </TableCell>
-                    <TableCell>{admin.phone}</TableCell>
-                    {/* <TableCell>{createdAt}</TableCell> */}
-                    <TableCell>
-                      <Button
-                        color="inherit"
-                        startIcon={
-                          <SvgIcon color="action" fontSize="small">
-                            <TrashIcon />
-                          </SvgIcon>
-                        }
-                        onClick={async () => {
-                          if (admin.role === "admin1") {
-                            const res = await apiCall(
-                              `${process.env.BASE_URL}/api/institute/adminHandler/adminOneHandler/removeAdminOne?userId=${admin.id}&&InstituteId=${instituteId}`,
-                              "GET",
-                              {},
-                              null
-                            );
-                            alert(res.data.message);
-                          } else if (admin.role === "admin2") {
-                            const res = await apiCall(
-                              `${process.env.BASE_URL}/api/institute/adminHandler/adminTwoHandler/removeAdminTwo?userId=${admin.id}&&InstituteId=${instituteId}`,
-                              "GET",
-                              {},
-                              null
-                            );
-                            alert(res.data.message);
-                          }
-                          router.reload();
-                        }}
-                      >
-                        <Typography
-                          color="text.secondary"
-                          display="inline"
-                          variant="body2"
+                          onClick={async () => {
+                            router.reload();
+                          }}
                         >
-                          Delete
-                        </Typography>
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+                          <Typography
+                            color="text.secondary"
+                            display="inline"
+                            variant="body2"
+                          >
+                            Delete
+                          </Typography>
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
             </TableBody>
           </Table>
         </Box>
@@ -162,7 +125,7 @@ export const AdminTable = (props) => {
   );
 };
 
-AdminTable.propTypes = {
+OrderTable.propTypes = {
   count: PropTypes.number,
   items: PropTypes.array,
   onDeselectAll: PropTypes.func,

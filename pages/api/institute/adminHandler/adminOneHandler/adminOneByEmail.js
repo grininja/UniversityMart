@@ -6,8 +6,8 @@ const handler = async (req, res) => {
     if (req.method === "GET") {
         await dbConnect();
       const { EmailId } = req.query;
-      const AdminOne = await AdminOneModel.findOne({ email:EmailId });
-      return res.status(200).send({ message: AdminOne });
+      const adminOneResponse = await AdminOneModel.findOne({ email:EmailId });
+      return res.status(200).send({ message:adminOneResponse });
     } else {
       return res.status(400).send({ message: "Bad request" });
     }
