@@ -16,6 +16,7 @@ export const authOptions = {
   },
   providers: [
     CredentialsProvider({
+      id: "institute-login",
       name: "Institute Login",
       async authorize(credentials, req) {
         await dbConnect();
@@ -30,7 +31,6 @@ export const authOptions = {
           credentials.password,
           findInstitute.password
         );
-        // console.log(res);
         if (res) {
           return findInstitute;
         } else {

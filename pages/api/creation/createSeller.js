@@ -1,44 +1,37 @@
 import dbConnect from "@/lib/mongoDb";
-import Seller from "@/models/Seller";
+import SellerModel from "@/models/Seller";
 
 const handler = async (req, res) => {
   try {
-    if (req.method == "POST") {
-      await dbConnect();
-      const { name, email, password, phone, address, gstin } = req.body;
-      const checkIfSellerExistsWithEmail = await Seller.find({
-        email: email,
-      });
-      const checkIfSellerExistsWithPhone = await Seller.find({
-        phone: phone,
-      });
-      const checkIfSellerExistsWithGstin = await Seller.find({
-        gstin: gstin,
-      });
-
-      if (
-        checkIfSellerExistsWithEmail.length > 0 ||
-        checkIfSellerExistsWithGstin.length > 0 ||
-        checkIfSellerExistsWithPhone.length > 0
-      ) {
-        return res.status(400).send({ message: "Seller already exists" });
+    if (req.method === "POST") {
+      const { EmailId, Phone, Gstin, Address, Name } = req.body;
+      const checkEmail = await SellerModel.findOne({ email: EmailId });
+      if (checkEmail !== null) {
+        return res.status(200).send({ message: "Seller already exists" });
       }
-      const createSeller = new Seller({
-        name: name,
-        email: email,
-        password: password,
-        phone: phone,
-        address: address,
-        gstin: gstin,
+      const checkPhone = await SellerModel.findOne({ phone: Phone });
+      if (checkPhone !== null) {
+        return res.status(200).send({ message: "Seller already exists" });
+      }
+      const checkGstin = await SellerModel.findOne({ gstin: Gstin });
+      if (checkGstin !== null) {
+        return res.status(200).send({ message: "Seller already exists" });
+      }
+      const newSeller = new SellerModel({
+        name: Name,
+        email: EmailId,
+        phone: Phone,
+        gstin: Gstin,
+        address: Address,
       });
-      await createSeller.save();
-      res.status(200).send({ message: "Seller created successfully" });
+      await newSeller.save();
+      return res.status(200).send({ message: "Seller created successfully" });
     } else {
-      return res.status(404).send({ message: "Invalid request" });
+      return res.status(400).send({ message: "Invalid response code" });
     }
-  } catch (e) {
-    console.log("exception occurred while creating seller: " + e);
-    return res.status(500).send({ message:"some error occured" });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send({ message: "some exception occured" });
   }
 };
 

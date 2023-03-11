@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
-//for seller ther is no first name and last name like goyal traders and marketing limited
+
 const Seller = new Schema({
   name: {
     type: String,
@@ -10,28 +10,13 @@ const Seller = new Schema({
     type: String,
     required: true,
   },
-  password: {
-    type: String,
-    required: true,
-  },
   phone: {
     type: String,
     required: true,
   },
   address: {
-    street: {
-      type: String,
-      required: true,
-    },
-    district: {
-      type: String,
-      required: true,
-    },
-    state: {
-      type: String,
-      required: true,
-    },
-    pincode: { type: Number, required: true },
+    type: String,
+    required: true,
   },
   gstin: {
     required: true,
@@ -41,5 +26,5 @@ const Seller = new Schema({
 });
 
 const SellerModel = mongoose.models.Seller || mongoose.model("Seller", Seller);
-module.exports=SellerModel;
+module.exports = SellerModel;
 // export default SellerModel;
