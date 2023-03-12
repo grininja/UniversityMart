@@ -8,10 +8,11 @@ const handler = async (req, res) => {
         name,
         description,
         category,
-        priceList,
+        Price,
         productImageUrl,
         sellerId,
         productId,
+        visibility,
       } = req.body;
       const updateProduct = await SellerProduct.findOneAndUpdate(
         { Seller: sellerId, _id: productId },
@@ -19,8 +20,9 @@ const handler = async (req, res) => {
           name: name,
           description: description,
           category: category,
-          priceList: priceList,
+          price: Price,
           productImageUrl: productImageUrl,
+          visible: visibility,
         }
       );
       return res.status(200).send({ message: "Product Updated Successfully" });

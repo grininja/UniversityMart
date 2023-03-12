@@ -286,11 +286,12 @@ export async function getServerSideProps(context) {
 
   try {
     const getSeller = await apiCall(
-      `${process.env.BASE_URL}/api/institute/adminHandler/adminOneHandler/adminOneByEmail?=${session.user.email}`,
+      `${process.env.BASE_URL}/api/seller/getSellerWithEmail?EmailId=${session.user.email}`,
       "GET",
       {},
       null
     );
+    // console.log(getSeller.data.message);
 
     return {
       props: {

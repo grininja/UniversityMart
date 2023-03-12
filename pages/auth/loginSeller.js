@@ -33,7 +33,7 @@ const Login = ({ email }) => (
         {},
         null
       );
-      if (findSellerWithEmail.data.message !== true) {
+      if (findSellerWithEmail.data.message === null) {
         alert("Seller does not exist");
         return;
       }
