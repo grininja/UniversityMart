@@ -1,0 +1,56 @@
+{
+    "Building and Construction": {
+        "Wood,Plywood,Veneer and Laminates": {},
+        "Steel Bars,Rods,Plates and Sheets": {},
+        "Roofing and False ceiling": {},
+        "Building and Construction Machines": {},
+        "Building pannel and cladding materials": {}
+    },
+    "Chemicals, Dyes & Solvents": {
+        "Industry Chemical & Acid": {},
+        "Chemicals & Derivatives": {},
+        "Textile, Dyeing & Finishing Chemical": {},
+        "Insecticides and Pesticides": {},
+        "Natural, Industrial & Medical Gases": {},
+        "Organic and Inorganic Solvents": {}
+    },
+    "Lab Instruments & Supplies": {
+        "Measuring Tool & Devices": {},
+        "Test Equipment & Devices": {},
+        "Lab & Testing Equipments": {},
+        "Metallurgical & Lab Microscopes": {},
+        "Sensors & Transducers": {},
+        "Research and Development (R&D) Work": {}
+    },
+    "Books & Stationery": {
+        "Files, Folders & Notebooks": {},
+        "Pen, Pencil & Supplies": {},
+        "Printer Inks & Supplies": {},
+        "Paper Bags, Gifts & Paper Products": {},
+        "Presentation Boards & Accessories": {},
+        "Newspaper & Magazine Publishers": {}
+    },
+    "Food & Beverages": {
+        "Flavours & Aromatics": {},
+        "Cereals & Food Grains": {},
+        "Cooking Spices and Masala": {},
+        "Bakery & Confectionery Products": {},
+        "Milk & Dairy Products": {},
+        "Snacks and Namkeen": {},
+        "Fresh, Dried & Preserved Vegetables": {},
+        "Juices, Soups & Soft Drinks": {},
+        "Chocolates, Biscuits & Cookies": {},
+        "Fresh, Dried & Preserved Fruits": {},
+        "Tea & Coffee": {},
+        "Ready to Eat & Instant Food Mixes": {},
+        "Pickles, Jams & Ketchups": {},
+        "Dry Fruits & Nuts": {},
+        "Indian Sweets & Desserts": {},
+        "Edible Oil & Allied Products": {},
+        "Marine Food Supplies": {},
+        "Meat & Poultry Food": {},
+        "Organic Food Grains & Vegetables": {},
+        "ENT Surgical Equipment & Supplies": {},
+        "Ayurvedic & Herbal Health Supplement": {}
+    }
+}

@@ -4,6 +4,8 @@ import apiCall from "@/helper/apiCall";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useState } from "react";
+import categories from "@/helper/category.json";
+import React from "react";
 import {
   Box,
   Button,
@@ -19,6 +21,7 @@ import {
   Typography,
   Avatar,
   Switch,
+  Autocomplete,
 } from "@mui/material";
 
 import Head from "next/head";
@@ -26,7 +29,16 @@ import { useRouter } from "next/router";
 import { Layout as SellerDashboardLayout } from "../../layouts/SellerDashboard/layout";
 import { useSession } from "next-auth/react";
 
-//under consturuction image upload
+const categoriesList = [];
+
+for (var i in categories) {
+  var key = i;
+  var val = categories[key];
+  for (key in val) {
+    categoriesList.push( key );
+  }
+}
+// console.log(categoriesList);
 
 const UploadPicture = () => {
   const [filepath, setfilepath] = useState("");
@@ -90,13 +102,16 @@ const UploadPicture = () => {
 
 const CreateItem = ({ SellerId }) => {
   const router = useRouter();
+  const [categoryValue, setCategoryValue] = React.useState("");
+  const [categoryinputValue, setCategoryInputValue] = React.useState("");
+
   const formik = useFormik({
     initialValues: {
       name: "",
       photo: "",
       price: 0,
       description: "",
-      category: "",
+      // category: "",
     },
     validationSchema: Yup.object({
       name: Yup.string().max(255).required("Product name is required"),
@@ -105,18 +120,23 @@ const CreateItem = ({ SellerId }) => {
       description: Yup.string()
         .max(255)
         .required("Product description is required"),
-      category: Yup.string().max(255),
+      // category: Yup.string().max(255),
     }),
     onSubmit: async (values, helpers) => {
       try {
-        console.log(values);
+        if (categoryValue === "") {
+          alert("Please select a category");
+          return;
+        }
+        // console.log(values);
+        // console.log(categoryValue);
         const res = await apiCall(
           `${process.env.BASE_URL}/api/seller/products/createProduct`,
           "POST",
           {
             name: values.name,
             description: values.description,
-            category: values.category,
+            category: categoryValue.label,
             productImageUrl: values.photo,
             pricePerItem: values.price,
             sellerId: SellerId,
@@ -186,7 +206,7 @@ const CreateItem = ({ SellerId }) => {
                 />
               </Grid>
               <Grid xs={12} md={6}>
-                <TextField
+                {/* <TextField
                   fullWidth
                   label="Item Category"
                   name="category"
@@ -196,6 +216,23 @@ const CreateItem = ({ SellerId }) => {
                   value={formik.values.category}
                   helperText={formik.touched.category && formik.errors.category}
                   error={!!(formik.touched.category && formik.errors.category)}
+                /> */}
+                <Autocomplete
+                  value={categoryValue}
+                  onChange={(event, newValue) => {
+                    setCategoryValue(newValue);
+                  }}
+                  label="Item Category"
+                  name="category"
+                  options={categoriesList}
+                  sx={{ width: 300 }}
+                  inputValue={categoryinputValue}
+                  onInputChange={(event, newInputValue) => {
+                    setCategoryInputValue(newInputValue);
+                  }}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Category" />
+                  )}
                 />
               </Grid>
             </Grid>

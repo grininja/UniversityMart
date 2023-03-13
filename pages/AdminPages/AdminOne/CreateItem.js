@@ -3,6 +3,8 @@ import { getServerSession } from "next-auth/next";
 import apiCall from "@/helper/apiCall";
 import * as Yup from "yup";
 import { useFormik } from "formik";
+import categories from "@/helper/category.json";
+
 import {
   Box,
   Button,
@@ -17,6 +19,7 @@ import {
   Stack,
   Typography,
   Avatar,
+  Autocomplete,
 } from "@mui/material";
 
 import Head from "next/head";
@@ -24,6 +27,15 @@ import { useRouter } from "next/router";
 import { Layout as AdminOneDashBoardLayout } from "../../../layouts/AdminOneDashboard/layout";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+const categoriesList = [];
+
+for (var i in categories) {
+  var key = i;
+  var val = categories[key];
+  for (key in val) {
+    categoriesList.push(key);
+  }
+}
 
 //under consturuction image upload
 
@@ -85,14 +97,16 @@ import { useState } from "react";
 
 const CreateItem = ({ adminOneId, InstituteId }) => {
   // console.log(adminOneId+" "+InstituteId);
-  const router=useRouter();
+  const [categoryValue, setCategoryValue] = useState("");
+  const [categoryinputValue, setCategoryInputValue] = useState("");
+  const router = useRouter();
   const formik = useFormik({
     initialValues: {
       name: "",
       photo: "",
       quantity: 0,
       description: "",
-      category: "",
+      // category: "",
     },
     validationSchema: Yup.object({
       name: Yup.string().max(255).required("Product name is required"),
@@ -101,10 +115,14 @@ const CreateItem = ({ adminOneId, InstituteId }) => {
       description: Yup.string()
         .max(255)
         .required("Product description is required"),
-      category: Yup.string().max(255),
+      // category: Yup.string().max(255),
     }),
     onSubmit: async (values, helpers) => {
       try {
+        if (categoryValue === "") {
+          alert("Please select a category");
+          return;
+        }
         const res = await apiCall(
           `${process.env.BASE_URL}/api/adminOneRequests/productHandler/addItem`,
           "POST",
@@ -113,7 +131,7 @@ const CreateItem = ({ adminOneId, InstituteId }) => {
             description: values.description,
             photoUrl: values.photo,
             quantity: values.quantity,
-            category: values.category,
+            category: categoryValue,
             adminOneId: adminOneId,
             InstituteId: InstituteId,
           },
@@ -121,7 +139,6 @@ const CreateItem = ({ adminOneId, InstituteId }) => {
         );
         alert(res.data.message);
         router.reload();
-
       } catch (err) {
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: err.message });
@@ -181,7 +198,7 @@ const CreateItem = ({ adminOneId, InstituteId }) => {
                 />
               </Grid>
               <Grid xs={12} md={6}>
-                <TextField
+                {/* <TextField
                   fullWidth
                   label="Item Category"
                   name="category"
@@ -191,6 +208,24 @@ const CreateItem = ({ adminOneId, InstituteId }) => {
                   value={formik.values.category}
                   helperText={formik.touched.category && formik.errors.category}
                   error={!!(formik.touched.category && formik.errors.category)}
+                /> */}
+
+                <Autocomplete
+                  value={categoryValue}
+                  onChange={(event, newValue) => {
+                    setCategoryValue(newValue);
+                  }}
+                  label="Item Category"
+                  name="category"
+                  options={categoriesList}
+                  sx={{ width: 300 }}
+                  inputValue={categoryinputValue}
+                  onInputChange={(event, newInputValue) => {
+                    setCategoryInputValue(newInputValue);
+                  }}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Category" />
+                  )}
                 />
               </Grid>
             </Grid>

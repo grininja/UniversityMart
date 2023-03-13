@@ -48,5 +48,8 @@
     "slsx": "^0.0.3",
     "tabler": "^1.0.0-alpha.8",
     "yup": "^0.32.11"
+  },
+  "devDependencies": {
+    "json-loader": "^0.5.7"
   }
 }
