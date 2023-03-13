@@ -7,19 +7,21 @@ const handler = async (req, res) => {
     if (req.method == "POST") {
       await dbConnect();
       const { userId, instituteId } = req.body;
-      const findUser = await User.findById(userId);
+      const findUser = await User.findOne({ _id: userId });
+      // console.log(findUser);
+      // console.log(instituteId);
       if (findUser !== null && findUser.Institute.toString() === instituteId) {
         //check if user is already admin
+        // console.log(findUser.Institute);
         const isAlreadyAdmin = await Institutemodel.find({ admin2: userId });
         if (isAlreadyAdmin !== null && isAlreadyAdmin.length > 0) {
-          return res.status(404).send({ message: "Already admin" });
+          return res.status(200).send({ message: "Already admin" });
         }
         const addAdminTwo = await Institutemodel.updateOne(
           { _id: instituteId },
           { $push: { admin2: userId } }
         );
 
-        //create admin two
         const createAdminTwo = new adminTwo({
           user: userId,
           Institute: instituteId,

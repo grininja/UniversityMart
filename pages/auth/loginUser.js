@@ -1,4 +1,3 @@
-
 import Head from "next/head";
 import NextLink from "next/link";
 import { useRouter } from "next/navigation";
@@ -75,11 +74,17 @@ const Login = ({ email, institute, role }) => (
         alert("User does not have admin permission");
         return;
       }
-
-      const result = await signIn("email", {
-        email,
-        callbackUrl: `${process.env.BASE_URL}/AdminPages/AdminOne/Home`,
-      });
+      if (role.value === "admin1") {
+        const result = await signIn("email", {
+          email,
+          callbackUrl: `${process.env.BASE_URL}/AdminPages/AdminOne/Home`,
+        });
+      } else if (role.value === "admin2") {
+        const result = await signIn("email", {
+          email,
+          callbackUrl: `${process.env.BASE_URL}/AdminPages/AdminTwo/Home`,
+        });
+      }
     }}
     fullWidth
     variant="contained"

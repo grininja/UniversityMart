@@ -8,6 +8,7 @@ import UsersIcon from "@heroicons/react/24/solid/UsersIcon";
 import XCircleIcon from "@heroicons/react/24/solid/XCircleIcon";
 import ShoppingCartIcon from "@heroicons/react/24/solid/ShoppingCartIcon";
 import { SvgIcon } from "@mui/material";
+import ChatBubbleBottomIcon from "@heroicons/react/24/solid/ChatBubbleBottomIcon";
 
 export const items = [
   {
@@ -29,27 +30,8 @@ export const items = [
     ),
   },
   {
-    title: "Create Items",
+    title: "Shop",
     path: "/AdminPages/AdminTwo/Ecommerce",
-    icon: (
-      <SvgIcon fontSize="small">
-        <CogIcon />
-      </SvgIcon>
-    ),
-  },
-  {
-    title: "Cart",
-    path: "/AdminPages/AdminTwo/CreateOrder",
-    icon: (
-      <SvgIcon fontSize="small">
-        <ShoppingCartIcon />
-      </SvgIcon>
-    ),
-  },
-
-  {
-    title: "Department Items",
-    path: "/AdminPages/AdminOne/Items",
     icon: (
       <SvgIcon fontSize="small">
         <ShoppingBagIcon />
@@ -57,8 +39,27 @@ export const items = [
     ),
   },
   {
+    title: "Chats",
+    path: "/AdminPages/AdminTwo/Chats",
+    icon: (
+      <SvgIcon fontSize="small">
+        <ChatBubbleBottomIcon />
+      </SvgIcon>
+    ),
+  },
+
+  // {
+  //   title: "Department Items",
+  //   path: "/AdminPages/AdminOne/Items",
+  //   icon: (
+  //     <SvgIcon fontSize="small">
+  //       <ShoppingBagIcon />
+  //     </SvgIcon>
+  //   ),
+  // },
+  {
     title: "Account",
-    path: "/AdminPages/AdminOne/account",
+    path: "/AdminPages/AdminTwo/account",
     icon: (
       <SvgIcon fontSize="small">
         <UserIcon />
