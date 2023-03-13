@@ -41,7 +41,7 @@ const Page = () => {
           redirect: false,
           email: values.email,
           password: values.password,
-          callbackUrl: "/AdminPages/WebAdmin/Home",
+          callbackUrl: `${process.env.BASE_URL}/AdminPages/WebAdmin/Home`,
         });
         // router.push("/");
         if (status.ok) {

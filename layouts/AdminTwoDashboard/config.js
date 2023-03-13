@@ -8,7 +8,7 @@ import UsersIcon from "@heroicons/react/24/solid/UsersIcon";
 import XCircleIcon from "@heroicons/react/24/solid/XCircleIcon";
 import ShoppingCartIcon from "@heroicons/react/24/solid/ShoppingCartIcon";
 import { SvgIcon } from "@mui/material";
-import ChatBubbleBottomIcon from "@heroicons/react/24/solid/ChatBubbleBottomIcon";
+import ChatBubbleBottomCenterIcon from "@heroicons/react/24/solid/ChatBubbleBottomCenterIcon";
 
 export const items = [
   {
@@ -43,7 +43,7 @@ export const items = [
     path: "/AdminPages/AdminTwo/Chats",
     icon: (
       <SvgIcon fontSize="small">
-        <ChatBubbleBottomIcon />
+        <ChatBubbleBottomCenterIcon />
       </SvgIcon>
     ),
   },

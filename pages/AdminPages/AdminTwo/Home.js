@@ -1,10 +1,8 @@
 import Head from "next/head";
-import { authOptions } from "../../api/auth/[...nextauth]";
-import { getServerSession } from "next-auth/next";
-import apiCall from "@/helper/apiCall";
 import { Box, Container, Unstable_Grid2 as Grid } from "@mui/material";
 import { Layout as AdminTwoDashboard } from "../../../layouts/AdminTwoDashboard/layout";
-
+import { authOptions } from "../../api/auth/[...nextauth]";
+import { getServerSession } from "next-auth/next";
 const Home = () => (
   <>
     <Head>
@@ -63,3 +61,31 @@ export default Home;
 //     return { props: { error: "something happened" } };
 //   }
 // }
+
+export async function getServerSideProps(context) {
+    const session = await getServerSession(context.req, context.res, authOptions);
+    console.log(session);
+    try {
+      // const getAdminOne = await apiCall(
+      //   `${process.env.BASE_URL}/api/institute/adminHandler/adminOneHandler/adminOneByEmail?=${session.user.email}`,
+      //   "GET",
+      //   {},
+      //   null
+      // );
+      // const allOrders = await apiCall(
+      //   `${process.env.BASE_URL}/api/adminOneRequests/OrderHandler/getAllOrder?DepartmentId=${getAdminOne.data.message.department}`
+      // );
+      // console.log(allOrders.data.message);
+      return {
+        props: {
+          // InstituteId: getAdminOne.data.message.Institute,
+          // // DepartmentId: getAdminOne.data.message.department,
+          // AdminOneId: getAdminOne.data.message._id,
+          // Orders: allOrders.data.message,
+        },
+      };
+    } catch (e) {
+      console.log(e);
+      return { props: { error: "something happened" } };
+    }
+  }
