@@ -3,7 +3,7 @@ import { authOptions } from "../../api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 import apiCall from "@/helper/apiCall";
 import { Box, Container, Unstable_Grid2 as Grid } from "@mui/material";
-import { Layout as SellerDashboard } from "../../../layouts/SellerDashboard/layout";
+import { Layout as SellerDashboard } from "../../layouts/SellerDashboard/layout";
 import { useRouter } from "next/router";
 
 const Home = () => {

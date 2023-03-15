@@ -70,15 +70,15 @@ export const TopNav = (props) => {
               </IconButton>
             </Tooltip>
           </Stack>
-          <Stack alignItems="center" direction="row" spacing={2}>
-            <Tooltip title="Contacts">
+          {/* <Stack alignItems="center" direction="row" spacing={2}> */}
+          {/* <Tooltip title="Contacts">
               <IconButton>
                 <SvgIcon fontSize="small">
                   <UsersIcon />
                 </SvgIcon>
               </IconButton>
-            </Tooltip>
-            <Tooltip title="Notifications">
+            </Tooltip> */}
+          {/* <Tooltip title="Notifications">
               <IconButton>
                 <Badge badgeContent={4} color="success" variant="dot">
                   <SvgIcon fontSize="small">
@@ -86,8 +86,8 @@ export const TopNav = (props) => {
                   </SvgIcon>
                 </Badge>
               </IconButton>
-            </Tooltip>
-            <Avatar
+            </Tooltip> */}
+          {/* <Avatar
               onClick={accountPopover.handleOpen}
               ref={accountPopover.anchorRef}
               sx={{
@@ -96,8 +96,8 @@ export const TopNav = (props) => {
                 width: 40,
               }}
               src="/assets/avatars/avatar-anika-visser.png"
-            />
-          </Stack>
+            /> */}
+          {/* </Stack> */}
         </Stack>
       </Box>
       <AccountPopover

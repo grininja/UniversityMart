@@ -66,7 +66,7 @@ export const OrderRequestsTable = (props) => {
                   return (
                     ((onlyPending && item.status === "pending") ||
                       onlyPending === false) && (
-                      <TableRow hover key={item.id}>
+                      <TableRow hover key={item._id}>
                         <TableCell>
                           <Stack
                             alignItems="center"
@@ -75,7 +75,7 @@ export const OrderRequestsTable = (props) => {
                           >
                             <Typography variant="subtitle2">
                               <Link
-                                href={`/AdminPages/AdminOne/OrderDetails/${item._id}`}
+                                href={`/AdminPages/AdminTwo/OrderRequestDetails/${item._id}`}
                               >
                                 {item._id}
                               </Link>
