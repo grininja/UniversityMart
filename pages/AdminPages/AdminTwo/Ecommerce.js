@@ -183,7 +183,7 @@ const Page = (props) => {
   return (
     <div>
       <Head>
-        <title>Shop | Devias Kit</title>
+        <title>Shop | Universitymart</title>
       </Head>
       <Box
         component="main"
