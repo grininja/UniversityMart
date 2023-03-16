@@ -48,15 +48,15 @@ export const items = [
     ),
   },
 
-  // {
-  //   title: "Department Items",
-  //   path: "/AdminPages/AdminOne/Items",
-  //   icon: (
-  //     <SvgIcon fontSize="small">
-  //       <ShoppingBagIcon />
-  //     </SvgIcon>
-  //   ),
-  // },
+  {
+    title: "Order Placed",
+    path: "/AdminPages/AdminTwo/AllOrdersPlaced",
+    icon: (
+      <SvgIcon fontSize="small">
+        <ShoppingBagIcon />
+      </SvgIcon>
+    ),
+  },
   {
     title: "Account",
     path: "/AdminPages/AdminTwo/account",

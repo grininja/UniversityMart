@@ -30,7 +30,7 @@ const OrderRequestAdminTwo = new Schema({
   },
   Status: {
     type: String,
-    default: "Pending",
+    default: "pending",
     index: true,
   },
 });

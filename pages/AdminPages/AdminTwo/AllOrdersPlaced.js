@@ -20,44 +20,44 @@ import { useSelection } from "../../../hooks/use-selection";
 import apiCall from "@/helper/apiCall";
 import { useSession } from "next-auth/react";
 import { Layout as AdminTwoDashboard } from "../../../layouts/AdminTwoDashboard/layout";
-import { OrderRequestsTable } from "../../../sections/AdminTwo/orderrequest-table";
+import { AllOrderTable } from "../../../sections/AdminTwo/allOrderPlacedTable";
 import { applyPagination } from "../../../utils/apply-pagination";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 import { useRouter } from "next/router";
 import MagnifyingGlassIcon from "@heroicons/react/24/solid/MagnifyingGlassIcon";
 
-const OrderRequestsSearch = () => (
-  <Card sx={{ p: 2 }}>
-    <OutlinedInput
-      defaultValue=""
-      fullWidth
-      placeholder="Search Order Requests"
-      startAdornment={
-        <InputAdornment position="start">
-          <SvgIcon color="action" fontSize="small">
-            <MagnifyingGlassIcon />
-          </SvgIcon>
-        </InputAdornment>
-      }
-      sx={{ maxWidth: 500 }}
-    />
-  </Card>
-);
+// const AllOrdersSearch = () => (
+//   <Card sx={{ p: 2 }}>
+//     <OutlinedInput
+//       defaultValue=""
+//       fullWidth
+//       placeholder="Search Order Requests"
+//       startAdornment={
+//         <InputAdornment position="start">
+//           <SvgIcon color="action" fontSize="small">
+//             <MagnifyingGlassIcon />
+//           </SvgIcon>
+//         </InputAdornment>
+//       }
+//       sx={{ maxWidth: 500 }}
+//     />
+//   </Card>
+// );
 
-const now = new Date();
+// const now = new Date();
 
-const useCustomers = (page, rowsPerPage) => {
-  return useMemo(() => {
-    return applyPagination(data, page, rowsPerPage);
-  }, [page, rowsPerPage]);
-};
+// const useCustomers = (page, rowsPerPage) => {
+//   return useMemo(() => {
+//     return applyPagination(data, page, rowsPerPage);
+//   }, [page, rowsPerPage]);
+// };
 
-const useCustomerIds = (customers) => {
-  return useMemo(() => {
-    return customers.map((customer) => customer.id);
-  }, [customers]);
-};
+// const useCustomerIds = (customers) => {
+//   return useMemo(() => {
+//     return customers.map((customer) => customer.id);
+//   }, [customers]);
+// };
 
 const Page = (props) => {
   const router = useRouter();
@@ -67,8 +67,9 @@ const Page = (props) => {
       router.push("/auth/loginUser");
     },
   });
-  const { InstituteId, OrderRequests, AdminTwoId } = props;
-  //   console.log(OrderRequests);
+  //   const { InstituteId, AllOrders, AdminTwoId } = props;
+  const { InstituteId, AllOrders, AdminTwoId } = props;
+  //   console.log(AllOrders);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [checked, setChecked] = useState(false);
@@ -83,7 +84,7 @@ const Page = (props) => {
   return (
     <>
       <Head>
-        <title>OrderRequests | UniversityMart</title>
+        <title>AllOrders | UniversityMart</title>
       </Head>
       <Box
         component="main"
@@ -96,20 +97,8 @@ const Page = (props) => {
           <Stack spacing={3}>
             <Stack direction="row" justifyContent="space-between" spacing={4}>
               <Stack spacing={1}>
-                <Typography variant="h4">Order Requests </Typography>
+                <Typography variant="h4">Order Placed </Typography>
               </Stack>
-              <div>
-                <Button
-                  startIcon={
-                    <SvgIcon fontSize="small">
-                      <PlusIcon />
-                    </SvgIcon>
-                  }
-                  variant="contained"
-                >
-                  Merge pending Orders
-                </Button>
-              </div>
             </Stack>
             <Stack justifyContent="space-between" direction="row">
               <Card sx={{ p: 2 }}>
@@ -138,17 +127,17 @@ const Page = (props) => {
                 />
               </Stack>
             </Stack>
-            {OrderRequests && OrderRequests.length > 0 && (
-              <OrderRequestsTable
-                count={OrderRequests.length}
-                items={OrderRequests}
+            {AllOrders && AllOrders.length > 0 && (
+              <AllOrderTable
+                count={AllOrders.length}
+                items={AllOrders}
                 onPageChange={handlePageChange}
                 onRowsPerPageChange={handleRowsPerPageChange}
                 page={page}
                 rowsPerPage={rowsPerPage}
                 instituteId={InstituteId}
                 adminTwoId={AdminTwoId}
-                key={OrderRequests._id}
+                key={AllOrders._id}
                 onlyPending={checked}
               />
             )}
@@ -161,9 +150,12 @@ const Page = (props) => {
 
 Page.getLayout = (page) => <AdminTwoDashboard>{page}</AdminTwoDashboard>;
 
+export default Page;
+
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
-  //   console.log(session);
+  // console.log(session);
+
   try {
     const getAdminTwo = await apiCall(
       `${process.env.BASE_URL}/api/institute/adminHandler/adminTwoHandler/adminTwoByEmail?AdminTwoEmail=${session.user.email}`,
@@ -171,9 +163,10 @@ export async function getServerSideProps(context) {
       {},
       null
     );
+    //   console.log(getAdminTwo.data.message._id);
     const InstituteId = getAdminTwo.data.message.Institute;
-    const allOrderRequest = await apiCall(
-      `${process.env.BASE_URL}/api/adminTwoRequests/getAllOrderRequests?InstituteID=${InstituteId}&AdminTwoId=${getAdminTwo.data.message._id}`,
+    const allOrderPlaced = await apiCall(
+      `${process.env.BASE_URL}/api/adminTwoRequests/getAllOrderPlaced?AdminTwoId=${getAdminTwo.data.message._id}`,
       "GET",
       {},
       null
@@ -182,7 +175,7 @@ export async function getServerSideProps(context) {
     return {
       props: {
         InstituteId: InstituteId,
-        OrderRequests: allOrderRequest.data.message,
+        AllOrders: allOrderPlaced.data.message,
         AdminTwoId: getAdminTwo.data.message._id,
       },
     };
@@ -191,5 +184,3 @@ export async function getServerSideProps(context) {
     return { props: { error: "something happened" } };
   }
 }
-
-export default Page;
