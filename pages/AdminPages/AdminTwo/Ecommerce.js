@@ -106,7 +106,7 @@ const matchname = async (name1, name2) => {
   for (var i = 0; i < meanslikename2.length; i++) {
     meanslikename2words.push(meanslikename2.data[i].word.toLowerCase());
   }
-  console.log(meanslikename1words);
+  // console.log(meanslikename1words);
   const set1 = new Set(meanslikename1words);
   const set2 = new Set(meanslikename2words);
   if (intersection(set1, set2) === true) {
@@ -145,8 +145,13 @@ function MediaCard({ product }) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Share</Button>
-        <Button size="small">Learn More</Button>
+        <Button size="small">Price: {product.price}</Button>
+        <Button
+          size="small"
+          href={`/AdminPages/AdminTwo/SellerProductDetail/${product._id}`}
+        >
+          See Details
+        </Button>
       </CardActions>
     </Card>
   );

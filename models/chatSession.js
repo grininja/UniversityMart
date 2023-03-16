@@ -1,25 +1,32 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
-export const ChatSession = new Schema({
-  question: {
+const ChatSession = new Schema(
+  {
     item: {
       type: Schema.Types.ObjectId,
       ref: "SellerProduct",
+      required: true,
     },
-    quantity: Number,
+    question: {
+      quantity: { type: Schema.Types.Number, required: true },
+      request: String,
+    },
+    response: String,
+    seller: {
+      type: Schema.Types.ObjectId,
+      ref: "Seller",
+      required: true,
+    },
+    buyer: {
+      type: Schema.Types.ObjectId,
+      ref: "AdminTwo",
+      required: true,
+    },
   },
-  response: String,
-  seller: {
-    type: Schema.Types.ObjectId,
-    ref: "Seller",
-  },
-  buyer: {
-    type: Schema.Types.ObjectId,
-    ref: "AdminTwo",
-  },
-});
+  { timestamps: true }
+);
 
-const chatModel =mongoose.models.chatModel || mongoose.model("ChatSession", ChatSession);
-module.exports=chatModel;
-
+const chatModel =
+  mongoose.models.ChatSession || mongoose.model("ChatSession", ChatSession);
+module.exports = chatModel;

@@ -6,12 +6,12 @@ const AdminTwo = new Schema({
     required: true,
     index: true,
   },
-  chatSessions: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "ChatSession",
-    },
-  ],
+  // chatSessions: [
+  //   {
+  //     type: Schema.Types.ObjectId,
+  //     ref: "ChatSession",
+  //   },
+  // ],
   Institute: {
     type: Schema.Types.ObjectId,
     required: true,
