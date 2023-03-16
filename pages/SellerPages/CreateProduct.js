@@ -35,7 +35,7 @@ for (var i in categories) {
   var key = i;
   var val = categories[key];
   for (key in val) {
-    categoriesList.push( key );
+    categoriesList.push(key);
   }
 }
 // console.log(categoriesList);
@@ -117,9 +117,7 @@ const CreateItem = ({ SellerId }) => {
       name: Yup.string().max(255).required("Product name is required"),
       photo: Yup.string().url(),
       price: Yup.number().integer().required("Quantity is required"),
-      description: Yup.string()
-        .max(255)
-        .required("Product description is required"),
+      description: Yup.string().required("Product description is required"),
       // category: Yup.string().max(255),
     }),
     onSubmit: async (values, helpers) => {

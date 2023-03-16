@@ -30,6 +30,7 @@ import {
   Button,
   Fab,
   ListItemAvatar,
+  ButtonGroup,
 } from "@mui/material";
 
 const ChatBox = ({ ChatBox }) => {
@@ -71,7 +72,7 @@ const ChatBox = ({ ChatBox }) => {
             </ListItem>
           );
         })}
-      <Divider variant="inset" component="li" />
+      {/* <Divider variant="inset" component="li" /> */}
     </List>
   );
 };
@@ -176,6 +177,7 @@ const ContactSeller = ({ InstituteId, Product, AdminTwoId }) => {
 const ProductDesc = (props) => {
   const { InstituteId, Product, AdminTwoId, Chats } = props;
   const spacing = 0.5;
+  const [counter, setCounter] = useState(0);
   return (
     <div>
       {Product && (
@@ -200,11 +202,11 @@ const ProductDesc = (props) => {
                 <Typography align="center" gutterBottom variant="h5">
                   {Product.name}
                 </Typography>
-                <br></br>
+                {/* <br></br> */}
                 <Typography align="center" variant="body1">
                   {Product.description}
                 </Typography>
-                <br></br>
+                {/* <br></br> */}
                 <Typography
                   color="text.secondary"
                   align="center"
@@ -213,6 +215,56 @@ const ProductDesc = (props) => {
                   Price: {Product.price}
                 </Typography>
               </CardContent>
+              <ButtonGroup
+                size="small"
+                aria-label="small outlined button group"
+              >
+                <Button
+                  onClick={() => {
+                    setCounter(counter + 1);
+                  }}
+                >
+                  +
+                </Button>
+                {counter >= 0 && <Button disabled>{counter}</Button>}
+                {counter > 0 && (
+                  <Button
+                    onClick={() => {
+                      setCounter(counter - 1);
+                    }}
+                  >
+                    -
+                  </Button>
+                )}
+              </ButtonGroup>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                color="success"
+                onClick={async () => {
+                  if (counter === 0) {
+                    alert("Quantity must be greater than zero");
+                    return;
+                  }
+                  const result = await apiCall(
+                    `${process.env.BASE_URL}/api/adminTwoRequests/createOrder`,
+                    "POST",
+                    {
+                      ProductId: Product._id,
+                      Quantity: counter,
+                      InstituteId: InstituteId,
+                      BuyerId: AdminTwoId,
+                      SellerId: Product.sellerDetail._id,
+                    },
+                    null
+                  );
+                  alert(result.data.message);
+                }}
+              >
+                Purchase
+              </Button>
             </CardActionArea>
             <CardActionArea>
               <Box

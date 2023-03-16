@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
-import ItemSchema from "./Item";
 export const OrderRequest = new Schema({
   products: [
     {
