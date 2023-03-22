@@ -12,7 +12,10 @@ const ChatSession = new Schema(
       quantity: { type: Schema.Types.Number, required: true },
       request: String,
     },
-    response: String,
+    response: {
+      type: String,
+      default: "",
+    },
     seller: {
       type: Schema.Types.ObjectId,
       ref: "Seller",

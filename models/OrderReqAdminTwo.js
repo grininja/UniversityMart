@@ -27,6 +27,7 @@ const OrderRequestAdminTwo = new Schema({
 
   RemarksSeller: {
     type: String,
+    default:"",
   },
   Status: {
     type: String,
