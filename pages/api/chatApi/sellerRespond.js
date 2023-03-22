@@ -5,7 +5,7 @@ const handler = async (req, res) => {
   try {
     if (req.method === "POST") {
       await dbConnect();
-      const { chatSessionId, SellerId, SellerResponse } = req.query;
+      const { chatSessionId, SellerId, SellerResponse } = req.body;
       const updateChats = await ChatSessionModel.findOneAndUpdate(
         {
           _id: chatSessionId,
@@ -23,3 +23,5 @@ const handler = async (req, res) => {
     return res.status(500).send({ message: "something went wrong" });
   }
 };
+
+export default handler;

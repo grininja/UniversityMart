@@ -6,6 +6,8 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import {
   Box,
   Button,
@@ -13,6 +15,11 @@ import {
   Pagination,
   Stack,
   SvgIcon,
+  TextField,
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
   Unstable_Grid2 as Grid,
 } from "@mui/material";
 import { Layout as SellerDashboardLayout } from "../../../layouts/SellerDashboard/layout";
@@ -20,9 +27,77 @@ import { authOptions } from "../../api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 import apiCall from "@/helper/apiCall";
 
+const AnsWerQueryComponent = ({ ChatSessionId, SellerId }) => {
+  const formik = useFormik({
+    initialValues: {
+      response: "",
+    },
+    validationSchema: Yup.object({
+      response: Yup.string().max(255).required("Seller Response is required"),
+    }),
+    onSubmit: async (values, helpers) => {
+      try {
+        const result = await apiCall(
+          `${process.env.BASE_URL}/api/chatApi/sellerRespond`,
+          "POST",
+          {
+            chatSessionId: ChatSessionId,
+            SellerId: SellerId,
+            SellerResponse: values.response,
+          },
+          null
+        );
+        alert(result.data.message);
+        router.reload();
+      } catch (err) {
+        helpers.setStatus({ success: false });
+        helpers.setErrors({ submit: err.message });
+        helpers.setSubmitting(false);
+      }
+    },
+  });
+  return (
+    <form autoComplete="off" noValidate onSubmit={formik.handleSubmit}>
+      <Box sx={{ m: 2 }}>
+        <TextField
+          // fullWidth
+          label="Response"
+          name="response"
+          helperText={formik.touched.response && formik.errors.response}
+          error={!!(formik.touched.response && formik.errors.response)}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          required
+          value={formik.values.response}
+        />
+      </Box>
+      <Button size="small" type="submit">
+        Submit Response
+      </Button>
+    </form>
+  );
+};
+
 const Page = (props) => {
+  const formik = useFormik({
+    initialValues: {
+      response: "",
+    },
+    validationSchema: Yup.object({
+      response: Yup.string().max(255).required("Seller Response is required"),
+    }),
+    onSubmit: async (values, helpers) => {
+      try {
+        console.log(values);
+        router.reload();
+      } catch (err) {
+        helpers.setStatus({ success: false });
+        helpers.setErrors({ submit: err.message });
+        helpers.setSubmitting(false);
+      }
+    },
+  });
   const { sellerId, nonRespondedQuotes } = props;
-  console.log(nonRespondedQuotes);
   return (
     <Box
       sx={{
@@ -45,31 +120,33 @@ const Page = (props) => {
               nonRespondedQuotes.length > 0 &&
               nonRespondedQuotes.map((item) => {
                 return (
-                  <ListItem alignItems="flex-start" key={item._id}>
-                    <ListItemAvatar>
-                      <Avatar
-                        alt="Remy Sharp"
-                        src="/static/images/avatar/1.jpg"
+                  <Box key={item._id} sx={{ m: 2 }}>
+                    <Card sx={{ maxWidth: 345 }} key={item._id}>
+                      <CardContent>
+                        <Typography gutterBottom variant="h5" component="div">
+                          {item.buyerDetail.name}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {item.question.request}
+                        </Typography>
+                      </CardContent>
+                      <AnsWerQueryComponent
+                        ChatSessionId={item._id}
+                        SellerId={item.seller}
                       />
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={`${item.question.request}`}
-                      secondary={
-                        <React.Fragment>
-                          <Typography
-                            sx={{ display: "inline" }}
-                            component="span"
-                            variant="body2"
-                            color="text.primary"
+                      <CardActions>
+                        <Box sx={{ m: -1 }}>
+                          <Button
+                            size="small"
+                            href={`/SellerPages/ShowProduct/${item.item}`}
                           >
-                            Buyer: {item.buyerDetail.name}
-                          </Typography>
-                          <br></br>
-                          {`Quantity: ${item.question.quantity}`}
-                        </React.Fragment>
-                      }
-                    />
-                  </ListItem>
+                            Show Product Requested
+                          </Button>
+                        </Box>
+                      </CardActions>
+                    </Card>
+                    <Divider sx={{ borderColor: "neutral.700" }} />
+                  </Box>
                 );
               })}
           </List>
