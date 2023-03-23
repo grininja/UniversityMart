@@ -2,7 +2,7 @@ import dbConnect from "@/lib/mongoDb";
 import ChatSessionModel from "@/models/ChatSession";
 import InstituteModel from "@/models/Institute";
 import AdminTwoModel from "@/models/AdminTwo";
-import mongoose from "mongoose";
+
 const handler = async (req, res) => {
   try {
     if (req.method === "GET") {

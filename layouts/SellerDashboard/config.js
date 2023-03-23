@@ -47,15 +47,15 @@ export const items = [
     ),
   },
 
-  // {
-  //   title: "Department Items",
-  //   path: "/AdminPages/AdminOne/Items",
-  //   icon: (
-  //     <SvgIcon fontSize="small">
-  //       <ShoppingBagIcon />
-  //     </SvgIcon>
-  //   ),
-  // },
+  {
+    title: "Order Requests",
+    path: "/SellerPages/OrderRequests",
+    icon: (
+      <SvgIcon fontSize="small">
+        <ShoppingBagIcon />
+      </SvgIcon>
+    ),
+  },
   // {
   //   title: "Account",
   //   path: "/AdminPages/AdminOne/account",

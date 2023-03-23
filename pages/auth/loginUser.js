@@ -136,98 +136,100 @@ function LoginUser(props) {
       <Head>
         <title>LoginInstitute | UniversityMart</title>
       </Head>
-      <Box
-        sx={{
-          backgroundColor: "background.paper",
-          flex: "1 1 auto",
-          alignItems: "center",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
+      {props.institutes && props.institutes.length > 0 && (
         <Box
           sx={{
-            maxWidth: 550,
-            px: 3,
-            py: "100px",
-            width: "100%",
+            backgroundColor: "background.paper",
+            flex: "1 1 auto",
+            alignItems: "center",
+            display: "flex",
+            justifyContent: "center",
           }}
         >
-          <div>
-            <Stack spacing={1} sx={{ mb: 3 }}>
-              <Typography variant="h4">Login Admins</Typography>
-              <Typography color="text.secondary" variant="body2">
-                Don&apos;t have an account? &nbsp;
-                <Link
-                  component={NextLink}
-                  href="/auth/registerInstitute"
-                  underline="hover"
-                  variant="subtitle2"
+          <Box
+            sx={{
+              maxWidth: 550,
+              px: 3,
+              py: "100px",
+              width: "100%",
+            }}
+          >
+            <div>
+              <Stack spacing={1} sx={{ mb: 3 }}>
+                <Typography variant="h4">Login Admins</Typography>
+                <Typography color="text.secondary" variant="body2">
+                  Don&apos;t have an account? &nbsp;
+                  <Link
+                    component={NextLink}
+                    href="/auth/registerInstitute"
+                    underline="hover"
+                    variant="subtitle2"
+                  >
+                    First Register Institute
+                  </Link>
+                </Typography>
+              </Stack>
+
+              <Box component="form" noValidate sx={{ mt: 1 }}>
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  value={emailValue}
+                  onChange={(event) => {
+                    setEmailValue(event.target.value);
+                  }}
+                  id="email"
+                  label="Email Address"
+                />
+
+                <Autocomplete
+                  defaultValue={props.institutes[0]}
+                  value={value}
+                  onChange={(event, newValue) => {
+                    setValue(newValue);
+                  }}
+                  inputValue={inputValue}
+                  onInputChange={(event, newInputValue) => {
+                    setInputValue(newInputValue);
+                  }}
+                  id="name"
+                  {...defaultProps}
+                  sx={{ width: 300 }}
+                  renderInput={(params) => (
+                    <TextField {...params} label="University" />
+                  )}
+                  getOptionLabel={(option) => option.name || ""}
+                />
+                <Autocomplete
+                  disablePortal
+                  value={roleValue}
+                  onChange={(event, newValue) => {
+                    setRoleValue(newValue);
+                  }}
+                  id="AdminSelection"
+                  options={roleOptions}
+                  sx={{ width: 300 }}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Admin" />
+                  )}
+                  getOptionLabel={(option) => option.value || ""}
+                />
+
+                <Login email={emailValue} institute={value} role={roleValue} />
+                <Copyright sx={{ mt: 5 }} />
+                <button
+                  onClick={() =>
+                    signOut({ callbackUrl: `${process.env.BASE_URL}` })
+                  }
                 >
-                  First Register Institute
-                </Link>
-              </Typography>
-            </Stack>
-
-            <Box component="form" noValidate sx={{ mt: 1 }}>
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                value={emailValue}
-                onChange={(event) => {
-                  setEmailValue(event.target.value);
-                }}
-                id="email"
-                label="Email Address"
-              />
-
-              <Autocomplete
-                defaultValue={props.institutes[0]}
-                value={value}
-                onChange={(event, newValue) => {
-                  setValue(newValue);
-                }}
-                inputValue={inputValue}
-                onInputChange={(event, newInputValue) => {
-                  setInputValue(newInputValue);
-                }}
-                id="name"
-                {...defaultProps}
-                sx={{ width: 300 }}
-                renderInput={(params) => (
-                  <TextField {...params} label="University" />
-                )}
-                getOptionLabel={(option) => option.name || ""}
-              />
-              <Autocomplete
-                disablePortal
-                value={roleValue}
-                onChange={(event, newValue) => {
-                  setRoleValue(newValue);
-                }}
-                id="AdminSelection"
-                options={roleOptions}
-                sx={{ width: 300 }}
-                renderInput={(params) => (
-                  <TextField {...params} label="Admin" />
-                )}
-                getOptionLabel={(option) => option.value || ""}
-              />
-
-              <Login email={emailValue} institute={value} role={roleValue} />
-              <Copyright sx={{ mt: 5 }} />
-              <button
-                onClick={() =>
-                  signOut({ callbackUrl: `${process.env.BASE_URL}` })
-                }
-              >
-                Sign Out
-              </button>
-            </Box>
-          </div>
+                  Sign Out
+                </button>
+              </Box>
+            </div>
+          </Box>
         </Box>
-      </Box>
+      )}
     </>
   );
 }

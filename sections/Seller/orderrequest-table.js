@@ -1,5 +1,3 @@
-import PropTypes from "prop-types";
-import { format } from "date-fns";
 import {
   Avatar,
   Box,
@@ -16,6 +14,7 @@ import {
   Button,
   SvgIcon,
 } from "@mui/material";
+import SendIcon from "@mui/icons-material/Send";
 import apiCall from "@/helper/apiCall";
 import TrashIcon from "@heroicons/react/24/solid/TrashIcon";
 import { Scrollbar } from "../../components/scrollbar";
@@ -29,20 +28,19 @@ const statusMap = {
   refunded: "error",
 };
 
-export const OrderTable = (props) => {
+export const AllOrderTable = (props) => {
   const {
     count = 0,
     items = [],
     onPageChange = () => {},
     onRowsPerPageChange,
-    instituteId,
-    departmentId,
-    itemOneId,
+    sellerId,
     page = 0,
     rowsPerPage = 0,
     selected = [],
+    onlyPending,
   } = props;
-
+  console.log(items);
   const selectedSome = selected.length > 0 && selected.length < items.length;
   const selectedAll = items.length > 0 && selected.length === items.length;
 
@@ -54,58 +52,59 @@ export const OrderTable = (props) => {
             <TableHead>
               <TableRow>
                 <TableCell>OrderId</TableCell>
-                <TableCell>Remarks</TableCell>
-                <TableCell>Tag</TableCell>
                 <TableCell>Status</TableCell>
-                <TableCell>Delete</TableCell>
+                <TableCell>See All Buyer Query</TableCell>
+                <TableCell>See Details</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {items &&
                 items.length > 0 &&
                 items.map((item) => {
-                  const isSelected = selected.includes(item.id);
+                  const isSelected = selected.includes(item._id);
                   return (
-                    <TableRow hover key={item.id}>
-                      <TableCell>
-                        <Stack alignItems="center" direction="row" spacing={2}>
-                          <Typography variant="subtitle2">
-                            <Link href={`/AdminPages/AdminOne/OrderDetails/${item._id}`}>
-                              {item._id}
-                            </Link>
-                          </Typography>
-                        </Stack>
-                      </TableCell>
-                      <TableCell>{item.remarksAdminOne}</TableCell>
-                      <TableCell>{item.tag}</TableCell>
-                      <TableCell>
-                        <SeverityPill color={statusMap[item.status]}>
-                          {item.status}
-                        </SeverityPill>
-                      </TableCell>
-                      {/* <TableCell>{createdAt}</TableCell> */}
-                      <TableCell>
-                        <Button
-                          color="inherit"
-                          startIcon={
-                            <SvgIcon color="action" fontSize="small">
-                              <TrashIcon />
-                            </SvgIcon>
-                          }
-                          onClick={async () => {
-                            router.reload();
-                          }}
-                        >
-                          <Typography
-                            color="text.secondary"
-                            display="inline"
-                            variant="body2"
+                    ((onlyPending && item.Status === "pending") ||
+                      onlyPending === false) && (
+                      <TableRow hover key={item._id}>
+                        <TableCell>
+                          <Stack
+                            alignItems="center"
+                            direction="row"
+                            spacing={2}
                           >
-                            Delete
-                          </Typography>
-                        </Button>
-                      </TableCell>
-                    </TableRow>
+                            <Typography variant="subtitle2">
+                              {/* <Link
+                                href={`/AdminPages/AdminTwo/OrderRequestDetails/${item._id}`}
+                              > */}
+                              {item._id}
+                              {/* </Link> */}
+                            </Typography>
+                          </Stack>
+                        </TableCell>
+
+                        {/* <TableCell>{item.Buyer}</TableCell> */}
+                        <TableCell>
+                          <SeverityPill color={statusMap[item.OrderStatus]}>
+                            {item.Status}
+                          </SeverityPill>
+                        </TableCell>
+                        <TableCell>
+                          <Button color="secondary" variant="contained">
+                            Click
+                          </Button>
+                        </TableCell>
+                        <TableCell>
+                          <Button
+                            variant="contained"
+                            href={`/SellerPages/OrderRequestDetails/${item._id}`}
+                            endIcon={<SendIcon />}
+                          >
+                            Click
+                          </Button>
+                        </TableCell>
+                        {/* <TableCell>{item.orderTotal}</TableCell> */}
+                      </TableRow>
+                    )
                   );
                 })}
             </TableBody>
@@ -123,18 +122,4 @@ export const OrderTable = (props) => {
       />
     </Card>
   );
-};
-
-OrderTable.propTypes = {
-  count: PropTypes.number,
-  items: PropTypes.array,
-  onDeselectAll: PropTypes.func,
-  onDeselectOne: PropTypes.func,
-  onPageChange: PropTypes.func,
-  onRowsPerPageChange: PropTypes.func,
-  onSelectAll: PropTypes.func,
-  onSelectOne: PropTypes.func,
-  page: PropTypes.number,
-  rowsPerPage: PropTypes.number,
-  selected: PropTypes.array,
 };
