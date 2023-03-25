@@ -6,6 +6,8 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import categories from "@/helper/category.json";
 import React from "react";
+import { UploadFile } from "@/helper/uploadFile";
+import { Input } from "@mui/material";
 import {
   Box,
   Button,
@@ -40,71 +42,69 @@ for (var i in categories) {
 }
 // console.log(categoriesList);
 
-const UploadPicture = () => {
-  const [filepath, setfilepath] = useState("");
-  return (
-    <div>
-      <Card>
-        <CardContent>
-          <Box
-            sx={{
-              alignItems: "center",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <Avatar
-              //   src={user.avatar}
-              sx={{
-                height: 80,
-                mb: 2,
-                width: 80,
-              }}
-            />
-            <Typography gutterBottom variant="h5">
-              {/* {user.name} */}
-              {/* <input
-                type="file"
-                name="file"
-                onChange={(event) => {
-                  setfilepath(event.target.files[0]);
-                  // console.log(event.target.files[0]);
-                  const imageUrl=URL.createObjectURL(event.target.files[0])
-                  console.log(imageUrl);
-                }}
-              /> */}
-            </Typography>
-            <Typography color="text.secondary" variant="body2">
-              {/* {user.city} {user.country} */}
-            </Typography>
-            <Typography color="text.secondary" variant="body2">
-              {/* {user.timezone} */}
-            </Typography>
-          </Box>
-        </CardContent>
-        <Divider />
-        <CardActions>
-          <Button
-            fullWidth
-            variant="text"
-            type="submit"
-            onClick={async () => {
-              // const res=await apiCall('https://api.imgbb.com/1/upload?key=f9e9cec480aeb08bc3c6836d35c810f0')
-            }}
-          >
-            Upload picture
-          </Button>
-        </CardActions>
-      </Card>
-    </div>
-  );
-};
+// const UploadPicture = () => {
+//   const [file, setFile] = useState(null);
+//   return (
+//     <div>
+//       <Card>
+//         <CardContent>
+//           <Box
+//             sx={{
+//               alignItems: "center",
+//               display: "flex",
+//               flexDirection: "column",
+//             }}
+//           >
+//             <Button component="label">
+//               <Avatar
+//                 //   src={user.avatar}
+//                 sx={{
+//                   height: 80,
+//                   mb: 2,
+//                   width: 80,
+//                 }}
+//               />
+//               <input
+//                 type="file"
+//                 hidden
+//                 onChange={(e) => setFile(e.target.files[0])}
+//                 id="select-image"
+//               />
+//             </Button>
+//             {file && file.name !== null && <Typography>{file.name}</Typography>}
+//           </Box>
+//         </CardContent>
+//         <Divider />
+//         <CardActions>
+//           <Button
+//             fullWidth
+//             variant="text"
+//             type="submit"
+//             onClick={async () => {
+//               const downloadUri = await UploadFile(
+//                 file,
+//                 "Seller",
+//                 "productImage"
+//               );
+//               alert("Image Upload Success");
 
-const CreateItem = ({ SellerId }) => {
+//               // console.log(downloadUrl)
+//               // const res=await apiCall('https://api.imgbb.com/1/upload?key=f9e9cec480aeb08bc3c6836d35c810f0')
+//             }}
+//           >
+//             Upload picture
+//           </Button>
+//         </CardActions>
+//       </Card>
+//     </div>
+//   );
+// };
+
+const CreateItem = ({ SellerId, DownLoadUrl }) => {
   const router = useRouter();
   const [categoryValue, setCategoryValue] = React.useState("");
   const [categoryinputValue, setCategoryInputValue] = React.useState("");
-
+  const [file, setFile] = useState(null);
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -126,8 +126,6 @@ const CreateItem = ({ SellerId }) => {
           alert("Please select a category");
           return;
         }
-        // console.log(values);
-        // console.log(categoryValue);
         const res = await apiCall(
           `${process.env.BASE_URL}/api/seller/products/createProduct`,
           "POST",
@@ -135,7 +133,7 @@ const CreateItem = ({ SellerId }) => {
             name: values.name,
             description: values.description,
             category: categoryValue.label,
-            productImageUrl: values.photo,
+            productImageUrl: DownLoadUrl,
             pricePerItem: values.price,
             sellerId: SellerId,
             visible: checked,
@@ -272,10 +270,11 @@ const Page = (props) => {
   const { status } = useSession({
     required: true,
     onUnauthenticated() {
-      router.push("/auth/loginUser");
+      router.push("/auth/loginSeller");
     },
   });
-
+  const [downloadUrl, setDownloadUrl] = useState("");
+  const [file, setFile] = useState(null);
   return (
     <div>
       <Head>
@@ -296,10 +295,63 @@ const Page = (props) => {
             <div>
               <Grid container spacing={3}>
                 <Grid xs={12} md={6} lg={4}>
-                  <UploadPicture />
+                  <div>
+                    <Card>
+                      <CardContent>
+                        <Box
+                          sx={{
+                            alignItems: "center",
+                            display: "flex",
+                            flexDirection: "column",
+                          }}
+                        >
+                          <Button component="label">
+                            <Avatar
+                              //   src={user.avatar}
+                              sx={{
+                                height: 80,
+                                mb: 2,
+                                width: 80,
+                              }}
+                            />
+                            <input
+                              type="file"
+                              hidden
+                              onChange={(e) => setFile(e.target.files[0])}
+                              id="select-image"
+                            />
+                          </Button>
+                          {file && file.name !== null && (
+                            <Typography>{file.name}</Typography>
+                          )}
+                        </Box>
+                      </CardContent>
+                      <Divider />
+                      <CardActions>
+                        <Button
+                          fullWidth
+                          variant="text"
+                          type="submit"
+                          onClick={async () => {
+                            const downloadUri = await UploadFile(
+                              file,
+                              "Seller",
+                              "productImage"
+                            );
+                            alert("Image Upload Success");
+                            setDownloadUrl(downloadUri);
+                            // console.log(downloadUrl)
+                            // const res=await apiCall('https://api.imgbb.com/1/upload?key=f9e9cec480aeb08bc3c6836d35c810f0')
+                          }}
+                        >
+                          Upload picture
+                        </Button>
+                      </CardActions>
+                    </Card>
+                  </div>
                 </Grid>
                 <Grid xs={12} md={6} lg={8}>
-                  <CreateItem SellerId={sellerId} />
+                  <CreateItem SellerId={sellerId} DownLoadUrl={downloadUrl} />
                 </Grid>
               </Grid>
             </div>
@@ -326,7 +378,19 @@ export async function getServerSideProps(context) {
       {},
       null
     );
-    // console.log(getSeller.data.message);
+    if (
+      getSeller.data.message === null &&
+      getSeller.data.message === undefined &&
+      getSeller.data.message === ""
+    ) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/auth/loginSeller",
+        },
+        props: {},
+      };
+    }
 
     return {
       props: {

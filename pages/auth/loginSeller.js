@@ -10,6 +10,10 @@ import Typography from "@mui/material/Typography";
 import apiCall from "@/helper/apiCall";
 import { signIn, signOut } from "next-auth/react";
 import { Layout as AuthLayout } from "../../layouts/auth/layout";
+import { useSession } from "next-auth/react";
+import { authOptions } from "../api/auth/[...nextauth]";
+import { getServerSession } from "next-auth/next";
+import { useRouter } from "next/router";
 var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
 import Head from "next/head";
 
@@ -40,7 +44,7 @@ const Login = ({ email }) => (
 
       const result = await signIn("email", {
         email,
-        callbackUrl: `${process.env.BASE_URL}`,
+        callbackUrl: `${process.env.BASE_URL}/SellerPages/Home`,
       });
     }}
     fullWidth
@@ -53,6 +57,13 @@ const Login = ({ email }) => (
 );
 
 const LoginSeller = () => {
+  const router = useRouter();
+  // const { status } = useSession({
+  //   required: false,
+  // });
+  // if (status === "authenticated") {
+  // }
+  // console.log(status);
   const [emailValue, setEmailValue] = React.useState("");
   return (
     <div>
@@ -115,3 +126,46 @@ const LoginSeller = () => {
 LoginSeller.getLayout = (page) => <AuthLayout>{page}</AuthLayout>;
 
 export default LoginSeller;
+
+export async function getServerSideProps(context) {
+  const session = await getServerSession(context.req, context.res, authOptions);
+
+  try {
+    if (session !== null) {
+      const getSeller = await apiCall(
+        `${process.env.BASE_URL}/api/seller/getSellerWithEmail?EmailId=${session.user.email}`,
+        "GET",
+        {},
+        null
+      );
+      if (
+        getSeller.data.message !== null &&
+        getSeller.data.message !== undefined &&
+        getSeller.data.message !== ""
+      ) {
+        return {
+          redirect: {
+            permanent: false,
+            destination: "/SellerPages/Home",
+          },
+          props: {},
+        };
+      }
+
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/",
+        },
+        props: {},
+      };
+    } else {
+      return {
+        props: {},
+      };
+    }
+  } catch (e) {
+    console.log(e);
+    return { props: { error: "something happened" } };
+  }
+}

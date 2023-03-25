@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { Container, Row, Col } from "reactstrap";
 
 const Footer = () => {
@@ -19,16 +19,18 @@ const Footer = () => {
   //     ]
   //   },
   // ];
-  
+
   return (
     <section className="footer section">
       <Container>
         <Row>
           <Col lg={4}>
-              <div className="mb-4">
-                <p className="text-muted mt-4 mb-2">universitymartmnit@gmail.com</p>
-                <h6 className="text-muted font-weight-normal">+99 1234-5678-9</h6>
-              </div>
+            <div className="mb-4">
+              <p className="text-muted mt-4 mb-2">
+                universitymartmnit@gmail.com
+              </p>
+              <h6 className="text-muted font-weight-normal">+99 1234-5678-9</h6>
+            </div>
           </Col>
           <Col lg={8}>
             <Row>
@@ -46,15 +48,31 @@ const Footer = () => {
                   </Col>
                 )
               } */}
-              
+
               <Col md={4}>
                 <h6 className="text-dark mb-3">Our Address</h6>
-                <p className="text-muted f-14">Mnit Jaipur Malviya Nagar, Jaipur</p>
-                <h6 className="text-muted pb-2">Email: universitymartmnit@gmail.com</h6>
+                <p className="text-muted f-14">
+                  Mnit Jaipur Malviya Nagar, Jaipur
+                </p>
+                <h6 className="text-muted pb-2">
+                  Email: universitymartmnit@gmail.com
+                </h6>
                 <ul className="list-unstyled footer-social-list mt-4">
-                  <li className="list-inline-item"><a href="#"><i className="mdi mdi-facebook"></i></a></li>
-                  <li className="list-inline-item"><a href="#"><i className="mdi mdi-instagram"></i></a></li>
-                  <li className="list-inline-item"><a href="#"><i className="mdi mdi-linkedin"></i></a></li>
+                  <li className="list-inline-item">
+                    <a href="#">
+                      <i className="mdi mdi-facebook"></i>
+                    </a>
+                  </li>
+                  <li className="list-inline-item">
+                    <a href="#">
+                      <i className="mdi mdi-instagram"></i>
+                    </a>
+                  </li>
+                  <li className="list-inline-item">
+                    <a href="#">
+                      <i className="mdi mdi-linkedin"></i>
+                    </a>
+                  </li>
                 </ul>
               </Col>
             </Row>
@@ -71,6 +89,6 @@ const Footer = () => {
       </Container>
     </section>
   );
-}
+};
 
 export default Footer;

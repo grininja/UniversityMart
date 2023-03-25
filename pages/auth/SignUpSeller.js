@@ -13,9 +13,9 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import apiCall from "@/helper/apiCall";
-import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { Alert, FormHelperText, Stack, Tab, Tabs } from "@mui/material";
+import { authOptions } from "../api/auth/[...nextauth]";
+import { getServerSession } from "next-auth/next";
 // import { useAuth } from 'src/hooks/use-auth';
 import { Layout as AuthLayout } from "../../layouts/auth/layout";
 function Copyright(props) {
@@ -186,3 +186,46 @@ const SignUpSeller = () => {
 SignUpSeller.getLayout = (page) => <AuthLayout>{page}</AuthLayout>;
 
 export default SignUpSeller;
+
+export async function getServerSideProps(context) {
+  const session = await getServerSession(context.req, context.res, authOptions);
+
+  try {
+    if (session !== null) {
+      const getSeller = await apiCall(
+        `${process.env.BASE_URL}/api/seller/getSellerWithEmail?EmailId=${session.user.email}`,
+        "GET",
+        {},
+        null
+      );
+      if (
+        getSeller.data.message !== null &&
+        getSeller.data.message !== undefined &&
+        getSeller.data.message !== ""
+      ) {
+        return {
+          redirect: {
+            permanent: false,
+            destination: "/SellerPages/Home",
+          },
+          props: {},
+        };
+      }
+
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/",
+        },
+        props: {},
+      };
+    } else {
+      return {
+        props: {},
+      };
+    }
+  } catch (e) {
+    console.log(e);
+    return { props: { error: "something happened" } };
+  }
+}
