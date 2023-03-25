@@ -218,13 +218,13 @@ function LoginUser(props) {
 
                 <Login email={emailValue} institute={value} role={roleValue} />
                 <Copyright sx={{ mt: 5 }} />
-                <button
+                {/* <button
                   onClick={() =>
                     signOut({ callbackUrl: `${process.env.BASE_URL}` })
                   }
                 >
                   Sign Out
-                </button>
+                </button> */}
               </Box>
             </div>
           </Box>

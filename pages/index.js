@@ -219,8 +219,6 @@ const now = new Date();
 //   </>
 // );
 
-Home.getLayout = (page) => (
-  <SellerDashboard>{page}</SellerDashboard>
-);
+Home.getLayout = (page) => <SellerDashboard>{page}</SellerDashboard>;
 
 export default Home;

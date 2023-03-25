@@ -31,7 +31,7 @@ import {
   Unstable_Grid2 as Grid,
   CardContent,
 } from "@mui/material";
-const OrderDetails = ({ SellerId, OrderDescription }) => {
+const OrderDetails = ({ sellerId, OrderDescription }) => {
   const [remarksValue, setRemarksValue] = useState("");
   const [tagValue, setTagValue] = useState("");
   const product = OrderDescription;
@@ -92,13 +92,9 @@ const OrderDetails = ({ SellerId, OrderDescription }) => {
                 "POST",
                 {
                   OrderId: product.OrderDetail.id,
-                  SellerId: SellerId,
+                  SellerId: sellerId,
                   remarks: remarksValue,
                   TagValue: tagValue,
-                  // OrderReuqestId: Order._id,
-                  // InstituteId: InstituteId,
-                  // newStatus: tagValue,
-                  // adminTwoRemark: remarksValue,
                 },
                 null
               );
@@ -210,7 +206,7 @@ export async function getServerSideProps(context) {
 
     return {
       props: {
-        SellerId: getSeller.data.message._id,
+        sellerId: getSeller.data.message._id,
         OrderDescription: OrderDesc.data.message,
       },
     };

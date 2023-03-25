@@ -52,16 +52,16 @@ export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
   console.log(session);
   try {
-//     const getAdminOne = await apiCall(
-//       `${process.env.BASE_URL}/api/institute/adminHandler/adminOneHandler/adminOneByEmail?=${session.user.email}`,
-//       "GET",
-//       {},
-//       null
-//     );
-//     const allItems = await apiCall(
-//       `${process.env.BASE_URL}/api/adminOneRequests/productHandler/getAllItems?departmentId=${getAdminOne.data.message.department}`
-//     );
-//     console.log(allItems.data.message);
+    //     const getAdminOne = await apiCall(
+    //       `${process.env.BASE_URL}/api/institute/adminHandler/adminOneHandler/adminOneByEmail?=${session.user.email}`,
+    //       "GET",
+    //       {},
+    //       null
+    //     );
+    //     const allItems = await apiCall(
+    //       `${process.env.BASE_URL}/api/adminOneRequests/productHandler/getAllItems?departmentId=${getAdminOne.data.message.department}`
+    //     );
+    //     console.log(allItems.data.message);
     return {
       props: {
         // itemsList: allItems.data.message,
