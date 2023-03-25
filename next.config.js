@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+
   reactStrictMode: true,
   env: {
     MONGODB_SRV: process.env.MONGODB_SRV,
@@ -7,4 +8,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports =  nextConfig;

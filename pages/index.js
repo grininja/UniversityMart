@@ -4,9 +4,29 @@ import { useRouter } from "next/router";
 
 ///////new imports/////////////////////
 import Head from "next/head";
-import { Layout as SellerDashboard } from "../layouts/SellerDashboard/layout";
+// import { Layout as SellerDashboard } from "../layouts/SellerDashboard/layout";
 
 ///////////////////////////////////////////////////////
+import Layout from "../components/landing/Layout";
+import Header from "../components/landing/Header";
+import Hero from "../components/landing/Hero";
+import Feature from "../components/landing/Feature";
+import Service from "../components/landing/Service";
+import About from "../components/landing/About";
+import Footer from "../components/landing/Footer";
+
+const Index = () => {
+  return (
+    <Layout pageTitle="Landing Page Nextjs">
+      <Header />
+      <Hero />
+      <Feature />
+      {/* <Service /> */}
+      {/* <About /> */}
+      <Footer />
+    </Layout>
+  );
+};
 
 ////////////////older components //////////////////////////////////////////////////
 function Home() {
@@ -219,6 +239,6 @@ const now = new Date();
 //   </>
 // );
 
-Home.getLayout = (page) => <SellerDashboard>{page}</SellerDashboard>;
+// Home.getLayout = (page) => <SellerDashboard>{page}</SellerDashboard>;
 
-export default Home;
+export default Index;

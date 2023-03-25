@@ -1,4 +1,7 @@
 // import "../styles/global.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../styles/global.css";
+import "../styles/header.css";
 import { SessionProvider, useSession } from "next-auth/react";
 
 // part added for beautiful dashboard
@@ -8,7 +11,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
-import { AuthConsumer, AuthProvider } from "../contexts/auth-context";
+
 import { useNProgress } from "../hooks/use-nprogress";
 import { createTheme } from "../theme";
 import { createEmotionCache } from "../utils/create-emotion-cache";
