@@ -1,5 +1,5 @@
 import dbConnect from "@/lib/mongoDb";
-import ChatSessionModel from "@/models/ChatSession";
+import ChatSessionModel from "@/models/chatSession";
 
 const handler = async (req, res) => {
   try {
