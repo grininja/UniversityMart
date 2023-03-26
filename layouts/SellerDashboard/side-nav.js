@@ -135,7 +135,7 @@ export const SideNav = (props) => {
               variant="contained"
               onClick={() => {
                 signOut({
-                  callbackUrl: `${process.env.BASE_URL}/auth/loginUser`,
+                  callbackUrl: `${process.env.BASE_URL}`,
                 });
               }}
             >

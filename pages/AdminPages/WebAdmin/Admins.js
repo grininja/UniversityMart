@@ -140,6 +140,15 @@ export default Page;
 
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
+  if (session === null) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/loginInstitute",
+      },
+      props: {},
+    };
+  }
   // console.log(session);
   try {
     const findInstutitute = await apiCall(
@@ -148,6 +157,19 @@ export async function getServerSideProps(context) {
       {},
       null
     );
+    if (
+      findInstutitute.data.message === null &&
+      findInstutitute.data.message === undefined &&
+      findInstutitute.data.message === ""
+    ) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/auth/loginInstitute",
+        },
+        props: {},
+      };
+    }
     const departMents = await apiCall(
       `${process.env.BASE_URL}/api/institute/departmentHandler/getAllDepartments?InstituteId=${findInstutitute.data.message}`,
       "GET",
@@ -172,6 +194,12 @@ export async function getServerSideProps(context) {
     };
   } catch (e) {
     console.log(e);
-    return { props: { error: "something happened" } };
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/loginInstitute",
+      },
+      props: { error: "something happened" },
+    };
   }
 }

@@ -316,6 +316,7 @@ export async function getServerSideProps(context) {
       {},
       null
     );
+    // console.log(getSeller)
     if (
       getSeller.data.message === null &&
       getSeller.data.message === undefined &&
@@ -336,7 +337,14 @@ export async function getServerSideProps(context) {
       },
     };
   } catch (e) {
-    console.log(e);
+    // console.log(e);
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/loginSeller",
+      },
+      props: {},
+    };
     return { props: { error: "something happened" } };
   }
 }

@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { authOptions } from "../api/auth/[...nextauth]";
+import { getServerSession } from "next-auth/next";
+import apiCall from "@/helper/apiCall";
 import {
   Alert,
   Box,
@@ -184,3 +187,48 @@ const Page = () => {
 Page.getLayout = (page) => <AuthLayout>{page}</AuthLayout>;
 
 export default Page;
+
+export async function getServerSideProps(context) {
+  const session = await getServerSession(context.req, context.res, authOptions);
+  console.log(session);
+  try {
+    if (session !== null) {
+      const findInstutitute = await apiCall(
+        `${process.env.BASE_URL}/api/institute/getInstituteByName?name=${session.user.name}`,
+        "GET",
+        {},
+        null
+      );
+      if (
+        findInstutitute.data.message === null &&
+        findInstutitute.data.message === undefined &&
+        findInstutitute.data.message === ""
+      ) {
+        return {
+          redirect: {
+            permanent: false,
+            destination: "/auth/loginInstitute",
+          },
+          props: {},
+        };
+      }
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/AdminPages/WebAdmin/Home",
+        },
+        props: {
+          institueId: findInstutitute.data.message,
+          instituteName: session.user.name,
+        },
+      };
+    } else {
+      return {
+        props: {},
+      };
+    }
+  } catch (e) {
+    console.log(e);
+    return { props: { error: "something happened" } };
+  }
+}

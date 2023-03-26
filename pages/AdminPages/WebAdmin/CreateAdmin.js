@@ -182,7 +182,15 @@ export default CreateAdmin;
 
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
-
+  if (session === null) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/loginInstitute",
+      },
+      props: {},
+    };
+  }
   try {
     const findInstutitute = await apiCall(
       `${process.env.BASE_URL}/api/institute/getInstituteByName?name=${session.user.name}`,
@@ -190,6 +198,19 @@ export async function getServerSideProps(context) {
       {},
       null
     );
+    if (
+      findInstutitute.data.message === null &&
+      findInstutitute.data.message === undefined &&
+      findInstutitute.data.message === ""
+    ) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/auth/loginInstitute",
+        },
+        props: {},
+      };
+    }
     const departMents = await apiCall(
       `${process.env.BASE_URL}/api/institute/departmentHandler/getAllDepartments?InstituteId=${findInstutitute.data.message}`,
       "GET",
@@ -206,6 +227,12 @@ export async function getServerSideProps(context) {
     };
   } catch (e) {
     console.log(e);
-    return { props: { error: "something happened" } };
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/loginInstitute",
+      },
+      props: { error: "something happened" },
+    };
   }
 }

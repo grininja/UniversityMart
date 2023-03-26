@@ -2,7 +2,9 @@ import Head from "next/head";
 import { subDays, subHours } from "date-fns";
 import { Box, Container, Unstable_Grid2 as Grid } from "@mui/material";
 import { Layout as WebAdminDashboard } from "../../../layouts/WebAdminDashboard/layout";
-
+import apiCall from "@/helper/apiCall";
+import { authOptions } from "../../api/auth/[...nextauth]";
+import { getServerSession } from "next-auth/next";
 const Home = () => (
   <>
     <Head>
@@ -34,3 +36,50 @@ const Home = () => (
 Home.getLayout = (page) => <WebAdminDashboard>{page}</WebAdminDashboard>;
 
 export default Home;
+
+export async function getServerSideProps(context) {
+  const session = await getServerSession(context.req, context.res, authOptions);
+  if (session === null) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/loginInstitute",
+      },
+      props: {},
+    };
+  }
+  try {
+    const findInstutitute = await apiCall(
+      `${process.env.BASE_URL}/api/institute/getInstituteByName?name=${session.user.name}`,
+      "GET",
+      {},
+      null
+    );
+    if (
+      findInstutitute.data.message === null &&
+      findInstutitute.data.message === undefined &&
+      findInstutitute.data.message === ""
+    ) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/auth/loginInstitute",
+        },
+        props: {},
+      };
+    }
+
+    return {
+      props: {},
+    };
+  } catch (e) {
+    console.log(e);
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/loginInstitute",
+      },
+      props: { error: "something happened" },
+    };
+  }
+}

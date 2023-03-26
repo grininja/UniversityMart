@@ -9,7 +9,9 @@ import {
 import { Layout as WebAdminDashboard } from "../../../layouts/WebAdminDashboard/layout";
 import { AccountProfile } from "../../../sections/WebAdmin/account-profile";
 import { AccountProfileDetails } from "../../../sections/account/account-profile-details";
-
+import { authOptions } from "../../api/auth/[...nextauth]";
+import { getServerSession } from "next-auth/next";
+import apiCall from "@/helper/apiCall";
 const Page = () => (
   <>
     <Head>
@@ -46,3 +48,50 @@ const Page = () => (
 Page.getLayout = (page) => <WebAdminDashboard>{page}</WebAdminDashboard>;
 
 export default Page;
+
+export async function getServerSideProps(context) {
+  const session = await getServerSession(context.req, context.res, authOptions);
+  try {
+    if (session !== null) {
+      const findInstutitute = await apiCall(
+        `${process.env.BASE_URL}/api/institute/getInstituteByName?name=${session.user.name}`,
+        "GET",
+        {},
+        null
+      );
+      if (
+        findInstutitute.data.message === null &&
+        findInstutitute.data.message === undefined &&
+        findInstutitute.data.message === ""
+      ) {
+        return {
+          redirect: {
+            permanent: false,
+            destination: "/auth/loginInstitute",
+          },
+          props: {},
+        };
+      }
+      return {
+        props: {},
+      };
+    } else {
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/auth/loginInstitute",
+        },
+        props: {},
+      };
+    }
+  } catch (e) {
+    console.log(e);
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/loginInstitute",
+      },
+      props: { error: "something happened" },
+    };
+  }
+}

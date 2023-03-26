@@ -233,6 +233,13 @@ export async function getServerSideProps(context) {
     };
   } catch (e) {
     console.log(e);
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/loginSeller",
+      },
+      props: {},
+    };
     return { props: { error: "something happened" } };
   }
 }
