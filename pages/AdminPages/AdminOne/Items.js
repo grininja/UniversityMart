@@ -20,10 +20,8 @@ import { ItemSearch } from "../../../sections/AdminOne/item-search";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 
-
-
 const Page = (props) => {
-  const { itemsList, InstituteId, DepartmentId,AdminOneId } = props;
+  const { itemsList, InstituteId, DepartmentId, AdminOneId } = props;
   // console.log(itemsList);
   const { status } = useSession({
     required: true,
@@ -90,7 +88,7 @@ const Page = (props) => {
             <Grid container spacing={3}>
               {itemsList.map((product) => (
                 <Grid xs={12} md={6} lg={4} key={product._id}>
-                  <ItemCard item={product} AdminOne={AdminOneId}/>
+                  <ItemCard item={product} AdminOne={AdminOneId} />
                 </Grid>
               ))}
             </Grid>
@@ -118,6 +116,16 @@ export default Page;
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
   // console.log(session);
+
+  if (session === null) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/loginUser",
+      },
+      props: {},
+    };
+  }
   try {
     const getAdminOne = await apiCall(
       `${process.env.BASE_URL}/api/institute/adminHandler/adminOneHandler/adminOneByEmail?=${session.user.email}`,
@@ -125,6 +133,19 @@ export async function getServerSideProps(context) {
       {},
       null
     );
+    if (
+      getAdminOne.data.message === null &&
+      getAdminOne.data.message === undefined &&
+      getAdminOne.data.message === ""
+    ) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/auth/loginUser",
+        },
+        props: {},
+      };
+    }
     const allItems = await apiCall(
       `${process.env.BASE_URL}/api/adminOneRequests/productHandler/getAllItems?departmentId=${getAdminOne.data.message.department}`
     );
@@ -139,6 +160,12 @@ export async function getServerSideProps(context) {
     };
   } catch (e) {
     console.log(e);
-    return { props: { error: "something happened" } };
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/loginUser",
+      },
+      props: { error: "something happened" },
+    };
   }
 }

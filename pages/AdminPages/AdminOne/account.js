@@ -9,7 +9,9 @@ import {
 import { Layout as WebAdminDashboard } from "../../../layouts/WebAdminDashboard/layout";
 import { AccountProfile } from "../../../sections/WebAdmin/account-profile";
 import { AccountProfileDetails } from "../../../sections/account/account-profile-details";
-
+import { authOptions } from "../../api/auth/[...nextauth]";
+import { getServerSession } from "next-auth/next";
+import apiCall from "@/helper/apiCall";
 const Page = () => (
   <>
     <Head>
@@ -46,3 +48,49 @@ const Page = () => (
 Page.getLayout = (page) => <WebAdminDashboard>{page}</WebAdminDashboard>;
 
 export default Page;
+
+export async function getServerSideProps(context) {
+  const session = await getServerSession(context.req, context.res, authOptions);
+  if (session === null) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/loginUser",
+      },
+      props: {},
+    };
+  }
+  try {
+    const getAdminOne = await apiCall(
+      `${process.env.BASE_URL}/api/institute/adminHandler/adminOneHandler/adminOneByEmail?=${session.user.email}`,
+      "GET",
+      {},
+      null
+    );
+    if (
+      getAdminOne.data.message === null &&
+      getAdminOne.data.message === undefined &&
+      getAdminOne.data.message === ""
+    ) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/auth/loginUser",
+        },
+        props: {},
+      };
+    }
+
+    return {
+      props: {},
+    };
+  } catch (e) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/loginUser",
+      },
+      props: { error: "something happened" },
+    };
+  }
+}

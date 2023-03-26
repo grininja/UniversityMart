@@ -37,10 +37,17 @@ Home.getLayout = (page) => <AdminOneDashboard>{page}</AdminOneDashboard>;
 
 export default Home;
 
-
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
-  console.log(session);
+  if (session === null) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/loginUser",
+      },
+      props: {},
+    };
+  }
   try {
     const getAdminOne = await apiCall(
       `${process.env.BASE_URL}/api/institute/adminHandler/adminOneHandler/adminOneByEmail?=${session.user.email}`,
@@ -48,10 +55,20 @@ export async function getServerSideProps(context) {
       {},
       null
     );
-    const allItems = await apiCall(
-      `${process.env.BASE_URL}/api/adminOneRequests/productHandler/getAllItems?departmentId=${getAdminOne.data.message.department}`
-    );
-    console.log(allItems.data.message);
+    if (
+      getAdminOne.data.message === null &&
+      getAdminOne.data.message === undefined &&
+      getAdminOne.data.message === ""
+    ) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/auth/loginUser",
+        },
+        props: {},
+      };
+    }
+
     return {
       props: {
         // itemsList: allItems.data.message,
@@ -61,6 +78,12 @@ export async function getServerSideProps(context) {
     };
   } catch (e) {
     console.log(e);
-    return { props: { error: "something happened" } };
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/loginUser",
+      },
+      props: { error: "something happened" },
+    };
   }
 }
