@@ -38,15 +38,15 @@ export const items = [
       </SvgIcon>
     ),
   },
-  {
-    title: "Chats",
-    path: "/AdminPages/AdminTwo/Chats",
-    icon: (
-      <SvgIcon fontSize="small">
-        <ChatBubbleBottomCenterIcon />
-      </SvgIcon>
-    ),
-  },
+  // {
+  //   title: "Chats",
+  //   path: "/AdminPages/AdminTwo/Chats",
+  //   icon: (
+  //     <SvgIcon fontSize="small">
+  //       <ChatBubbleBottomCenterIcon />
+  //     </SvgIcon>
+  //   ),
+  // },
 
   {
     title: "Order Placed",

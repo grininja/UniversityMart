@@ -164,6 +164,15 @@ Page.getLayout = (page) => <AdminTwoDashboard>{page}</AdminTwoDashboard>;
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
   //   console.log(session);
+  if (session === null) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/loginUser",
+      },
+      props: {},
+    };
+  }
   try {
     const getAdminTwo = await apiCall(
       `${process.env.BASE_URL}/api/institute/adminHandler/adminTwoHandler/adminTwoByEmail?AdminTwoEmail=${session.user.email}`,
@@ -171,6 +180,19 @@ export async function getServerSideProps(context) {
       {},
       null
     );
+    if (
+      getAdminTwo.data.message === null &&
+      getAdminTwo.data.message === undefined &&
+      getAdminTwo.data.message === ""
+    ) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/auth/loginUser",
+        },
+        props: {},
+      };
+    }
     const InstituteId = getAdminTwo.data.message.Institute;
     const allOrderRequest = await apiCall(
       `${process.env.BASE_URL}/api/adminTwoRequests/getAllOrderRequests?InstituteID=${InstituteId}&AdminTwoId=${getAdminTwo.data.message._id}`,
@@ -188,7 +210,13 @@ export async function getServerSideProps(context) {
     };
   } catch (e) {
     console.log(e);
-    return { props: { error: "something happened" } };
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/loginUser",
+      },
+      props: { error: "something happened" },
+    };
   }
 }
 

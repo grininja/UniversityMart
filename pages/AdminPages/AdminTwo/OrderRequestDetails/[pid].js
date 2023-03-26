@@ -30,7 +30,6 @@ import {
   Typography,
   Unstable_Grid2 as Grid,
   CardContent,
-  
 } from "@mui/material";
 const OrderDetails = ({ Order, AdminTwoId, InstituteId }) => {
   const [remarksValue, setRemarksValue] = useState("");
@@ -178,6 +177,16 @@ export default OrderDetails;
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
   //   console.log(session);
+  if (session === null) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/loginUser",
+      },
+      props: {},
+    };
+  }
+
   const orderId = context.query.pid;
 
   try {
@@ -187,6 +196,19 @@ export async function getServerSideProps(context) {
       {},
       null
     );
+    if (
+      getAdminTwo.data.message === null &&
+      getAdminTwo.data.message === undefined &&
+      getAdminTwo.data.message === ""
+    ) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/auth/loginUser",
+        },
+        props: {},
+      };
+    }
     const InstituteId = getAdminTwo.data.message.Institute;
     const OrderDetail = await apiCall(
       `${process.env.BASE_URL}/api/adminTwoRequests/getOrderRequestById?InstituteId=${InstituteId}&OrderRequestId=${orderId}`,
@@ -203,6 +225,12 @@ export async function getServerSideProps(context) {
     };
   } catch (e) {
     console.log(e);
-    return { props: { error: "something happened" } };
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/loginUser",
+      },
+      props: { error: "something happened" },
+    };
   }
 }

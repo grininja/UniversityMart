@@ -191,12 +191,12 @@ const ProductDesc = (props) => {
                   pb: 3,
                 }}
               >
-                {/* <CardMedia
-                component="img"
-                variant
-                image={Product.productImageUrl}
-                alt="Product Image"
-              /> */}
+                <CardMedia
+                  component="img"
+                  variant
+                  image={Product.productImageUrl}
+                  alt="Product Image"
+                />
               </Box>
               <CardContent>
                 <Typography align="center" gutterBottom variant="h5">
@@ -315,7 +315,15 @@ export default ProductDesc;
 
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
-  //   console.log(session)
+  if (session === null) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/loginUser",
+      },
+      props: {},
+    };
+  }
   const productId = context.query.pid;
   try {
     const getAdminTwo = await apiCall(
@@ -324,6 +332,19 @@ export async function getServerSideProps(context) {
       {},
       null
     );
+    if (
+      getAdminTwo.data.message === null &&
+      getAdminTwo.data.message === undefined &&
+      getAdminTwo.data.message === ""
+    ) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/auth/loginUser",
+        },
+        props: {},
+      };
+    }
     const InstituteId = getAdminTwo.data.message.Institute;
     const SellerProduct = await apiCall(
       `${process.env.BASE_URL}/api/adminTwoRequests/getSellerProductById?ProductId=${productId}&AdminTwoId=${getAdminTwo.data.message._id}`,
@@ -337,8 +358,7 @@ export async function getServerSideProps(context) {
       {},
       null
     );
-    // console.log(chatHistory.data.message)
-    //   console.log(SellerProduct.data.message)
+
     return {
       props: {
         InstituteId: InstituteId,
@@ -349,6 +369,12 @@ export async function getServerSideProps(context) {
     };
   } catch (e) {
     console.log(e);
-    return { props: { error: "something happened" } };
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/loginUser",
+      },
+      props: { error: "something happened" },
+    };
   }
 }

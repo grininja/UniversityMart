@@ -237,7 +237,7 @@ function LoginUser(props) {
 export async function getServerSideProps(context) {
   try {
     const res = await apiCall(
-      "http://localhost:3000/api/institute/getAllInstitutes",
+      `${process.env.BASE_URL}/api/institute/getAllInstitutes`,
       "GET",
       {},
       ""
