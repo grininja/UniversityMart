@@ -17,7 +17,7 @@ import {
   Typography,
   Stack,
 } from "@mui/material";
-import Image from "next/image";
+// import Image from "next/image";
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [sticky, setSticky] = useState(false);

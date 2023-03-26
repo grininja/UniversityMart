@@ -32,7 +32,7 @@ const SellerProductSchema = new Schema({
   },
 });
 
-SellerProduct.index({ name: "text", description: "text" });
+SellerProductSchema.index({ name: "text", description: "text" });
 
 const SellerProductModel =
   mongoose.models.SellerProduct ||

@@ -1,6 +1,8 @@
 import React from "react";
 import { Container, Row, Col } from "reactstrap";
 import Image from 'next/image'
+import Image45Png from '../../public/images/45.png';
+import GroupMemberImage from '../../public/images/GroupMembers.png';
 const Hero = () => {
   return (
     <section className="section position-relative">
@@ -32,7 +34,7 @@ const Hero = () => {
           <Col lg={6}>
             <div className="mt-5 mt-lg-0">
               <Image
-                src="/images/Group Members.png"
+                src={GroupMemberImage}
                 alt=""
                 className="img-fluid mx-auto d-block"
               />

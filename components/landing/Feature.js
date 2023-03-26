@@ -1,6 +1,9 @@
 import React from "react";
 import { Container, Row, Col } from "reactstrap";
 import Image from 'next/image'
+import Image45Png from '../../public/images/45.png';
+import GroupMemberImage from '../../public/images/GroupMembers.png';
+
 const FeatureBox = (props) => {
   return (
     <>
@@ -20,6 +23,7 @@ const FeatureBox = (props) => {
                   src={feature.img}
                   alt=""
                   className="img-fluid d-block mx-auto"
+                  
                 />
               </div>
             </Col>
@@ -74,21 +78,21 @@ const Feature = () => {
   const features = [
     {
       id: 1,
-      img: "./images/45.png",
+      img: Image45Png,
       title: "Select Products from Multiple Categories",
       desc: "enables users to quickly find the items they need and helps sellers to organize and display their products effectively, leading to increased sales and customer satisfaction.",
       link: "/",
     },
     {
       id: 2,
-      img: "./images/Group Members.png",
+      img: GroupMemberImage,
       title: "Multi Level Admin Approvals",
       desc: "multi-level approval on the institute side is an essential feature that enhances financial discipline and accountability. It ensures that all purchases and expenses are thoroughly reviewed and approved, preventing any unauthorized or unnecessary spending and promoting financial stability and sustainability.",
       link: "/",
     },
     {
       id: 3,
-      img: "./images/45.png",
+      img: Image45Png,
       title: "Add remarks and tags to your orders",
       desc: "Adding remarks and tags to orders is a valuable feature that enhances organization, communication, and collaboration between users and sellers. It also helps users to manage their orders more efficiently and effectively, leading to higher customer satisfaction.",
       link: "/",

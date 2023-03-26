@@ -85,7 +85,7 @@ export const Layout = (props) => {
             <Typography align="center" sx={{ mb: 3 }} variant="subtitle1">
               All In one solution for University Shopping.
             </Typography>
-            <Image alt="" src="/assets/auth-illustration.svg" />
+            {/* <Image alt="" src="/assets/auth-illustration.svg" /> */}
           </Box>
         </Grid>
       </Grid>
