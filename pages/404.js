@@ -33,7 +33,7 @@ const Page = () => (
               textAlign: 'center'
             }}
           >
-            <Image
+            {/* <Image
               alt="Under development"
               src="/assets/errors/error-404.png"
               style={{
@@ -41,7 +41,7 @@ const Page = () => (
                 maxWidth: '100%',
                 width: 400
               }}
-            />
+            /> */}
           </Box>
           <Typography
             align="center"
