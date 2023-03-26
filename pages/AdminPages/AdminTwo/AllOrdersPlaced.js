@@ -1,9 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
 import Head from "next/head";
-import { subDays, subHours } from "date-fns";
-import ArrowDownOnSquareIcon from "@heroicons/react/24/solid/ArrowDownOnSquareIcon";
-import ArrowUpOnSquareIcon from "@heroicons/react/24/solid/ArrowUpOnSquareIcon";
-import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 import {
   Box,
   Button,
@@ -16,12 +12,10 @@ import {
   OutlinedInput,
   Switch,
 } from "@mui/material";
-import { useSelection } from "../../../hooks/use-selection";
 import apiCall from "@/helper/apiCall";
 import { useSession } from "next-auth/react";
 import { Layout as AdminTwoDashboard } from "../../../layouts/AdminTwoDashboard/layout";
 import { AllOrderTable } from "../../../sections/AdminTwo/allOrderPlacedTable";
-import { applyPagination } from "../../../utils/apply-pagination";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 import { useRouter } from "next/router";

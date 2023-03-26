@@ -23,7 +23,6 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { Layout as AdminOneDashBoardLayout } from "../../../../layouts/AdminOneDashboard/layout";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
 
 //under consturuction image upload
 

@@ -1,10 +1,8 @@
 import { useCallback, useState } from "react";
 import Head from "next/head";
-import NextLink from "next/link";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import apiCall from "@/helper/apiCall";
-import { signIn, signOut, useSession } from "next-auth/react";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 import { useRouter } from "next/router";

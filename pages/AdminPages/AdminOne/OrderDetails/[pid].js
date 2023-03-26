@@ -1,10 +1,5 @@
-import { formatDistanceToNow } from "date-fns";
-import PropTypes from "prop-types";
-import ArrowRightIcon from "@heroicons/react/24/solid/ArrowRightIcon";
 import EllipsisVerticalIcon from "@heroicons/react/24/solid/EllipsisVerticalIcon";
 import Head from "next/head";
-import ArrowUpOnSquareIcon from "@heroicons/react/24/solid/ArrowUpOnSquareIcon";
-import ArrowDownOnSquareIcon from "@heroicons/react/24/solid/ArrowDownOnSquareIcon";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 import apiCall from "@/helper/apiCall";
 import { useSession } from "next-auth/react";
@@ -26,7 +21,6 @@ import {
   ListItemText,
   SvgIcon,
   Container,
-  Pagination,
   Typography,
   Unstable_Grid2 as Grid,
 } from "@mui/material";

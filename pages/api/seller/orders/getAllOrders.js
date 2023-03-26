@@ -2,7 +2,7 @@ import dbConnect from "@/lib/mongoDb";
 import SellerModel from "@/models/Seller";
 import OrderReqAdminTwoModel from "@/models/OrderReqAdminTwo";
 import InstituteModel from "@/models/Institute";
-import AdminTwoModel from "@/models/AdminTwo";
+import AdminTwoModel from "@/models/adminTwo";
 const handler = async (req, res) => {
   try {
     if (req.method === "GET") {

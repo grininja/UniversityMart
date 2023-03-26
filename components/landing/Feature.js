@@ -56,7 +56,7 @@ const FeatureBox = (props) => {
             </Col>
             <Col md={{ size: 5, offset: 1 }} className="mt-5 mt-sm-0">
               <div>
-                <img
+                <Image
                   src={feature.img}
                   alt=""
                   className="img-fluid d-block mx-auto"

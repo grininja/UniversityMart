@@ -1,5 +1,5 @@
 import dbConnect from "@/lib/mongoDb";
-import adminTwo from "@/models/adminTwo";
+import AdminTwoModel from "@/models/adminTwo";
 import InstituteModel from "@/models/Institute";
 
 const handler = async (req, res) => {
@@ -15,7 +15,7 @@ const handler = async (req, res) => {
           },
         }
       );
-      const finditem = await adminTwo
+      const finditem = await AdminTwoModel
         .findOneAndDelete({
           user: userId,
           Institute: InstituteId,

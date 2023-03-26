@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
-const ChatSession = new Schema(
+const ChatSessionSchema = new Schema(
   {
     item: {
       type: Schema.Types.ObjectId,
@@ -31,5 +31,5 @@ const ChatSession = new Schema(
 );
 
 const ChatModel =
-  mongoose.models.ChatSession || mongoose.model("ChatSession", ChatSession);
+  mongoose.models.ChatSession || mongoose.model("ChatSession", ChatSessionSchema);
 module.exports = ChatModel;

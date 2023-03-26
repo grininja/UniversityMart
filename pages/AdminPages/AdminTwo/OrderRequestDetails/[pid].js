@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import apiCall from "@/helper/apiCall";
 import EllipsisVerticalIcon from "@heroicons/react/24/solid/EllipsisVerticalIcon";
-import { useSession } from "next-auth/react";
 import { Layout as AdminTwoDashboard } from "../../../../layouts/AdminTwoDashboard/layout";
 import { authOptions } from "../../../api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
-import { useRouter } from "next/router";
 import ArrowPathIcon from "@heroicons/react/24/solid/ArrowPathIcon";
 import {
   Stack,
@@ -14,7 +12,6 @@ import {
   MenuItem,
   Button,
   Card,
-  CardActions,
   CardHeader,
   TextField,
   Divider,
@@ -23,10 +20,8 @@ import {
   List,
   ListItem,
   ListItemAvatar,
-  ListItemText,
   SvgIcon,
   Container,
-  Pagination,
   Typography,
   Unstable_Grid2 as Grid,
   CardContent,

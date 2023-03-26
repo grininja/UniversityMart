@@ -1,25 +1,16 @@
 import * as React from "react";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import {
   Box,
   Button,
-  Container,
-  Pagination,
-  Stack,
-  SvgIcon,
   TextField,
   Card,
   CardActions,
   CardContent,
-  CardMedia,
   Unstable_Grid2 as Grid,
 } from "@mui/material";
 import { Layout as SellerDashboardLayout } from "../../../layouts/SellerDashboard/layout";

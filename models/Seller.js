@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
-const Seller = new Schema({
+const SellerSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -25,6 +25,6 @@ const Seller = new Schema({
   productListed: [{ type: Schema.Types.ObjectId, ref: "SellerProduct" }],
 });
 
-const SellerModel = mongoose.models.Seller || mongoose.model("Seller", Seller);
+const SellerModel = mongoose.models.Seller || mongoose.model("Seller", SellerSchema);
 module.exports = SellerModel;
 // export default SellerModel;

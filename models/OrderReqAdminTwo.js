@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
-const OrderRequestAdminTwo = new Schema({
+const OrderRequestAdminTwoSchema = new Schema({
   Product: {
     type: Schema.Types.ObjectId,
     ref: "SellerProduct",
@@ -38,5 +38,5 @@ const OrderRequestAdminTwo = new Schema({
 
 const OrderRequestAdminTwoModel =
   mongoose.models.OrderRequestAdminTwo ||
-  mongoose.model("OrderRequestAdminTwo", OrderRequestAdminTwo);
+  mongoose.model("OrderRequestAdminTwo", OrderRequestAdminTwoSchema);
 module.exports = OrderRequestAdminTwoModel;

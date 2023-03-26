@@ -2,25 +2,26 @@ import { Children } from 'react';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 import createEmotionServer from '@emotion/server/create-instance';
 import { createEmotionCache } from '../utils/create-emotion-cache';
+import NextLink from 'next/link';
 
 const Favicon = () => (
   <>
-    <link
+    <NextLink
       rel="apple-touch-icon"
       sizes="180x180"
       href="/apple-touch-icon.png"
     />
-    <link
+    <NextLink
       rel="icon"
       href="/favicon.ico"
     />
-    <link
+    <NextLink
       rel="icon"
       type="image/png"
       sizes="32x32"
       href="/favicon-32x32.png"
     />
-    <link
+    <NextLink
       rel="icon"
       type="image/png"
       sizes="16x16"
@@ -31,23 +32,23 @@ const Favicon = () => (
 
 const Fonts = () => (
   <>
-    <link
+    <NextLink
       rel="preconnect"
       href="https://fonts.googleapis.com"
     />
-    <link
+    <NextLink
       rel="preconnect"
       href="https://fonts.gstatic.com"
     />
-    <link
+    <NextLink
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
     />
-    <link
+    <NextLink
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400&display=swap"
     />
-    <link
+    <NextLink
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700&display=swap"
     />
