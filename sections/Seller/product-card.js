@@ -38,7 +38,7 @@ export const ProductCard = (props) => {
             pb: 3,
           }}
         >
-          <Avatar src={item.photo} variant="square" />
+          <Avatar src={item.productImageUrl} variant="square" />
         </Box>
         <Typography align="center" gutterBottom variant="h5">
           {item.name}

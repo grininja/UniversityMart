@@ -205,7 +205,6 @@ const CreateItem = ({ SellerId, Product }) => {
           </Box>
         </CardContent>
         <Divider />
-
       </Card>
     </form>
   );
@@ -264,7 +263,15 @@ export default Page;
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
   const productId = context.query.pid;
-
+  if (session === null) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/loginSeller",
+      },
+      props: {},
+    };
+  }
   try {
     const getSeller = await apiCall(
       `${process.env.BASE_URL}/api/seller/getSellerWithEmail?EmailId=${session.user.email}`,

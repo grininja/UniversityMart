@@ -192,6 +192,15 @@ export default OrderDetails;
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
   const orderId = context.query.pid;
+  if (session === null) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/loginSeller",
+      },
+      props: {},
+    };
+  }
   try {
     const getSeller = await apiCall(
       `${process.env.BASE_URL}/api/seller/getSellerWithEmail?EmailId=${session.user.email}`,

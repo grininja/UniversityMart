@@ -46,7 +46,7 @@ const Page = (props) => {
           <Stack spacing={3}>
             <Stack direction="row" justifyContent="space-between" spacing={4}>
               <Stack spacing={1}>
-                <Typography variant="h4">Department Items</Typography>
+                <Typography variant="h4">Your Products</Typography>
                 <Stack alignItems="center" direction="row" spacing={1}>
                   {/* <Button
                   color="inherit"
@@ -115,7 +115,15 @@ export default Page;
 
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
-
+  if (session === null) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/loginSeller",
+      },
+      props: {},
+    };
+  }
   try {
     const getSeller = await apiCall(
       `${process.env.BASE_URL}/api/seller/getSellerWithEmail?EmailId=${session.user.email}`,

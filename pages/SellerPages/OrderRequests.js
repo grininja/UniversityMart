@@ -19,7 +19,7 @@ import {
 import { useSelection } from "../../hooks/use-selection";
 import apiCall from "@/helper/apiCall";
 import { useSession } from "next-auth/react";
-import { Layout as AdminTwoDashboard } from "../../layouts/AdminTwoDashboard/layout";
+import { Layout as SellerDashboardLayout } from "../../layouts/SellerDashboard/layout";
 import { AllOrderTable } from "../../sections/Seller/orderrequest-table";
 import { applyPagination } from "../../utils/apply-pagination";
 import { authOptions } from "../api/auth/[...nextauth]";
@@ -113,13 +113,23 @@ const Page = (props) => {
   );
 };
 
-Page.getLayout = (page) => <AdminTwoDashboard>{page}</AdminTwoDashboard>;
+Page.getLayout = (page) => (
+  <SellerDashboardLayout>{page}</SellerDashboardLayout>
+);
 
 export default Page;
 
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
-
+  if (session === null) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/loginSeller",
+      },
+      props: {},
+    };
+  }
   try {
     const getSeller = await apiCall(
       `${process.env.BASE_URL}/api/seller/getSellerWithEmail?EmailId=${session.user.email}`,

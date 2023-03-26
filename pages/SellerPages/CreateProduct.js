@@ -40,65 +40,6 @@ for (var i in categories) {
     categoriesList.push(key);
   }
 }
-// console.log(categoriesList);
-
-// const UploadPicture = () => {
-//   const [file, setFile] = useState(null);
-//   return (
-//     <div>
-//       <Card>
-//         <CardContent>
-//           <Box
-//             sx={{
-//               alignItems: "center",
-//               display: "flex",
-//               flexDirection: "column",
-//             }}
-//           >
-//             <Button component="label">
-//               <Avatar
-//                 //   src={user.avatar}
-//                 sx={{
-//                   height: 80,
-//                   mb: 2,
-//                   width: 80,
-//                 }}
-//               />
-//               <input
-//                 type="file"
-//                 hidden
-//                 onChange={(e) => setFile(e.target.files[0])}
-//                 id="select-image"
-//               />
-//             </Button>
-//             {file && file.name !== null && <Typography>{file.name}</Typography>}
-//           </Box>
-//         </CardContent>
-//         <Divider />
-//         <CardActions>
-//           <Button
-//             fullWidth
-//             variant="text"
-//             type="submit"
-//             onClick={async () => {
-//               const downloadUri = await UploadFile(
-//                 file,
-//                 "Seller",
-//                 "productImage"
-//               );
-//               alert("Image Upload Success");
-
-//               // console.log(downloadUrl)
-//               // const res=await apiCall('https://api.imgbb.com/1/upload?key=f9e9cec480aeb08bc3c6836d35c810f0')
-//             }}
-//           >
-//             Upload picture
-//           </Button>
-//         </CardActions>
-//       </Card>
-//     </div>
-//   );
-// };
 
 const CreateItem = ({ SellerId, DownLoadUrl }) => {
   const router = useRouter();
@@ -202,17 +143,6 @@ const CreateItem = ({ SellerId, DownLoadUrl }) => {
                 />
               </Grid>
               <Grid xs={12} md={6}>
-                {/* <TextField
-                  fullWidth
-                  label="Item Category"
-                  name="category"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  required
-                  value={formik.values.category}
-                  helperText={formik.touched.category && formik.errors.category}
-                  error={!!(formik.touched.category && formik.errors.category)}
-                /> */}
                 <Autocomplete
                   value={categoryValue}
                   onChange={(event, newValue) => {
@@ -370,7 +300,15 @@ export default Page;
 
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
-
+  if (session === null) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/loginSeller",
+      },
+      props: {},
+    };
+  }
   try {
     const getSeller = await apiCall(
       `${process.env.BASE_URL}/api/seller/getSellerWithEmail?EmailId=${session.user.email}`,
