@@ -172,7 +172,19 @@ export async function getServerSideProps(context) {
       {},
       null
     );
-
+    if (
+      getSeller.data.message === null &&
+      getSeller.data.message === undefined &&
+      getSeller.data.message === ""
+    ) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/auth/loginSeller",
+        },
+        props: {},
+      };
+    }
     const getNotRespondedQuotes = await apiCall(
       `${process.env.BASE_URL}/api/chatApi/getNotRespondedChats?SellerId=${getSeller.data.message._id}`
     );

@@ -272,6 +272,19 @@ export async function getServerSideProps(context) {
       {},
       null
     );
+    if (
+      getSeller.data.message === null &&
+      getSeller.data.message === undefined &&
+      getSeller.data.message === ""
+    ) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/auth/loginSeller",
+        },
+        props: {},
+      };
+    }
     const getProduct = await apiCall(
       `${process.env.BASE_URL}/api/seller/products/getProductWithId?ProductId=${productId}&SellerId=${getSeller.data.message._id}`
     );

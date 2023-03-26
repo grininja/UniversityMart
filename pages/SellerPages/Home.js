@@ -7,7 +7,7 @@ import { Layout as SellerDashboard } from "../../layouts/SellerDashboard/layout"
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
-const Home = () => {
+const Home = (props) => {
   const router = useRouter();
   const { status } = useSession({
     required: true,
@@ -48,25 +48,34 @@ Home.getLayout = (page) => <SellerDashboard>{page}</SellerDashboard>;
 
 export default Home;
 
+
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
-  console.log(session);
+
   try {
-    //     const getAdminOne = await apiCall(
-    //       `${process.env.BASE_URL}/api/institute/adminHandler/adminOneHandler/adminOneByEmail?=${session.user.email}`,
-    //       "GET",
-    //       {},
-    //       null
-    //     );
-    //     const allItems = await apiCall(
-    //       `${process.env.BASE_URL}/api/adminOneRequests/productHandler/getAllItems?departmentId=${getAdminOne.data.message.department}`
-    //     );
-    //     console.log(allItems.data.message);
+    const getSeller = await apiCall(
+      `${process.env.BASE_URL}/api/seller/getSellerWithEmail?EmailId=${session.user.email}`,
+      "GET",
+      {},
+      null
+    );
+    if (
+      getSeller.data.message === null &&
+      getSeller.data.message === undefined &&
+      getSeller.data.message === ""
+    ) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/auth/loginSeller",
+        },
+        props: {},
+      };
+    }
+
     return {
       props: {
-        // itemsList: allItems.data.message,
-        // Institute: getAdminOne.data.message.Institute,
-        // Department: getAdminOne.data.message.department,
+        sellerId: getSeller.data.message._id,
       },
     };
   } catch (e) {

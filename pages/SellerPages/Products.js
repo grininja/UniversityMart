@@ -123,6 +123,19 @@ export async function getServerSideProps(context) {
       {},
       null
     );
+    if (
+      getSeller.data.message === null &&
+      getSeller.data.message === undefined &&
+      getSeller.data.message === ""
+    ) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/auth/loginSeller",
+        },
+        props: {},
+      };
+    }
     //  console.log(getSeller.data.message);
     const getProducts = await apiCall(
       `${process.env.BASE_URL}/api/seller/products/listAllProducts?sellerId=${getSeller.data.message._id}`,
