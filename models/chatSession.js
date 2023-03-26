@@ -30,6 +30,6 @@ const ChatSession = new Schema(
   { timestamps: true }
 );
 
-const chatModel =
+const ChatModel =
   mongoose.models.ChatSession || mongoose.model("ChatSession", ChatSession);
-module.exports = chatModel;
+module.exports = ChatModel;

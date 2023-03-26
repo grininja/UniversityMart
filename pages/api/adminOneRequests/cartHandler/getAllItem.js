@@ -1,6 +1,6 @@
 import dbConnect from "@/lib/mongoDb";
 import AdminOne from "@/models/adminOne";
-import ItemModel from "@/models/item";
+import ItemModel from "@/models/Item";
 const handler = async (req, res) => {
   try {
     if (req.method === "GET") {

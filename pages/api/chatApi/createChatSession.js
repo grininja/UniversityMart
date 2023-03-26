@@ -1,7 +1,7 @@
 import dbConnect from "@/lib/mongoDb";
 import ChatSessionModel from "@/models/ChatSession";
-import AdminTwoModel from "@/models/adminTwo";
-import SellerModel from "@/models/Seller";
+// import AdminTwoModel from "@/models/adminTwo";
+// import SellerModel from "@/models/Seller";
 
 const handler = async (req, res) => {
   try {

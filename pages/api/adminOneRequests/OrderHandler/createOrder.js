@@ -1,6 +1,6 @@
 import dbConnect from "@/lib/mongoDb";
 import OrderReqAdminOneModel from "@/models/OrderReqAdminOne";
-import AdminOneModel from "@/models/AdminOne";
+import AdminOneModel from "@/models/adminOne";
 
 const handler = async (req, res) => {
   try {
