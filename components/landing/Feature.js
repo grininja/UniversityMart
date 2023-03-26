@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Row, Col } from "reactstrap";
-
+import Image from 'next/image'
 const FeatureBox = (props) => {
   return (
     <>
@@ -16,7 +16,7 @@ const FeatureBox = (props) => {
           >
             <Col md={5}>
               <div>
-                <img
+                <Image
                   src={feature.img}
                   alt=""
                   className="img-fluid d-block mx-auto"

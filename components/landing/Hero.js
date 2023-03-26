@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Row, Col } from "reactstrap";
-
+import Image from 'next/image'
 const Hero = () => {
   return (
     <section className="section position-relative">
@@ -31,7 +31,7 @@ const Hero = () => {
           </Col>
           <Col lg={6}>
             <div className="mt-5 mt-lg-0">
-              <img
+              <Image
                 src="/images/Group Members.png"
                 alt=""
                 className="img-fluid mx-auto d-block"
