@@ -12,7 +12,7 @@ import {
   MenuItem,
   Button,
   Card,
-  CardHeader,
+  CardMedia,
   TextField,
   Divider,
   IconButton,
@@ -20,28 +20,57 @@ import {
   List,
   ListItem,
   ListItemAvatar,
+  CardActions,
   SvgIcon,
   Container,
   Typography,
   Unstable_Grid2 as Grid,
   CardContent,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 const OrderDetails = ({ Order, AdminTwoId, InstituteId }) => {
   const [remarksValue, setRemarksValue] = useState("");
   const [tagValue, setTagValue] = useState("");
   const products = Order.products;
+  const isMd = useMediaQuery((theme) => theme.breakpoints.up("md"));
+  // Use the useTheme hook to get access to the current theme
+  const theme = useTheme();
+
+  // Use the useMediaQuery hook to check the screen size and adjust the layout accordingly
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   return (
-    <Stack direction="row" justifyContent="center">
-      <Card>
-        <CardHeader title="Order Details" />
-        <Stack spacing={3} direction="row">
-          <Stack alignItems="center" direction="row" spacing={1}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        padding: "16px",
+      }}
+    >
+      <Typography variant="h5" align="center">
+        Order Details
+      </Typography>
+      <Box
+        sx={{
+          width: "100%",
+          maxWidth: 800,
+          padding: "16px",
+        }}
+      >
+        <Stack spacing={3} direction={isMobile ? "column" : "row"}>
+          <Stack
+            alignItems="center"
+            direction="row"
+            spacing={1}
+            sx={{ width: isMobile ? "100%" : "auto" }}
+          >
             <InputLabel id="demo-simple-select-helper-label">Tag</InputLabel>
             <Select
               labelId="demo-simple-select-helper-label"
               id="demo-simple-select-helper"
               value={tagValue}
-              label="Age"
+              label="Tag"
               onChange={(event) => {
                 setTagValue(event.target.value);
               }}
@@ -51,7 +80,12 @@ const OrderDetails = ({ Order, AdminTwoId, InstituteId }) => {
               <MenuItem value="pending">Pending</MenuItem>
             </Select>
           </Stack>
-          <Stack alignItems="center" direction="row" spacing={1}>
+          <Stack
+            alignItems="center"
+            direction="row"
+            spacing={1}
+            sx={{ width: isMobile ? "100%" : "auto" }}
+          >
             <TextField
               fullWidth
               label="Remarks"
@@ -83,83 +117,60 @@ const OrderDetails = ({ Order, AdminTwoId, InstituteId }) => {
           >
             Update Status
           </Button>
-          {/* <Stack alignItems="flex-end" direction="row" spacing={1}> */}
-
-          {/* </Stack> */}
         </Stack>
-        <List>
+        <Grid container spacing={2}>
           {products.map((product, index) => {
             const hasDivider = index < products.length - 1;
             return (
-              <ListItem divider={hasDivider} key={product.id}>
-                <ListItemAvatar>
-                  {product.detail.photo ? (
-                    <Box
-                      component="img"
-                      src={product.detail.photo}
-                      sx={{
-                        borderRadius: 1,
-                        height: 48,
-                        width: 48,
-                      }}
-                    />
-                  ) : (
-                    <Box
-                      sx={{
-                        borderRadius: 1,
-                        backgroundColor: "neutral.200",
-                        height: 48,
-                        width: 48,
-                      }}
-                    />
-                  )}
-                </ListItemAvatar>
-                <Grid xs={12} md={6} lg={4} key={product.detail.itemId}>
-                  <Card
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      height: "100%",
-                    }}
-                  >
-                    <CardContent>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          justifyContent: "center",
-                          pb: 3,
-                        }}
-                      ></Box>
-                      <Typography align="center" gutterBottom variant="h5">
-                        {product.detail.name}
-                      </Typography>
-                      <Typography align="center" variant="body1">
-                        Category: {product.detail.category}
-                      </Typography>
-                      <Typography align="center" variant="body1">
-                        Quantity: {product.quantity}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-                <IconButton edge="end">
-                  <SvgIcon>
-                    <EllipsisVerticalIcon />
-                  </SvgIcon>
-                </IconButton>
-              </ListItem>
+              <Grid item xs={12} sm={6} md={4} key={product.id}>
+                <Card
+                  sx={{
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <CardMedia
+                    component="img"
+                    image={product.detail.photo || "/placeholder.png"}
+                    alt={product.detail.name}
+                    height={200}
+                    sx={{ objectFit: "cover" }}
+                  />
+                  <CardContent sx={{ flexGrow: 1 }}>
+                    <Typography variant="h5" component="h2" gutterBottom>
+                      {product.detail.name}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      color="textSecondary"
+                      gutterBottom
+                    >
+                      Category: {product.detail.category}
+                    </Typography>
+                    <Typography variant="body1" color="textSecondary">
+                      Quantity: {product.quantity}
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    <IconButton>
+                      <EllipsisVerticalIcon />
+                    </IconButton>
+                  </CardActions>
+                </Card>
+                {hasDivider && <Divider />}
+              </Grid>
             );
           })}
-        </List>
+        </Grid>
 
-        <Divider />
-        <Stack direction="row" alignItems="center">
+        <Box sx={{ my: 4 }}>
           <Typography variant="h5">
             Requester Department: {Order.DepartmentName}
           </Typography>
-        </Stack>
-      </Card>
-    </Stack>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 
