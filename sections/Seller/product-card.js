@@ -22,6 +22,13 @@ import apiCall from "@/helper/apiCall";
 export const ProductCard = (props) => {
   const { item, SellerId } = props;
   const router = useRouter();
+  var decodedUrlImage = "";
+  if (item.productImageUrl !== "") {
+    let bufferObj = Buffer.from(imageUrl, "base64");
+
+    // Decoding base64 into String
+    decodedUrlImage = bufferObj.toString("utf8");
+  }
   return (
     <Card
       sx={{
@@ -38,7 +45,7 @@ export const ProductCard = (props) => {
             pb: 3,
           }}
         >
-          <Avatar src={item.productImageUrl} variant="square" />
+          <Avatar src={decodedUrlImage} variant="square" />
         </Box>
         <Typography align="center" gutterBottom variant="h5">
           {item.name}

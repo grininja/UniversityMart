@@ -22,7 +22,7 @@ export const AccountProfile = ({ InstituteId, imageUrl }) => {
   const [downloadUri, setDownloadUri] = useState(imageUrl);
   var decodedUrlImage = "";
   if (imageUrl !== "") {
-    let bufferObj = Buffer.from(base64string, "base64");
+    let bufferObj = Buffer.from(imageUrl, "base64");
 
     // Decoding base64 into String
     decodedUrlImage = bufferObj.toString("utf8");

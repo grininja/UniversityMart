@@ -27,9 +27,8 @@ import { useRouter } from "next/router";
 import { Layout as SellerDashboardLayout } from "../../../layouts/SellerDashboard/layout";
 import { useSession } from "next-auth/react";
 
-
 const CreateItem = ({ SellerId, Product, DownloadUrl }) => {
-  console.log(DownloadUrl)
+  console.log(DownloadUrl);
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
@@ -249,7 +248,10 @@ const Page = (props) => {
                               "productImage"
                             );
                             alert("Image Upload Success");
-                            setDownloadUrl(downloadUri);
+                            // setDownloadUrl(downloadUri);
+                            let bufferObj = Buffer.from(downloadUri, "utf8");
+                            let base64String = bufferObj.toString("base64");
+                            setDownloadUrl(base64String);
                           }}
                         >
                           Upload picture

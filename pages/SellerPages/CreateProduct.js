@@ -269,7 +269,9 @@ const Page = (props) => {
                               "productImage"
                             );
                             alert("Image Upload Success");
-                            setDownloadUrl(downloadUri);
+                            let bufferObj = Buffer.from(downloadUri, "utf8");
+                            let base64String = bufferObj.toString("base64");
+                            setDownloadUrl(base64String);
                             // console.log(downloadUrl)
                             // const res=await apiCall('https://api.imgbb.com/1/upload?key=f9e9cec480aeb08bc3c6836d35c810f0')
                           }}
