@@ -46,6 +46,7 @@ const CreateItem = ({ SellerId, DownLoadUrl }) => {
   const [categoryValue, setCategoryValue] = React.useState("");
   const [categoryinputValue, setCategoryInputValue] = React.useState("");
   const [file, setFile] = useState(null);
+  const encodedUrl=btoa(DownLoadUrl);
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -74,7 +75,7 @@ const CreateItem = ({ SellerId, DownLoadUrl }) => {
             name: values.name,
             description: values.description,
             category: categoryValue.label,
-            productImageUrl: DownLoadUrl,
+            productImageUrl:encodedUrl,
             pricePerItem: values.price,
             sellerId: SellerId,
             visible: checked,

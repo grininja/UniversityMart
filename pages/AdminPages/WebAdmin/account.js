@@ -8,11 +8,11 @@ import {
 } from "@mui/material";
 import { Layout as WebAdminDashboard } from "../../../layouts/WebAdminDashboard/layout";
 import { AccountProfile } from "../../../sections/WebAdmin/account-profile";
-import { AccountProfileDetails } from "../../../sections/account/account-profile-details";
+import { AccountProfileDetails } from "../../../sections/WebAdmin/account-profile-details";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 import apiCall from "@/helper/apiCall";
-const Page = () => (
+const Page = ({ institueDetail }) => (
   <>
     <Head>
       <title>Account | UniversityMart</title>
@@ -32,10 +32,10 @@ const Page = () => (
           <div>
             <Grid container spacing={3}>
               <Grid xs={12} md={6} lg={4}>
-                <AccountProfile />
+                <AccountProfile InstituteId={institueDetail._id} imageUrl={institueDetail.logoUrl}/>
               </Grid>
               <Grid xs={12} md={6} lg={8}>
-                <AccountProfileDetails />
+                <AccountProfileDetails InstituteDetail={institueDetail} />
               </Grid>
             </Grid>
           </div>
@@ -51,39 +51,29 @@ export default Page;
 
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
+  if (session === null) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/loginInstitute",
+      },
+      props: {},
+    };
+  }
+
   try {
-    if (session !== null) {
-      const findInstutitute = await apiCall(
-        `${process.env.BASE_URL}/api/institute/getInstituteByName?name=${session.user.name}`,
-        "GET",
-        {},
-        null
-      );
-      if (
-        findInstutitute.data.message === null &&
-        findInstutitute.data.message === undefined &&
-        findInstutitute.data.message === ""
-      ) {
-        return {
-          redirect: {
-            permanent: false,
-            destination: "/auth/loginInstitute",
-          },
-          props: {},
-        };
-      }
-      return {
-        props: {},
-      };
-    } else {
-      return {
-        redirect: {
-          permanent: false,
-          destination: "/auth/loginInstitute",
-        },
-        props: {},
-      };
-    }
+    const findInstutitute = await apiCall(
+      `${process.env.BASE_URL}/api/institute/getAllInstituteDetailsByName?name=${session.user.name}`,
+      "GET",
+      {},
+      null
+    );
+
+    return {
+      props: {
+        institueDetail: findInstutitute.data.message,
+      },
+    };
   } catch (e) {
     console.log(e);
     return {

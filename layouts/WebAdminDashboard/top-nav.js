@@ -68,7 +68,7 @@ export const TopNav = (props) => {
             <Tooltip title="Search">
               <IconButton>
                 <SvgIcon fontSize="small">
-                  <MagnifyingGlassIcon />
+                  {/* <MagnifyingGlassIcon /> */}
                 </SvgIcon>
               </IconButton>
             </Tooltip>
@@ -81,13 +81,13 @@ export const TopNav = (props) => {
             <Tooltip title="Contacts">
               <IconButton>
                 <SvgIcon fontSize="small">
-                  <UsersIcon />
+                  {/* <UsersIcon /> */}
                 </SvgIcon>
               </IconButton>
             </Tooltip>
             <Tooltip title="Notifications">
               <IconButton>
-                <Badge
+                {/* <Badge
                   badgeContent={4}
                   color="success"
                   variant="dot"
@@ -95,7 +95,7 @@ export const TopNav = (props) => {
                   <SvgIcon fontSize="small">
                     <BellIcon />
                   </SvgIcon>
-                </Badge>
+                </Badge> */}
               </IconButton>
             </Tooltip>
             <Avatar

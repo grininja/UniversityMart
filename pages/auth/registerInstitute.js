@@ -107,6 +107,7 @@ const Page = () => {
                   helperText={formik.touched.name && formik.errors.name}
                   label="Name"
                   name="name"
+                  required
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
                   value={formik.values.name}
@@ -118,6 +119,7 @@ const Page = () => {
                   helperText={formik.touched.email && formik.errors.email}
                   label="Email Address"
                   name="email"
+                  required
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
                   type="email"
@@ -174,6 +176,7 @@ const Page = () => {
                   helperText={formik.touched.password && formik.errors.password}
                   label="Password"
                   name="password"
+                  required
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
                   type="password"

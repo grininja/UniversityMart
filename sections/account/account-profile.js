@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Avatar,
   Box,
@@ -6,64 +7,66 @@ import {
   CardActions,
   CardContent,
   Divider,
-  Typography
-} from '@mui/material';
-
-const user = {
-  avatar: '/assets/avatars/avatar-anika-visser.png',
-  city: 'Los Angeles',
-  country: 'USA',
-  jobTitle: 'Senior Developer',
-  name: 'Anika Visser',
-  timezone: 'GTM-7'
+  Typography,
+} from "@mui/material";
+import { useState } from "react";
+import apiCall from "@/helper/apiCall";
+export const AccountProfile = ({ InstituteId }) => {
+  const [file, setFile] = useState("");
+  const [downloadUri, setDownloadUri] = useState("");
+  return (
+    <Card>
+      <CardContent>
+        <Box
+          sx={{
+            alignItems: "center",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <Button component="label">
+            <Avatar
+              src={user.downloadUri}
+              sx={{
+                height: 80,
+                mb: 2,
+                width: 80,
+              }}
+            />
+            <input
+              type="file"
+              hidden
+              onChange={(e) => setFile(e.target.files[0])}
+              id="select-image"
+            />
+          </Button>
+          {file && file.name !== null && <Typography>{file.name}</Typography>}
+        </Box>
+      </CardContent>
+      <Divider />
+      <CardActions>
+        <Button
+          fullWidth
+          variant="text"
+          type="submit"
+          onClick={async () => {
+            const downloadUri = await UploadFile(file, "Institute", "Profile");
+            alert("Image Upload Success");
+            setDownloadUri(downloadUri);
+            const updateUri = await apiCall(
+              `${process.env.BASE_URL}/api/institute/uploadPhoto?InstituteId=${InstituteId}&url=${downloadUri}`,
+              "GET",
+              {},
+              null
+            );
+            alert(updateUri.data.message);
+          }}
+        >
+          Upload picture
+        </Button>
+      </CardActions>
+    </Card>
+  );
 };
 
-export const AccountProfile = () => (
-  <Card>
-    <CardContent>
-      <Box
-        sx={{
-          alignItems: 'center',
-          display: 'flex',
-          flexDirection: 'column'
-        }}
-      >
-        <Avatar
-          src={user.avatar}
-          sx={{
-            height: 80,
-            mb: 2,
-            width: 80
-          }}
-        />
-        <Typography
-          gutterBottom
-          variant="h5"
-        >
-          {user.name}
-        </Typography>
-        <Typography
-          color="text.secondary"
-          variant="body2"
-        >
-          {user.city} {user.country}
-        </Typography>
-        <Typography
-          color="text.secondary"
-          variant="body2"
-        >
-          {user.timezone}
-        </Typography>
-      </Box>
-    </CardContent>
-    <Divider />
-    <CardActions>
-      <Button
-        fullWidth
-        variant="text"
-      >
-        Upload picture
-      </Button>
-    </CardActions>
-  </Card>
-);
+// export default AccountProfile;

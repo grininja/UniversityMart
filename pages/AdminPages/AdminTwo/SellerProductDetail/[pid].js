@@ -26,10 +26,11 @@ import {
   CardActionArea,
   Button,
   Fab,
+  CardActions,
   ListItemAvatar,
   ButtonGroup,
 } from "@mui/material";
-
+import Image from "next/image";
 const ChatBox = ({ ChatBox }) => {
   return (
     <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
@@ -80,9 +81,9 @@ const validationSchema = Yup.object({
     .min(1, "Quantity must be greater than 0 ")
     .required("Quantity is required"),
 });
-
 const ContactSeller = ({ InstituteId, Product, AdminTwoId }) => {
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const formik = useFormik({
     initialValues: {
       queryText: "",
@@ -90,84 +91,85 @@ const ContactSeller = ({ InstituteId, Product, AdminTwoId }) => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      console.log(values);
-      const result = await apiCall(
-        `${process.env.BASE_URL}/api/chatApi/createChatSession`,
-        "POST",
-        {
-          ItemId: Product._id,
-          Quantity: values.queryQuantity,
-          BuyerRequest: values.queryText,
-          SellerId: Product.sellerDetail._id,
-          BuyerId: AdminTwoId,
-        },
-        null
-      );
-      alert(result.data.message);
-      router.reload();
+      setIsSubmitting(true);
+      try {
+        const result = await apiCall(
+          `${process.env.BASE_URL}/api/chatApi/createChatSession`,
+          "POST",
+          {
+            ItemId: Product._id,
+            Quantity: values.queryQuantity,
+            BuyerRequest: values.queryText,
+            SellerId: Product.sellerDetail._id,
+            BuyerId: AdminTwoId,
+          },
+          null
+        );
+        alert(result.data.message);
+        router.reload();
+      } catch (error) {
+        alert("An error occurred. Please try again later.");
+      }
+      setIsSubmitting(false);
     },
   });
 
   return (
-    <>
-      <Box
-        sx={{
-          my: 8,
-          mx: 4,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Typography component="h1" variant="h5">
-          Submit Query
-        </Typography>
-        <Box
-          component="form"
-          noValidate
-          onSubmit={formik.handleSubmit}
-          sx={{ mt: 1 }}
+    <Box
+      sx={{
+        my: 8,
+        mx: "auto",
+        maxWidth: "600px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <Typography component="h1" variant="h5" sx={{ mb: 4 }}>
+        Submit Query
+      </Typography>
+      <Box component="form" noValidate onSubmit={formik.handleSubmit}>
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          id="queryText"
+          label="Write your question"
+          value={formik.values.queryText}
+          onChange={formik.handleChange}
+          error={formik.touched.queryText && Boolean(formik.errors.queryText)}
+          helperText={formik.touched.queryText && formik.errors.queryText}
+          sx={{ mb: 2 }}
+        />
+
+        <TextField
+          margin="normal"
+          required
+          fullWidth
+          id="queryQuantity"
+          label="Enter product quantity you want to purchase"
+          value={formik.values.queryQuantity}
+          onChange={formik.handleChange}
+          error={
+            formik.touched.queryQuantity && Boolean(formik.errors.queryQuantity)
+          }
+          helperText={
+            formik.touched.queryQuantity && formik.errors.queryQuantity
+          }
+          sx={{ mb: 3 }}
+        />
+
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          disabled={isSubmitting}
+          sx={{ mb: 2 }}
         >
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="queryText"
-            label="Write your question"
-            value={formik.values.queryText}
-            onChange={formik.handleChange}
-            error={formik.touched.queryText && Boolean(formik.errors.queryText)}
-            helperText={formik.touched.queryText && formik.errors.queryText}
-          />
-
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="queryQuantity"
-            label="Enter product quantity you want to purchase"
-            value={formik.values.queryQuantity}
-            onChange={formik.handleChange}
-            error={
-              formik.touched.queryQuantity &&
-              Boolean(formik.errors.queryQuantity)
-            }
-            helperText={
-              formik.touched.queryQuantity && formik.errors.queryQuantity
-            }
-          />
-
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Submit
-          </Button>
-        </Box>
+          Submit
+        </Button>
       </Box>
-    </>
+    </Box>
   );
 };
 
@@ -175,43 +177,47 @@ const ProductDesc = (props) => {
   const { InstituteId, Product, AdminTwoId, Chats } = props;
   const spacing = 0.5;
   const [counter, setCounter] = useState(0);
+
   return (
-    <div>
+    <Box sx={{ mt: 2 }}>
       {Product && (
-        <Grid sx={{ flexGrow: 1 }} container spacing={2}>
-          <Grid item xs={6}>
-            <CardActionArea>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  pb: 3,
-                }}
-              >
-                <CardMedia
-                  component="img"
-                  variant
-                  image={Product.productImageUrl}
-                  alt="Product Image"
-                />
-              </Box>
-              <CardContent>
-                <Typography align="center" gutterBottom variant="h5">
-                  {Product.name}
-                </Typography>
-                {/* <br></br> */}
-                <Typography align="center" variant="body1">
-                  {Product.description}
-                </Typography>
-                {/* <br></br> */}
-                <Typography
-                  color="text.secondary"
-                  align="center"
-                  variant="body1"
-                >
-                  Price: {Product.price}
-                </Typography>
-              </CardContent>
+        <Grid container spacing={2}>
+          <Grid item xs={6} md={6}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                pb: 3,
+              }}
+            >
+              {/* <CardMedia
+                component="img"
+                variant="square"
+                height="350"
+                image={Product.productImageUrl}
+                alt="Product Image"
+                
+              /> */}
+              <Image
+                src={Product.productImageUrl}
+                width={300}
+                height={300}
+                alt="Product Image"
+                // fill=""
+              />
+            </Box>
+            <CardContent>
+              <Typography align="center" gutterBottom variant="h5">
+                {Product.name}
+              </Typography>
+              <Typography align="center" variant="body1">
+                {Product.description}
+              </Typography>
+              <Typography color="text.secondary" align="center" variant="body1">
+                Price: {Product.price}
+              </Typography>
+            </CardContent>
+            <CardActions sx={{ display: "flex", justifyContent: "center" }}>
               <ButtonGroup
                 size="small"
                 aria-label="small outlined button group"
@@ -234,9 +240,16 @@ const ProductDesc = (props) => {
                   </Button>
                 )}
               </ButtonGroup>
+            </CardActions>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                pt: 2,
+              }}
+            >
               <Button
                 type="submit"
-                fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
                 color="success"
@@ -262,35 +275,9 @@ const ProductDesc = (props) => {
               >
                 Purchase
               </Button>
-            </CardActionArea>
-            <CardActionArea>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  pb: 3,
-                }}
-              ></Box>
-              <CardContent>
-                <Typography align="center" gutterBottom variant="h5">
-                  Seller: {Product.sellerDetail.name}
-                </Typography>
-                <br></br>
-                <Typography align="center" variant="body1">
-                  Seller Email: {Product.sellerDetail.email}
-                </Typography>
-                <br></br>
-                <Typography
-                  color="text.secondary"
-                  align="center"
-                  variant="body1"
-                >
-                  Seller Phone: {Product.sellerDetail.phone}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
+            </Box>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={6} md={6}>
             <Stack>
               <ContactSeller
                 InstituteId={InstituteId}
@@ -299,10 +286,25 @@ const ProductDesc = (props) => {
               />
               <ChatBox ChatBox={Chats} />
             </Stack>
+            <CardContent>
+              <Typography gutterBottom variant="h6">
+                Seller Information
+              </Typography>
+              <Divider sx={{ mb: 2 }} />
+              <Typography variant="h6" gutterBottom>
+                {Product.sellerDetail.name}
+              </Typography>
+              <Typography variant="subtitle1" gutterBottom>
+                {Product.sellerDetail.email}
+              </Typography>
+              <Typography variant="subtitle1">
+                {Product.sellerDetail.phone}
+              </Typography>
+            </CardContent>
           </Grid>
         </Grid>
       )}
-    </div>
+    </Box>
   );
 };
 

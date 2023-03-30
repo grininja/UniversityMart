@@ -29,7 +29,7 @@ export const InstituteSchema = new Schema({
   //   zipcode: { type: String, required: true },
   //   country: { type: String, required: true },
   // },
-  address: { type: String, required: true},
+  address: { type: String, required: true },
   admin1: [
     {
       type: Schema.Types.ObjectId,
@@ -55,6 +55,10 @@ export const InstituteSchema = new Schema({
       required: true,
     },
   ],
+  logoUrl: {
+    type: String,
+    default: "",
+  },
 });
 
 const Institute =

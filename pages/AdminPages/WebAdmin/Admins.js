@@ -177,7 +177,7 @@ export async function getServerSideProps(context) {
       null
     );
     const allAdminsDetails = await apiCall(
-      `${process.env.BASE_URL}/api/institute/adminHandler/getAllAdminOneWithDetail`,
+      `${process.env.BASE_URL}/api/institute/adminHandler/getAllAdminOneWithDetail?InstituteId=${findInstutitute.data.message}`,
       "GET",
       {},
       null

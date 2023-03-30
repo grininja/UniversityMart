@@ -7,8 +7,9 @@ const handler = async (req, res) => {
   try {
     if (req.method === "GET") {
       await dbConnect();
-      const allAdminOne = await AdminOneModel.find();
-      const allAdminTwo = await AdminTwoModel.find();
+      const { InstituteId } = req.query;
+      const allAdminOne = await AdminOneModel.find({ Institute: InstituteId });
+      const allAdminTwo = await AdminTwoModel.find({ Institute: InstituteId });
       const adminOneDetails = [];
       const adminTwoDetails = [];
       // const adminThreeDetails = [];

@@ -65,7 +65,7 @@ export const TopNav = (props) => {
             <Tooltip title="Search">
               <IconButton>
                 <SvgIcon fontSize="small">
-                  <MagnifyingGlassIcon />
+                  {/* <MagnifyingGlassIcon /> */}
                 </SvgIcon>
               </IconButton>
             </Tooltip>
