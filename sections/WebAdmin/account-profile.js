@@ -20,10 +20,12 @@ export const AccountProfile = ({ InstituteId, imageUrl }) => {
   const [file, setFile] = useState("");
   const router = useRouter();
   const [downloadUri, setDownloadUri] = useState(imageUrl);
-  var originalUrl = "";
+  var decodedUrlImage = "";
   if (imageUrl !== "") {
-    const decoded = atob(imageUrl);
-    originalUrl = decoded;
+    let bufferObj = Buffer.from(base64string, "base64");
+
+    // Decoding base64 into String
+    decodedUrlImage = bufferObj.toString("utf8");
   }
   return (
     <Card>
@@ -36,19 +38,14 @@ export const AccountProfile = ({ InstituteId, imageUrl }) => {
           }}
         >
           <Button component="label">
-            {/* {downloadUri} */}
-            <Image src={originalUrl} alt="Logo" height={80} width={80} mb={2} />
+            <Image
+              src={decodedUrlImage}
+              alt="Logo"
+              height={80}
+              width={80}
+              mb={2}
+            />
 
-            {/* <CardMedia
-              sx={{
-                height: 80,
-                width: 80,
-              }}
-              component="img"
-              variant
-              image={downloadUri}
-              alt="Product Image"
-            /> */}
             <input
               type="file"
               hidden
@@ -68,10 +65,11 @@ export const AccountProfile = ({ InstituteId, imageUrl }) => {
           onClick={async () => {
             const downloadUri = await UploadFile(file, "Institute", "Profile");
             setDownloadUri(downloadUri);
-            // console.log(downloadUri);
-            const encodedString = btoa(downloadUri);
+            console.log(downloadUri);
+            let bufferObj = Buffer.from(downloadUri, "utf8");
+            let base64String = bufferObj.toString("base64");
             const updateUri = await apiCall(
-              `${process.env.BASE_URL}/api/institute/uploadPhoto?InstituteId=${InstituteId}&url=${encodedString}`,
+              `${process.env.BASE_URL}/api/institute/uploadPhoto?InstituteId=${InstituteId}&url=${base64String}`,
               "GET",
               {},
               null
