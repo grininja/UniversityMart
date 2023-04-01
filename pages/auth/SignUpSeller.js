@@ -170,7 +170,7 @@ const SignUpSeller = () => {
             <Grid container>
               <Grid item xs></Grid>
               <Grid item>
-                <Link href="/authentication/loginSeller" variant="body2">
+                <Link href="/auth/loginSeller" variant="body2">
                   {"have an account? Sign In"}
                 </Link>
               </Grid>

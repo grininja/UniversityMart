@@ -177,7 +177,13 @@ const ProductDesc = (props) => {
   const { InstituteId, Product, AdminTwoId, Chats } = props;
   const spacing = 0.5;
   const [counter, setCounter] = useState(0);
+  var decodedUrlImage = "";
+  if (Product.productImageUrl !== "") {
+    let bufferObj = Buffer.from(Product.productImageUrl, "base64");
 
+    // Decoding base64 into String
+    decodedUrlImage = bufferObj.toString("utf8");
+  }
   return (
     <Box sx={{ mt: 2 }}>
       {Product && (
@@ -199,7 +205,7 @@ const ProductDesc = (props) => {
                 
               /> */}
               <Image
-                src={Product.productImageUrl}
+                src={decodedUrlImage}
                 width={300}
                 height={300}
                 alt="Product Image"

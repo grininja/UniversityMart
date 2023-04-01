@@ -18,13 +18,14 @@ import {
   Button,
 } from "@mui/material";
 import apiCall from "@/helper/apiCall";
+import Image from "next/image";
 
 export const ProductCard = (props) => {
   const { item, SellerId } = props;
   const router = useRouter();
   var decodedUrlImage = "";
   if (item.productImageUrl !== "") {
-    let bufferObj = Buffer.from(imageUrl, "base64");
+    let bufferObj = Buffer.from(item.productImageUrl, "base64");
 
     // Decoding base64 into String
     decodedUrlImage = bufferObj.toString("utf8");
@@ -45,7 +46,12 @@ export const ProductCard = (props) => {
             pb: 3,
           }}
         >
-          <Avatar src={decodedUrlImage} variant="square" />
+          <Image
+            src={decodedUrlImage}
+            width={100}
+            height={100}
+            alt="Product Image"
+          />
         </Box>
         <Typography align="center" gutterBottom variant="h5">
           {item.name}

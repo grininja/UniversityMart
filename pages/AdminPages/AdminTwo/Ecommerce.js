@@ -24,6 +24,8 @@ import {
   CardMedia,
 } from "@mui/material";
 import { Layout as AdminTwoDashboard } from "../../../layouts/AdminTwoDashboard/layout";
+import Image from "next/image";
+
 const categoriesList = [];
 
 function intersection(setA, setB) {
@@ -123,13 +125,22 @@ for (var i in categories) {
   }
 }
 function MediaCard({ product }) {
+  var decodedUrlImage = "";
+  if (product.productImageUrl !== "") {
+    let bufferObj = Buffer.from(product.productImageUrl, "base64");
+
+    // Decoding base64 into String
+    decodedUrlImage = bufferObj.toString("utf8");
+  }
+
   return (
     <Card sx={{ maxWidth: 345 }}>
-      <CardMedia
+      <Image height={50} src={decodedUrlImage} width={50} alt="product image" />
+      {/* <CardMedia
         sx={{ height: 50 }}
-        image={product.productImageUrl}
-        title="green iguana"
-      />
+        image={decodedUrlImage}
+        title="product image"
+      /> */}
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {product.name}
