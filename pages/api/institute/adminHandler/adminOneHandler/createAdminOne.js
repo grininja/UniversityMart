@@ -2,6 +2,7 @@ import dbConnect from "@/lib/mongoDb";
 import adminOne from "@/models/adminOne";
 import User from "@/models/User";
 import Institutemodel from "@/models/Institute";
+import checkForRoles from "@/helper/checkSingleRole";
 
 const handler = async (req, res) => {
   try {
@@ -9,8 +10,14 @@ const handler = async (req, res) => {
       await dbConnect();
       const { userId, instituteId, departMent } = req.body;
       console.log(userId, instituteId, departMent);
-      const findUser = await User.findOne({_id:userId});
+      const findUser = await User.findOne({ _id: userId });
       if (findUser !== null && findUser.Institute.toString() === instituteId) {
+        const checkRole = await checkForRoles(findUser._id,findUser.email);
+        if (checkRole === false) {
+          return res
+            .status(200)
+            .send({ message: "Already assigned some role" });
+        }
         const isAlreadyAdmin = await Institutemodel.find({ admin1: userId });
         if (isAlreadyAdmin !== null && isAlreadyAdmin.length > 0) {
           return res.status(200).send({ message: "Already admin" });

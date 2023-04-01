@@ -1,9 +1,10 @@
 import dbConnect from "@/lib/mongoDb";
 import SellerModel from "@/models/Seller";
-
+import checkForRoles from "@/helper/checkSingleRole";
 const handler = async (req, res) => {
   try {
     if (req.method === "POST") {
+      await dbConnect();
       const { EmailId, Phone, Gstin, Address, Name } = req.body;
       const checkEmail = await SellerModel.findOne({ email: EmailId });
       if (checkEmail !== null) {
@@ -16,6 +17,10 @@ const handler = async (req, res) => {
       const checkGstin = await SellerModel.findOne({ gstin: Gstin });
       if (checkGstin !== null) {
         return res.status(200).send({ message: "Seller already exists" });
+      }
+      const checkRoles = await checkForRoles(checkEmail._id, EmailId);
+      if (checkRoles === false) {
+        return res.status(200).send({ message: "Already some roles assigned" });
       }
       const newSeller = new SellerModel({
         name: Name,

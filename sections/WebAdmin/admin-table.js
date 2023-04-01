@@ -20,7 +20,7 @@ import apiCall from "@/helper/apiCall";
 import TrashIcon from "@heroicons/react/24/solid/TrashIcon";
 import { Scrollbar } from "../../components/scrollbar";
 import { getInitials } from "../../utils/get-initials";
-
+import { useRouter } from "next/router";
 export const AdminTable = (props) => {
   const {
     count = 0,
@@ -39,7 +39,7 @@ export const AdminTable = (props) => {
 
   const selectedSome = selected.length > 0 && selected.length < items.length;
   const selectedAll = items.length > 0 && selected.length === items.length;
-
+  const router=useRouter();
   return (
     <Card>
       <Scrollbar>
@@ -162,16 +162,16 @@ export const AdminTable = (props) => {
   );
 };
 
-AdminTable.propTypes = {
-  count: PropTypes.number,
-  items: PropTypes.array,
-  onDeselectAll: PropTypes.func,
-  onDeselectOne: PropTypes.func,
-  onPageChange: PropTypes.func,
-  onRowsPerPageChange: PropTypes.func,
-  onSelectAll: PropTypes.func,
-  onSelectOne: PropTypes.func,
-  page: PropTypes.number,
-  rowsPerPage: PropTypes.number,
-  selected: PropTypes.array,
-};
+// AdminTable.propTypes = {
+//   count: PropTypes.number,
+//   items: PropTypes.array,
+//   onDeselectAll: PropTypes.func,
+//   onDeselectOne: PropTypes.func,
+//   onPageChange: PropTypes.func,
+//   onRowsPerPageChange: PropTypes.func,
+//   onSelectAll: PropTypes.func,
+//   onSelectOne: PropTypes.func,
+//   page: PropTypes.number,
+//   rowsPerPage: PropTypes.number,
+//   selected: PropTypes.array,
+// };

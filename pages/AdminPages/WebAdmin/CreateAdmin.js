@@ -53,7 +53,7 @@ const createAdminFunction = async (
     null
   );
   const userId = user.data.userId;
-  console.log(userId);
+
   if (role === "admin1") {
     const res = await apiCall(
       `${process.env.BASE_URL}/api/institute/adminHandler/adminOneHandler/createAdminOne`,
@@ -85,20 +85,23 @@ const createAdminFunction = async (
 const CreateAdmin = ({ instituteName, instituteId, departmentList }) => {
   const router = useRouter();
   const [roleValue, setRoleValue] = useState("");
+  const [categoryinputValue, setCategoryInputValue] = useState("");
   const [emailValue, setEmailValue] = useState("");
   const [departMentValue, setDepartMentValue] = useState("");
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(roleValue, departMentValue);
+    // console.log("hello")
+    // console.log(roleValue, departMentValue);
     if (roleValue === "" || emailValue === "") {
       alert("Please enter your email address and role");
       return;
     }
+
     await createAdminFunction(
       emailValue,
       instituteId,
       roleValue,
-      departMentValue,
+      departMentValue._id,
       router
     );
   };
@@ -148,9 +151,14 @@ const CreateAdmin = ({ instituteName, instituteId, departmentList }) => {
                 <Autocomplete
                   value={departMentValue}
                   onChange={(e, value) => {
-                    setDepartMentValue(value._id);
+                    setDepartMentValue(value);
                   }}
+                  onInputChange={(event, newInputValue) => {
+                    setCategoryInputValue(newInputValue);
+                  }}
+                  inputValue={categoryinputValue}
                   required
+                  name="department"
                   id="department"
                   options={departmentList}
                   sx={{ width: 300 }}
