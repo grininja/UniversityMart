@@ -13,7 +13,7 @@ const handler = async (req, res) => {
       const hash = bcrypt.hashSync(password, salt);
       // console.log(password)
       const Institute = await InstitueModel.findOne({ email: InstituteEmail });
-    //   console.log(Institute)
+      //   console.log(Institute)
       if (Institute !== null) {
         await InstitueModel.findOneAndUpdate(
           { _id: Institute._id },
@@ -22,7 +22,7 @@ const handler = async (req, res) => {
           }
         );
         await SendMail(
-          "raishubham675@gmail.com",
+          InstituteEmail,
           "New Password",
           `Your New Password: ${password}`
         );
