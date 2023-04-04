@@ -1,8 +1,6 @@
 import {
-  Avatar,
   Box,
   Card,
-  Checkbox,
   Stack,
   Table,
   TableBody,
@@ -11,13 +9,8 @@ import {
   TablePagination,
   TableRow,
   Typography,
-  Button,
-  SvgIcon,
 } from "@mui/material";
-import apiCall from "@/helper/apiCall";
-import TrashIcon from "@heroicons/react/24/solid/TrashIcon";
 import { Scrollbar } from "../../components/scrollbar";
-import { getInitials } from "../../utils/get-initials";
 import Link from "next/link";
 import { SeverityPill } from "../../components/severity-pill";
 
@@ -74,13 +67,13 @@ export const AllOrderTable = (props) => {
                             direction="row"
                             spacing={2}
                           >
-                            <Typography variant="subtitle2">
-                              {/* <Link
-                                href={`/AdminPages/AdminTwo/OrderRequestDetails/${item._id}`}
-                              > */}
-                              {item.OrderId}
-                              {/* </Link> */}
-                            </Typography>
+                            <Link
+                              href={`/AdminPages/AdminTwo/SellerOrderDetails/${item.OrderId}`}
+                            >
+                              <Typography variant="subtitle2">
+                                {item.OrderId}
+                              </Typography>
+                            </Link>
                           </Stack>
                         </TableCell>
                         <TableCell>{item.productName}</TableCell>
