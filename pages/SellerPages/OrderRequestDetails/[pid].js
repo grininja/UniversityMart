@@ -33,6 +33,13 @@ const OrderDetails = ({ sellerId, OrderDescription }) => {
   const [remarksValue, setRemarksValue] = useState("");
   const [tagValue, setTagValue] = useState("");
   const product = OrderDescription;
+  var decodedUrlImage = "";
+  if (product && product.OrderDetail.photoUrl !== "") {
+    let bufferObj = Buffer.from(product.OrderDetail.photoUrl, "base64");
+
+    // Decoding base64 into String
+    decodedUrlImage = bufferObj.toString("utf8");
+  }
   return (
     // <Stack direction="row" justifyContent="center">
     <Box
@@ -108,7 +115,7 @@ const OrderDetails = ({ sellerId, OrderDescription }) => {
               {product.OrderDetail.photoUrl ? (
                 <Box
                   component="img"
-                  src={product.OrderDetail.photoUrl}
+                  src={decodedUrlImage}
                   sx={{
                     borderRadius: 1,
                     height: 48,

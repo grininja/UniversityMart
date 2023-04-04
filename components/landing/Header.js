@@ -19,7 +19,7 @@ import {
   Stack,
   SvgIcon,
 } from "@mui/material";
-import {  signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 // import Image from "next/image";
 const Header = () => {
