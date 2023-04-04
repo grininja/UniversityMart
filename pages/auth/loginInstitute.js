@@ -192,7 +192,13 @@ export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
   console.log(session);
   try {
-    if (session !== null) {
+    if (
+      session !== null &&
+      session.user !== null &&
+      session.user !== undefined &&
+      session.user.name !== null &&
+      session.user.name !== undefined
+    ) {
       const findInstutitute = await apiCall(
         `${process.env.BASE_URL}/api/institute/getInstituteByName?name=${session.user.name}`,
         "GET",

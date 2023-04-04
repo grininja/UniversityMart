@@ -12,13 +12,20 @@ import {
   Box,
   Divider,
   MenuItem,
+  Button,
   MenuList,
   Popover,
   Typography,
   Stack,
+  SvgIcon,
 } from "@mui/material";
+import {  signOut, useSession } from "next-auth/react";
+
 // import Image from "next/image";
 const Header = () => {
+  const { status } = useSession({
+    required: false,
+  });
   const [isOpen, setIsOpen] = useState(false);
   const [sticky, setSticky] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
@@ -78,6 +85,17 @@ const Header = () => {
             <NavItem>
               <NavLink href="/auth/loginUser">Login Admins</NavLink>
             </NavItem>
+            {status === "authenticated" && (
+              <Button
+                onClick={() => {
+                  signOut({
+                    callbackUrl: `${process.env.BASE_URL}`,
+                  });
+                }}
+              >
+                SignOut
+              </Button>
+            )}
           </Nav>
         </Nav>
       </Collapse>
