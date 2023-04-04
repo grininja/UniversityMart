@@ -1,32 +1,13 @@
 import React, { useState } from "react";
 import apiCall from "@/helper/apiCall";
-import EllipsisVerticalIcon from "@heroicons/react/24/solid/EllipsisVerticalIcon";
 import { Layout as AdminTwoDashboard } from "../../../../layouts/AdminTwoDashboard/layout";
 import { authOptions } from "../../../api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
-import ArrowPathIcon from "@heroicons/react/24/solid/ArrowPathIcon";
 import Image from "next/image";
 import {
-  Stack,
   Box,
-  InputLabel,
-  MenuItem,
-  Button,
-  Card,
-  CardMedia,
-  TextField,
-  Divider,
-  IconButton,
-  Select,
-  List,
-  ListItem,
-  ListItemAvatar,
-  CardActions,
-  SvgIcon,
-  Container,
   Typography,
   Unstable_Grid2 as Grid,
-  CardContent,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
@@ -212,7 +193,7 @@ const OrderDetails = ({ Order, AdminTwoId, InstituteId }) => {
         </Grid>
         <Box sx={{ marginTop: "16px" }}>
           <Image
-            src={decodedUrlImage || "/placeholder.png"}
+            src={decodedUrlImage || ""}
             alt={product.product_detail.name}
             width={300}
             height={300}
@@ -231,7 +212,6 @@ export default OrderDetails;
 
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
-  //   console.log(session);
   if (session === null) {
     return {
       redirect: {
