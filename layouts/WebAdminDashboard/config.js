@@ -7,7 +7,7 @@ import UserPlusIcon from "@heroicons/react/24/solid/UserPlusIcon";
 import UsersIcon from "@heroicons/react/24/solid/UsersIcon";
 import XCircleIcon from "@heroicons/react/24/solid/XCircleIcon";
 import { SvgIcon } from "@mui/material";
-
+import AcademicCapIcon from "@heroicons/react/24/solid/AcademicCapIcon";
 export const items = [
   {
     title: "Home",
@@ -32,7 +32,7 @@ export const items = [
     path: "/AdminPages/WebAdmin/Departments",
     icon: (
       <SvgIcon fontSize="small">
-        <ShoppingBagIcon />
+        <AcademicCapIcon />
       </SvgIcon>
     ),
   },

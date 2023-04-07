@@ -4,6 +4,7 @@ import Head from "next/head";
 // import ArrowDownOnSquareIcon from "@heroicons/react/24/solid/ArrowDownOnSquareIcon";
 // import ArrowUpOnSquareIcon from "@heroicons/react/24/solid/ArrowUpOnSquareIcon";
 // import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
+import SendIcon from "@mui/icons-material/Send";
 import {
   Box,
   Button,
@@ -35,7 +36,8 @@ const Page = (props) => {
       router.push("/auth/loginUser");
     },
   });
-  const { SellerId, AllOrders } = props;
+  const { SellerId, AllOrders, sellerDetails,isSellerVerified } = props;
+  // alert(isSellerVerified)
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [checked, setChecked] = useState(false);
@@ -68,7 +70,29 @@ const Page = (props) => {
             </Stack>
             <Stack justifyContent="space-between" direction="row">
               <Card sx={{ p: 2 }}>
-                <OutlinedInput
+                <Button
+                  variant="contained"
+                  endIcon={<SendIcon />}
+                  onClick={async () => {
+                    const res = await apiCall(
+                      `${process.env.BASE_URL}/api/payments/createAccount`,
+                      "POST",
+                      {
+                        sellerEmail: sellerDetails.email,
+                        sellerId: sellerDetails._id,
+                        sellerName: sellerDetails.name,
+                      },
+                      null
+                    );
+                    alert(res.data.message);
+                    if (res.data.url !== "") {
+                      router.redirect(res.data.url);
+                    }
+                  }}
+                >
+                  Register on payment gateway
+                </Button>
+                {/* <OutlinedInput
                   defaultValue=""
                   fullWidth
                   placeholder="Search Order Requests"
@@ -76,11 +100,13 @@ const Page = (props) => {
                     <InputAdornment position="start">
                       <SvgIcon color="action" fontSize="small">
                         <MagnifyingGlassIcon />
+                        
+                      
                       </SvgIcon>
                     </InputAdornment>
                   }
                   sx={{ maxWidth: 500 }}
-                />
+                /> */}
               </Card>
               <Stack justifyContent="center">
                 <Typography>Show pending only</Typography>
@@ -104,6 +130,7 @@ const Page = (props) => {
                 sellerId={SellerId}
                 key={AllOrders[0]._id}
                 onlyPending={checked}
+                sellerVerified={isSellerVerified}
               />
             )}
           </Stack>
@@ -155,10 +182,24 @@ export async function getServerSideProps(context) {
       `${process.env.BASE_URL}/api/seller/orders/getAllOrders?SellerId=${getSeller.data.message._id}`
     );
 
+    var isVerifiedSeller = false;
+    if (getSeller.data.message.stripeId !== "") {
+      const sellerStatus = await apiCall(
+        `${process.env.BASE_URL}/api/payments/checkIfPaymentEnable?accountID=${getSeller.data.message.stripeId}`,
+        "GET",
+        {},
+        null
+      );
+      if(sellerStatus.data.message===true){
+        isVerifiedSeller=true;
+      }
+    }
     return {
       props: {
         SellerId: getSeller.data.message._id,
         AllOrders: getAllOrders.data.message,
+        sellerDetails: getSeller.data.message,
+        isSellerVerified:isVerifiedSeller
       },
     };
   } catch (e) {

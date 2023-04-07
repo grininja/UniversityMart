@@ -13,7 +13,9 @@ import {
   Typography,
   Button,
   SvgIcon,
+  Switch,
 } from "@mui/material";
+import { useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
 import apiCall from "@/helper/apiCall";
 import TrashIcon from "@heroicons/react/24/solid/TrashIcon";
@@ -39,10 +41,12 @@ export const AllOrderTable = (props) => {
     rowsPerPage = 0,
     selected = [],
     onlyPending,
+    sellerVerified,
   } = props;
-  console.log(items);
+  // console.log(items);
   const selectedSome = selected.length > 0 && selected.length < items.length;
   const selectedAll = items.length > 0 && selected.length === items.length;
+  const [checked, setChecked] = useState(false);
 
   return (
     <Card>
@@ -55,6 +59,7 @@ export const AllOrderTable = (props) => {
                 <TableCell>Status</TableCell>
                 <TableCell>See All Buyer Query</TableCell>
                 <TableCell>See Details</TableCell>
+                {sellerVerified && <TableCell>Activate Payment</TableCell>}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -102,7 +107,28 @@ export const AllOrderTable = (props) => {
                             Click
                           </Button>
                         </TableCell>
-                        {/* <TableCell>{item.orderTotal}</TableCell> */}
+
+                        {sellerVerified && (
+                          <TableCell>
+                            <Stack justifyContent="center">
+                              {/* <Typography>Show pending only</Typography> */}
+                              <Switch
+                                checked={checked}
+                                onChange={async (event) => {
+                                  setChecked(event.target.checked);
+                                  const result = await apiCall(
+                                    `${process.env.BASE_URL}/api/payments/updatePaymentStatusOfOrder?OrderId=${item._id}`,
+                                    "GET",
+                                    {},
+                                    null
+                                  );
+                                  console.log(result.data.message);
+                                }}
+                                inputProps={{ "aria-label": "controlled" }}
+                              />
+                            </Stack>
+                          </TableCell>
+                        )}
                       </TableRow>
                     )
                   );

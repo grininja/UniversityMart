@@ -4,6 +4,7 @@ import { Layout as AdminTwoDashboard } from "../../../layouts/AdminTwoDashboard/
 import { authOptions } from "../../api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 import apiCall from "@/helper/apiCall";
+import Image from "next/image";
 const Home = () => (
   <>
     <Head>
@@ -17,16 +18,22 @@ const Home = () => (
       }}
     >
       <Container maxWidth="xl">
-        <Grid container spacing={3}>
-          <Grid xs={12} sm={6} lg={3}></Grid>
+      <Image
+          src="/images/welcomeadmin2.svg"
+          layout="fill"
+          objectFit="contain"
+          alt="Follow us on Twitter"
+        />
+        {/* <Grid container spacing={3}> */}
+          {/* <Grid xs={12} sm={6} lg={3}></Grid>
           <Grid xs={12} sm={6} lg={3}></Grid>
           <Grid xs={12} sm={6} lg={3}></Grid>
           <Grid xs={12} sm={6} lg={3}></Grid>
           <Grid xs={12} lg={8}></Grid>
           <Grid xs={12} md={6} lg={4}></Grid>
           <Grid xs={12} md={6} lg={4}></Grid>
-          <Grid xs={12} md={12} lg={8}></Grid>
-        </Grid>
+          <Grid xs={12} md={12} lg={8}></Grid> */}
+        {/* </Grid> */}
       </Container>
     </Box>
   </>

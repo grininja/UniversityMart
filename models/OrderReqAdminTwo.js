@@ -27,12 +27,16 @@ const OrderRequestAdminTwoSchema = new Schema({
 
   RemarksSeller: {
     type: String,
-    default:"",
+    default: "",
   },
   Status: {
     type: String,
     default: "pending",
     index: true,
+  },
+  PaymentActivated: {
+    type: Boolean,
+    default: false,
   },
 });
 

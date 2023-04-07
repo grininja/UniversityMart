@@ -11,15 +11,16 @@ const handler = async (req, res) => {
 
       if (data.length) {
         for (let i = 0; i < data.length; i++) {
-          // if(data[i].charges_enabled===false){
-          //      await stripe.accounts.del(
-          //         data[i].id
-          //       );
-          // }
-          if (data[i].email === sellerEmail) {
+          if (data[i].charges_enabled === false) {
+            await stripe.accounts.del(data[i].id);
+          }
+          if (
+            data[i].email === sellerEmail &&
+            data[i].charges_enabled === true
+          ) {
             return res.json({
-              accountCreated: false,
-              error: "Account already exists.",
+              message: "account already exists",
+              url:""
             });
           }
         }

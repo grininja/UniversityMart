@@ -6,7 +6,7 @@ import { Box, Container, Unstable_Grid2 as Grid } from "@mui/material";
 import { Layout as SellerDashboard } from "../../layouts/SellerDashboard/layout";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-
+import Image from "next/image";
 const Home = (props) => {
   const router = useRouter();
   const { status } = useSession({
@@ -28,7 +28,13 @@ const Home = (props) => {
         }}
       >
         <Container maxWidth="xl">
-          <Grid container spacing={3}>
+          <Image
+            src="/images/welcomeseller.svg"
+            layout="fill"
+            objectFit="contain"
+            alt="Follow us on Twitter"
+          />
+          {/* <Grid container spacing={3}>
             <Grid xs={12} sm={6} lg={3}></Grid>
             <Grid xs={12} sm={6} lg={3}></Grid>
             <Grid xs={12} sm={6} lg={3}></Grid>
@@ -37,7 +43,7 @@ const Home = (props) => {
             <Grid xs={12} md={6} lg={4}></Grid>
             <Grid xs={12} md={6} lg={4}></Grid>
             <Grid xs={12} md={12} lg={8}></Grid>
-          </Grid>
+          </Grid> */}
         </Container>
       </Box>
     </div>
@@ -47,7 +53,6 @@ const Home = (props) => {
 Home.getLayout = (page) => <SellerDashboard>{page}</SellerDashboard>;
 
 export default Home;
-
 
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);

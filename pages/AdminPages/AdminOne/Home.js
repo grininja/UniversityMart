@@ -4,7 +4,8 @@ import { getServerSession } from "next-auth/next";
 import apiCall from "@/helper/apiCall";
 import { Box, Container, Unstable_Grid2 as Grid } from "@mui/material";
 import { Layout as AdminOneDashboard } from "../../../layouts/AdminOneDashboard/layout";
-
+import WelcomeImage from "../../../public/images/welcome.svg";
+import Image from "next/image";
 const Home = () => (
   <>
     <Head>
@@ -18,7 +19,13 @@ const Home = () => (
       }}
     >
       <Container maxWidth="xl">
-        <Grid container spacing={3}>
+        <Image
+          src="/images/welcomeadmin1.svg"
+          height={32}
+          width={32}
+          alt="Follow us on Twitter"
+        />
+        {/* <Grid container spacing={3}>
           <Grid xs={12} sm={6} lg={3}></Grid>
           <Grid xs={12} sm={6} lg={3}></Grid>
           <Grid xs={12} sm={6} lg={3}></Grid>
@@ -27,7 +34,7 @@ const Home = () => (
           <Grid xs={12} md={6} lg={4}></Grid>
           <Grid xs={12} md={6} lg={4}></Grid>
           <Grid xs={12} md={12} lg={8}></Grid>
-        </Grid>
+        </Grid> */}
       </Container>
     </Box>
   </>
