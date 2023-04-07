@@ -23,8 +23,13 @@ const SellerSchema = new Schema({
     type: String,
   },
   productListed: [{ type: Schema.Types.ObjectId, ref: "SellerProduct" }],
+  stripeId: {
+    type: String,
+    default: "",
+  },
 });
 
-const SellerModel = mongoose.models.Seller || mongoose.model("Seller", SellerSchema);
+const SellerModel =
+  mongoose.models.Seller || mongoose.model("Seller", SellerSchema);
 module.exports = SellerModel;
 // export default SellerModel;
