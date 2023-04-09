@@ -17,7 +17,7 @@ import Footer from "../components/landing/Footer";
 
 const Index = () => {
   return (
-    <Layout pageTitle="Landing Page Nextjs">
+    <Layout pageTitle="UniversityMart">
       <Header />
       <Hero />
       <Feature />

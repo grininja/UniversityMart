@@ -10,12 +10,12 @@ const handler = async (req, res) => {
         orderId,
         priceEachProduct,
         accountId,
-        customerEmail,
-        productDescription = "seller product description",
+        customerEmail = "",
+        productDescription = "",
         productQuantity,
       } = req.body;
 
-      const { data } = await stripe.products.list({stripeAccount: accountId});
+      const { data } = await stripe.products.list({ stripeAccount: accountId });
       var priceData = null;
       var product = null;
       var priceid = null;
@@ -49,7 +49,7 @@ const handler = async (req, res) => {
         );
         priceid = priceData.id;
       }
-      const priceList = await stripe.prices.list({stripeAccount: accountId});
+      const priceList = await stripe.prices.list({ stripeAccount: accountId });
       if (priceList.data.length > 0) {
         for (var i = 0; i < priceList.data.length; i++) {
           if (priceList.data[i].product === product.id) {
@@ -58,22 +58,24 @@ const handler = async (req, res) => {
         }
       }
       //   console.log(priceid);
-        // console.log(product);
-        // console.log(priceData);
+      // console.log(product);
+      // console.log(priceData);
 
-        const session = await stripe.checkout.sessions.create(
-          {
-            customer_email: customerEmail,
-            mode: "payment",
-            line_items: [{ price: priceid, quantity: productQuantity }],
-            success_url: `${process.env.BASE_URL}`,
-            cancel_url: `${process.env.BASE_URL}`,
-            metadata: { orderId },
-          },
-          { stripeAccount: accountId }
-        );
-      console.log(session);
-      return res.status(200).send({ message: "transfer complete" });
+      const session = await stripe.checkout.sessions.create(
+        {
+          customer_email: customerEmail,
+          mode: "payment",
+          line_items: [{ price: priceid, quantity: productQuantity }],
+          success_url: `${process.env.BASE_URL}`,
+          cancel_url: `${process.env.BASE_URL}`,
+          metadata: { orderId },
+        },
+        { stripeAccount: accountId }
+      );
+      // console.log(session.url);
+      return res
+        .status(200)
+        .send({ message: "transfer complete", url: session.url });
     } else {
       return res.status(404).send({ message: "Bad Request" });
     }

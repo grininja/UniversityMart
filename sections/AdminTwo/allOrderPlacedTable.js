@@ -9,11 +9,13 @@ import {
   TablePagination,
   TableRow,
   Typography,
+  Button,
 } from "@mui/material";
 import { Scrollbar } from "../../components/scrollbar";
 import Link from "next/link";
 import { SeverityPill } from "../../components/severity-pill";
-
+import apiCall from "@/helper/apiCall";
+import { useRouter } from "next/router";
 const statusMap = {
   pending: "warning",
   delivered: "success",
@@ -32,8 +34,9 @@ export const AllOrderTable = (props) => {
     rowsPerPage = 0,
     selected = [],
     onlyPending,
+    CustomerEmail,
   } = props;
-
+  const router = useRouter();
   const selectedSome = selected.length > 0 && selected.length < items.length;
   const selectedAll = items.length > 0 && selected.length === items.length;
 
@@ -46,10 +49,11 @@ export const AllOrderTable = (props) => {
               <TableRow>
                 <TableCell>OrderId</TableCell>
                 <TableCell>Product Name</TableCell>
-                <TableCell>Seller Name</TableCell>
+                {/* <TableCell>Seller Name</TableCell> */}
                 <TableCell>Status</TableCell>
                 <TableCell>Seller Remarks</TableCell>
                 <TableCell>Price</TableCell>
+                <TableCell>Payment</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -57,6 +61,8 @@ export const AllOrderTable = (props) => {
                 items.length > 0 &&
                 items.map((item) => {
                   const isSelected = selected.includes(item._id);
+                  // console.log(item.productDescription);
+
                   return (
                     ((onlyPending && item.OrderStatus === "pending") ||
                       onlyPending === false) && (
@@ -77,7 +83,7 @@ export const AllOrderTable = (props) => {
                           </Stack>
                         </TableCell>
                         <TableCell>{item.productName}</TableCell>
-                        <TableCell>{item.sellerName}</TableCell>
+                        {/* <TableCell>{item.sellerName}</TableCell> */}
                         <TableCell>
                           <SeverityPill color={statusMap[item.OrderStatus]}>
                             {item.OrderStatus}
@@ -85,6 +91,43 @@ export const AllOrderTable = (props) => {
                         </TableCell>
                         <TableCell>{item.OrderRemark}</TableCell>
                         <TableCell>{item.orderTotal}</TableCell>
+                        <TableCell>
+                          {item.paymentActivated && (
+                            <Button
+                              color="secondary"
+                              variant="outlined"
+                              onClick={async () => {
+                                const result = await apiCall(
+                                  `${process.env.BASE_URL}/api/payments/performPayment`,
+                                  "POST",
+                                  {
+                                    productId: item.productId,
+                                    productName: item.productName,
+                                    orderId: item.OrderId,
+                                    priceEachProduct: item.productPrice,
+                                    accountId: item.SellerPaymentId,
+                                    customerEmail: CustomerEmail,
+                                    productDescription: item.productDescription,
+                                    productQuantity: item.totalQuantity,
+                                  },
+                                  null
+                                );
+                                router.push(result.data.url);
+                              }}
+                            >
+                              Pay
+                            </Button>
+                          )}
+                          {item.paymentActivated === false && (
+                            <Button
+                              color="secondary"
+                              variant="contained"
+                              disabled
+                            >
+                              Pay
+                            </Button>
+                          )}
+                        </TableCell>
                       </TableRow>
                     )
                   );

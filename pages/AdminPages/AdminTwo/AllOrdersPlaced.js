@@ -62,7 +62,7 @@ const Page = (props) => {
     },
   });
   //   const { InstituteId, AllOrders, AdminTwoId } = props;
-  const { InstituteId, AllOrders, AdminTwoId } = props;
+  const { InstituteId, AllOrders, AdminTwoId,AdminTwoEmail } = props;
   //   console.log(AllOrders);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -133,6 +133,7 @@ const Page = (props) => {
                 adminTwoId={AdminTwoId}
                 key={AllOrders._id}
                 onlyPending={checked}
+                CustomerEmail={AdminTwoEmail}
               />
             )}
           </Stack>
@@ -192,6 +193,7 @@ export async function getServerSideProps(context) {
         InstituteId: InstituteId,
         AllOrders: allOrderPlaced.data.message,
         AdminTwoId: getAdminTwo.data.message._id,
+        AdminTwoEmail:session.user.email
       },
     };
   } catch (e) {

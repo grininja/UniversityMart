@@ -19,6 +19,7 @@ const handler = async (req, res) => {
         const aboutSeller = await SellerModel.findOne({
           _id: item.Seller,
         });
+        // console.log(aboutItem)
         const newDesc = {
           productName: aboutItem.name,
           productPrice: aboutItem.price,
@@ -28,7 +29,11 @@ const handler = async (req, res) => {
           sellerId: aboutSeller._id,
           OrderStatus: item.Status,
           OrderRemark: item.RemarksSeller,
-          orderTotal:(item.Quantity*aboutItem.price)
+          orderTotal: item.Quantity * aboutItem.price,
+          paymentActivated: item.PaymentActivated,
+          productId:item.Product,
+          SellerPaymentId:aboutSeller.stripeId,
+          totalQuantity: item.Quantity
         };
         newRes.push(newDesc);
       }
