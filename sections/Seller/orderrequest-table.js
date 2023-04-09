@@ -23,7 +23,7 @@ import { Scrollbar } from "../../components/scrollbar";
 import { getInitials } from "../../utils/get-initials";
 import Link from "next/link";
 import { SeverityPill } from "../../components/severity-pill";
-
+import { useRouter } from "next/router";
 const statusMap = {
   pending: "warning",
   delivered: "success",
@@ -94,7 +94,11 @@ export const AllOrderTable = (props) => {
                           </SeverityPill>
                         </TableCell>
                         <TableCell>
-                          <Button color="secondary" variant="contained">
+                          <Button
+                            color="secondary"
+                            variant="contained"
+                            href={`/SellerPages/BuyerQueries/${item._id}`}
+                          >
                             Click
                           </Button>
                         </TableCell>
