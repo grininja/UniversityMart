@@ -2,7 +2,7 @@ import React from "react";
 import { Container, Row, Col } from "reactstrap";
 import Image from 'next/image'
 import Image45Png from '../../public/images/45.png';
-import GroupMemberImage from '../../public/images/GroupMembers.png';
+import GroupMemberImage from '../../public/images/shopping.svg';
 const Hero = () => {
   return (
     <section className="section position-relative">
@@ -26,9 +26,9 @@ const Hero = () => {
                 can browse through a vast selection of products and compare
                 prices to find the best deals.{" "}
               </p>
-              <a href="#" className="btn btn-warning">
+              {/* <a href="#" className="btn btn-warning">
                 Find Out How <span className="ml-2 right-icon">&#8594;</span>
-              </a>
+              </a> */}
             </div>
           </Col>
           <Col lg={6}>

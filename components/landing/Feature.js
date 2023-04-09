@@ -1,8 +1,10 @@
 import React from "react";
 import { Container, Row, Col } from "reactstrap";
 import Image from 'next/image'
-import Image45Png from '../../public/images/45.png';
-import GroupMemberImage from '../../public/images/GroupMembers.png';
+import SearchImage from '../../public/images/search.svg';
+import GroupMemberImage from '../../public/images/admin.svg';
+import AddTagImage from '../../public/images/addtag.svg';
+
 
 const FeatureBox = (props) => {
   return (
@@ -78,7 +80,7 @@ const Feature = () => {
   const features = [
     {
       id: 1,
-      img: Image45Png,
+      img: SearchImage,
       title: "Select Products from Multiple Categories",
       desc: "enables users to quickly find the items they need and helps sellers to organize and display their products effectively, leading to increased sales and customer satisfaction.",
       link: "/",
@@ -92,7 +94,7 @@ const Feature = () => {
     },
     {
       id: 3,
-      img: Image45Png,
+      img: AddTagImage,
       title: "Add remarks and tags to your orders",
       desc: "Adding remarks and tags to orders is a valuable feature that enhances organization, communication, and collaboration between users and sellers. It also helps users to manage their orders more efficiently and effectively, leading to higher customer satisfaction.",
       link: "/",
