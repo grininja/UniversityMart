@@ -6,6 +6,11 @@ const SellerProductSchema = new Schema({
     required: true,
     index: true,
   },
+  itemSerial: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   description: {
     type: String,
     required: true,

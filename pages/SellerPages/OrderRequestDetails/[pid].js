@@ -5,6 +5,9 @@ import { Layout as AdminTwoDashboard } from "../../../layouts/SellerDashboard/la
 import { authOptions } from "../../api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 import ArrowPathIcon from "@heroicons/react/24/solid/ArrowPathIcon";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import {
   Stack,
   Box,
@@ -30,86 +33,18 @@ import {
   CardContent,
   Hidden,
 } from "@mui/material";
+import { setDate } from "date-fns";
 const OrderDetails = ({ sellerId, OrderDescription }) => {
   const [remarksValue, setRemarksValue] = useState("");
   const [tagValue, setTagValue] = useState("");
+  const [dateValue, setDateValue] = useState("");
   const product = OrderDescription;
   var decodedUrlImage = "";
   if (product && product.OrderDetail.photoUrl !== "") {
     let bufferObj = Buffer.from(product.OrderDetail.photoUrl, "base64");
-
-    // Decoding base64 into String
     decodedUrlImage = bufferObj.toString("utf8");
   }
   return (
-    // <Stack direction="row" justifyContent="center">
-    // <Box
-    //   sx={{
-    //     m: 2,
-    //     justifyContent: "center",
-    //     alignItems: "center",
-    //   }}
-    // >
-    //   <Card>
-    //     <CardHeader title="Order Details" />
-    //     <Stack spacing={3} direction="row" justifyContent="space-around">
-    //       <Stack alignItems="center" direction="row" spacing={1}>
-    //         <InputLabel id="demo-simple-select-helper-label">
-    //           {" "}
-    //           <Typography variant="h6">Tag </Typography>
-    //         </InputLabel>
-    //         <Select
-    //           labelId="demo-simple-select-helper-label"
-    //           id="demo-simple-select-helper"
-    //           value={tagValue}
-    //           label="Age"
-    //           onChange={(event) => {
-    //             setTagValue(event.target.value);
-    //           }}
-    //         >
-    //           <MenuItem value="accepted">Accepted</MenuItem>
-    //           <MenuItem value="rejected">Rejected</MenuItem>
-    //           <MenuItem value="pending">Pending</MenuItem>
-    //         </Select>
-    //       </Stack>
-    //       <Stack
-    //         alignItems="center"
-    //         direction="row"
-    //         spacing={1}
-    //         justifyContent="space-between"
-    //       >
-    //         <TextField
-    //           fullWidth
-    //           label="Remarks"
-    //           name="Remarks"
-    //           onChange={(event) => {
-    //             setRemarksValue(event.target.value);
-    //           }}
-    //           required
-    //           value={remarksValue}
-    //         />
-    //       </Stack>
-    //       <Button
-    //         startIcon={<SvgIcon fontSize="small">{<ArrowPathIcon />}</SvgIcon>}
-    //         variant="contained"
-    //         onClick={async () => {
-    //           const updateresult = await apiCall(
-    //             `${process.env.BASE_URL}/api/seller/orders/addRemarks`,
-    //             "POST",
-    //             {
-    //               OrderId: product.OrderDetail.id,
-    //               SellerId: sellerId,
-    //               remarks: remarksValue,
-    //               TagValue: tagValue,
-    //             },
-    //             null
-    //           );
-    //           alert(updateresult.data.message);
-    //         }}
-    //       >
-    //         Update Status
-    //       </Button>
-    //     </Stack>
     <Box sx={{ m: { xs: 1, sm: 2, md: 3 }, maxWidth: 1000, mx: "auto" }}>
       <Card>
         <CardHeader title="Order Details" />
@@ -138,6 +73,17 @@ const OrderDetails = ({ sellerId, OrderDescription }) => {
               <MenuItem value="pending">Pending</MenuItem>
             </Select>
           </Stack>
+          {/* <Stack alignItems="center" direction="row" spacing={{ xs: 1, sm: 2 }}> */}
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              onChange={(event) => {
+                console.log(event);
+                setDateValue(event.$d);
+              }}
+              inputFormat="MM/dd/yyyy"
+            />
+          </LocalizationProvider>
+          {/* </Stack> */}
           <Stack alignItems="center" direction="row" spacing={{ xs: 1, sm: 2 }}>
             <TextField
               fullWidth
@@ -163,6 +109,7 @@ const OrderDetails = ({ sellerId, OrderDescription }) => {
                     SellerId: sellerId,
                     remarks: remarksValue,
                     TagValue: tagValue,
+                    DeliveryDate: dateValue,
                   },
                   null
                 );
@@ -173,83 +120,10 @@ const OrderDetails = ({ sellerId, OrderDescription }) => {
             </Button>
           </Stack>
         </Stack>
-        {/* <List>
-          <ListItem key={product.OrderDetail.id}>
-            <ListItemAvatar>
-              {product.OrderDetail.photoUrl ? (
-                <Box
-                  component="img"
-                  src={decodedUrlImage}
-                  sx={{
-                    borderRadius: 1,
-                    height: 48,
-                    width: 48,
-                  }}
-                />
-              ) : (
-                <Box
-                  sx={{
-                    borderRadius: 1,
-                    backgroundColor: "neutral.200",
-                    height: 48,
-                    width: 48,
-                  }}
-                />
-              )}
-            </ListItemAvatar>
-            <Grid xs={12} md={6} lg={4} key={product.OrderDetail.id}>
-              <Card
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  height: "100%",
-                }}
-              >
-                <CardContent>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      pb: 3,
-                    }}
-                  ></Box>
-                  <Typography align="center" gutterBottom variant="h5">
-                    {product.OrderDetail.name}
-                  </Typography>
-                  <Typography align="center" variant="body1">
-                    Category: {product.OrderDetail.category}
-                  </Typography>
-                  <Typography align="center" variant="body1">
-                    Quantity: {product.OrderDetail.quantity}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-            <IconButton edge="end">
-              <SvgIcon>
-                <EllipsisVerticalIcon />
-              </SvgIcon>
-            </IconButton>
-          </ListItem>
-        </List>
-
-        <Divider />
-        <Stack direction="column" justifyContent="center" margin={2}>
-          <Typography variant="h6">
-            Requester Detail: {product.InstituteDetail.name}
-          </Typography>
-          <Typography variant="h6">
-            Address: {product.InstituteDetail.address}
-          </Typography>
-          <Typography variant="h6">
-            Address: {product.InstituteDetail.phone}
-          </Typography>
-        </Stack> */}
       </Card>
-      {/* </Stack>
-       */}
+
       <Grid container spacing={2}>
-        <Grid item xs={12} md={6} lg={4}>
+        <Grid xs={12} md={6} lg={4}>
           <List>
             <ListItem>
               <ListItemAvatar sx={{ mr: 2 }}>
@@ -274,7 +148,7 @@ const OrderDetails = ({ sellerId, OrderDescription }) => {
                   />
                 )}
               </ListItemAvatar>
-              <Grid container item xs={12} justifyContent="center">
+              <Grid xs={12} justifyContent="center">
                 <Typography align="center" variant="h5" sx={{ mb: 1 }}>
                   {product.OrderDetail.name}
                 </Typography>
@@ -296,7 +170,7 @@ const OrderDetails = ({ sellerId, OrderDescription }) => {
           </List>
         </Grid>
         <Hidden mdUp>
-          <Grid container item xs={12} justifyContent="center">
+          <Grid xs={12} justifyContent="center">
             <IconButton edge="end">
               <SvgIcon>
                 <EllipsisVerticalIcon />
@@ -304,7 +178,7 @@ const OrderDetails = ({ sellerId, OrderDescription }) => {
             </IconButton>
           </Grid>
         </Hidden>
-        <Grid item xs={12} md={6} lg={4}>
+        <Grid xs={12} md={6} lg={4}>
           <Stack
             direction="column"
             justifyContent="center"

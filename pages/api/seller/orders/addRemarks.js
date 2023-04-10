@@ -5,18 +5,20 @@ const handler = async (req, res) => {
   try {
     if (req.method === "POST") {
       await dbConnect();
-      const { OrderId, SellerId, remarks, TagValue } = req.body;
-      //can only add remarks one time after that non updatable
-      console.log(OrderId,remarks,TagValue)
+      const { OrderId, SellerId, remarks, TagValue, DeliveryDate } = req.body;
+
+      const findOrder = await OrderReqAdminTwoModel.findOne({ _id: OrderId });
+      const remarksfinal = remarks !== "" ? remarks : findOrder.RemarksSeller;
+      const statusfinal = TagValue !== "" ? TagValue : findOrder.Status;
       const addRemarks = await OrderReqAdminTwoModel.findOneAndUpdate(
         {
           _id: OrderId,
           Seller: SellerId,
-          RemarksSeller: "",
         },
         {
-          RemarksSeller: remarks,
-          Status: TagValue,
+          RemarksSeller: remarksfinal,
+          Status: statusfinal,
+          ExpectedDelivery: DeliveryDate,
         }
       );
       return res.status(200).send({ message: "Remarks updated successfully" });

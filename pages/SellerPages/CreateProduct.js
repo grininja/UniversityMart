@@ -52,6 +52,7 @@ const CreateItem = ({ SellerId, DownLoadUrl }) => {
       photo: "",
       price: 0,
       description: "",
+      serialNumber: "",
       // category: "",
     },
     validationSchema: Yup.object({
@@ -59,6 +60,7 @@ const CreateItem = ({ SellerId, DownLoadUrl }) => {
       photo: Yup.string().url(),
       price: Yup.number().integer().required("Quantity is required"),
       description: Yup.string().required("Product description is required"),
+      serialNumber: Yup.string().required("Product serial number is required"),
       // category: Yup.string().max(255),
     }),
     onSubmit: async (values, helpers) => {
@@ -67,17 +69,20 @@ const CreateItem = ({ SellerId, DownLoadUrl }) => {
           alert("Please select a category");
           return;
         }
+        console.log(categoryValue);
+        // console.log(values)
         const res = await apiCall(
           `${process.env.BASE_URL}/api/seller/products/createProduct`,
           "POST",
           {
             name: values.name,
             description: values.description,
-            category: categoryValue.label,
+            categoryvalue: categoryValue,
             productImageUrl: DownLoadUrl,
             pricePerItem: values.price,
             sellerId: SellerId,
             visible: checked,
+            serialId: values.serialNumber,
           },
           null
         );
@@ -99,6 +104,25 @@ const CreateItem = ({ SellerId, DownLoadUrl }) => {
         <CardContent sx={{ pt: 0 }}>
           <Box sx={{ m: -1.5 }}>
             <Grid container spacing={3}>
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Item Serial Number"
+                  name="serialNumber"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  required
+                  value={formik.values.serialNumber}
+                  helperText={
+                    formik.touched.serialNumber && formik.errors.serialNumber
+                  }
+                  error={
+                    !!(
+                      formik.touched.serialNumber && formik.errors.serialNumber
+                    )
+                  }
+                />
+              </Grid>
               <Grid xs={12} md={6}>
                 <TextField
                   fullWidth

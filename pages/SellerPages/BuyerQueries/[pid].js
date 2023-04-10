@@ -1,15 +1,4 @@
 import * as React from "react";
-import {
-  Box,
-  Button,
-  TextField,
-  Card,
-  CardActions,
-  CardContent,
-  Unstable_Grid2 as Grid,
-  Snackbar,
-  Alert,
-} from "@mui/material";
 import { Layout as SellerDashboardLayout } from "../../../layouts/SellerDashboard/layout";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
@@ -17,11 +6,7 @@ import apiCall from "@/helper/apiCall";
 import Stack from "@mui/material/Stack";
 import SnackbarContent from "@mui/material/SnackbarContent";
 
-// const action = (
-//   <Button color="secondary" size="small">
-//     lorem ipsum dolorem
-//   </Button>
-// );
+
 
 const Page = (props) => {
   const { SellerId, Queries } = props;
@@ -86,12 +71,7 @@ export async function getServerSideProps(context) {
       {},
       null
     );
-    // const refinedQueries = [];
-    // for (var i = 0; i < getAllQueries.data.message.length; i++) {
-    //   if (getAllQueries.data.message[i].response !== "") {
-    //     refinedQueries.push(getAllQueries.data.message[i]);
-    //   }
-    // }
+
     return {
       props: {
         SellerId: getSeller.data.message._id,

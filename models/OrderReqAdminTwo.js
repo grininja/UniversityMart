@@ -38,6 +38,10 @@ const OrderRequestAdminTwoSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  ExpectedDelivery: {
+    type: String,
+    default: "",
+  },
 });
 
 const OrderRequestAdminTwoModel =

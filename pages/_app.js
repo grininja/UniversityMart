@@ -7,8 +7,8 @@ import { SessionProvider, useSession } from "next-auth/react";
 // part added for beautiful dashboard
 import Head from "next/head";
 import { CacheProvider } from "@emotion/react";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+// import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+// import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 
@@ -57,13 +57,13 @@ export default function App({
           <title>UnivresityMart</title>
           <meta name="viewport" content="initial-scale=1, width=device-width" />
         </Head>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
+        {/* <LocalizationProvider dateAdapter={AdapterDateFns}> */}
           <ThemeProvider theme={theme}>
             <CssBaseline />
 
             {getLayout(<Component {...pageProps} />)}
           </ThemeProvider>
-        </LocalizationProvider>
+        {/* </LocalizationProvider> */}
       </CacheProvider>
     </SessionProvider>
   );
