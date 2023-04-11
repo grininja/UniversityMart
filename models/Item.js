@@ -9,6 +9,10 @@ export const ItemSchema = new Schema({
     index: true,
     unique: true,
   },
+  serialId:{
+   type:String,
+   required: true,
+  },
   description: {
     type: String,
     required: true,

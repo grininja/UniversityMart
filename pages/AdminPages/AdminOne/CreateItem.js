@@ -21,12 +21,14 @@ import {
   Avatar,
   Autocomplete,
 } from "@mui/material";
-
+import Image from "next/image";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { Layout as AdminOneDashBoardLayout } from "../../../layouts/AdminOneDashboard/layout";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+import { UploadFile } from "@/helper/uploadFile";
+
 const categoriesList = [];
 
 for (var i in categories) {
@@ -37,9 +39,7 @@ for (var i in categories) {
   }
 }
 
-
-const CreateItem = ({ adminOneId, InstituteId }) => {
-  // console.log(adminOneId+" "+InstituteId);
+const CreateItem = ({ adminOneId, InstituteId, imageUrl = "" }) => {
   const [categoryValue, setCategoryValue] = useState("");
   const [categoryinputValue, setCategoryInputValue] = useState("");
   const router = useRouter();
@@ -49,7 +49,7 @@ const CreateItem = ({ adminOneId, InstituteId }) => {
       photo: "",
       quantity: 0,
       description: "",
-      // category: "",
+      serialNumber: "",
     },
     validationSchema: Yup.object({
       name: Yup.string().max(255).required("Product name is required"),
@@ -58,7 +58,9 @@ const CreateItem = ({ adminOneId, InstituteId }) => {
       description: Yup.string()
         .max(255)
         .required("Product description is required"),
-      // category: Yup.string().max(255),
+      serialNumber: Yup.string()
+        .max(255)
+        .required("Product serial number is required"),
     }),
     onSubmit: async (values, helpers) => {
       try {
@@ -66,17 +68,20 @@ const CreateItem = ({ adminOneId, InstituteId }) => {
           alert("Please select a category");
           return;
         }
+        console.log(values);
+        // console.log(categoryValue)
         const res = await apiCall(
           `${process.env.BASE_URL}/api/adminOneRequests/productHandler/addItem`,
           "POST",
           {
             name: values.name,
             description: values.description,
-            photoUrl: values.photo,
+            photoUrl: imageUrl,
             quantity: values.quantity,
             category: categoryValue,
             adminOneId: adminOneId,
             InstituteId: InstituteId,
+            serialId: values.serialNumber,
           },
           null
         );
@@ -97,6 +102,25 @@ const CreateItem = ({ adminOneId, InstituteId }) => {
         <CardContent sx={{ pt: 0 }}>
           <Box sx={{ m: -1.5 }}>
             <Grid container spacing={3}>
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Item Serial Number"
+                  name="serialNumber"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  required
+                  value={formik.values.serialNumber}
+                  helperText={
+                    formik.touched.serialNumber && formik.errors.serialNumber
+                  }
+                  error={
+                    !!(
+                      formik.touched.serialNumber && formik.errors.serialNumber
+                    )
+                  }
+                />
+              </Grid>
               <Grid xs={12} md={6}>
                 <TextField
                   fullWidth
@@ -186,15 +210,17 @@ const CreateItem = ({ adminOneId, InstituteId }) => {
 };
 
 const Page = (props) => {
-  const { InstituteId, DepartmentId, AdminOneId } = props;
-  const router = useRouter();
   const { status } = useSession({
     required: true,
     onUnauthenticated() {
       router.push("/auth/loginUser");
     },
   });
-
+  const { InstituteId, DepartmentId, AdminOneId } = props;
+  const router = useRouter();
+  const [downloadUrl, setDownloadUrl] = useState("");
+  const [file, setFile] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
   return (
     <div>
       <Head>
@@ -215,12 +241,66 @@ const Page = (props) => {
             <div>
               <Grid container spacing={3}>
                 <Grid xs={12} md={6} lg={4}>
-                  {/* <UploadPicture /> */}
+                  <div>
+                    <Card>
+                      <CardContent>
+                        <Box
+                          sx={{
+                            alignItems: "center",
+                            display: "flex",
+                            flexDirection: "column",
+                          }}
+                        >
+                          <Button component="label">
+                            <Image
+                              src={imageUrl}
+                              alt="click here"
+                              height={80}
+                              width={80}
+                              mb={2}
+                            />
+                            <input
+                              type="file"
+                              hidden
+                              onChange={(e) => setFile(e.target.files[0])}
+                              id="select-image"
+                            />
+                          </Button>
+                          {file && file.name !== null && (
+                            <Typography>{file.name}</Typography>
+                          )}
+                        </Box>
+                      </CardContent>
+                      <Divider />
+                      <CardActions>
+                        <Button
+                          fullWidth
+                          variant="text"
+                          type="submit"
+                          onClick={async () => {
+                            const downloadUri = await UploadFile(
+                              file,
+                              "Institute",
+                              "itemImage"
+                            );
+                            alert("Image Upload Success");
+                            let bufferObj = Buffer.from(downloadUri, "utf8");
+                            let base64String = bufferObj.toString("base64");
+                            setDownloadUrl(base64String);
+                            setImageUrl(downloadUri);
+                          }}
+                        >
+                          Upload picture
+                        </Button>
+                      </CardActions>
+                    </Card>
+                  </div>
                 </Grid>
                 <Grid xs={12} md={6} lg={8}>
                   <CreateItem
                     adminOneId={AdminOneId}
                     InstituteId={InstituteId}
+                    imageUrl={downloadUrl}
                   />
                 </Grid>
               </Grid>

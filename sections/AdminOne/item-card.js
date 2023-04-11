@@ -18,10 +18,18 @@ import {
   Button,
 } from "@mui/material";
 import apiCall from "@/helper/apiCall";
-
+import Image from "next/image";
 export const ItemCard = (props) => {
   const { item, AdminOne } = props;
   const router = useRouter();
+  var decodedUrlImage = "";
+  // console.log(item)
+  if (item.photo !== "") {
+    let bufferObj = Buffer.from(item.photo, "base64");
+
+    // Decoding base64 into String
+    decodedUrlImage = bufferObj.toString("utf8");
+  }
   return (
     <Card
       sx={{
@@ -38,7 +46,13 @@ export const ItemCard = (props) => {
             pb: 3,
           }}
         >
-          <Avatar src={item.photo} variant="square" />
+          <Image
+            src={decodedUrlImage}
+            alt="Product Image"
+            height={80}
+            width={80}
+            mb={2}
+          />
         </Box>
         <Typography align="center" gutterBottom variant="h5">
           {item.name}

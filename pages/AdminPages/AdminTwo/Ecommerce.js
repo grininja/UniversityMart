@@ -114,6 +114,16 @@ const matchname = async (name1, name2) => {
   if (matchsound(name1, name2) === true) {
     return true;
   }
+  const le = name2.length;
+  const le2 = name1.length;
+  for (let i = 0; i < le; i++) {
+    if (i + le2 <= le) {
+      var str1 = name2.substring(i, i + le2);
+      if (str1 === name1) {
+        return true;
+      }
+    }
+  }
   return false;
 };
 

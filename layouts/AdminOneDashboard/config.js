@@ -20,7 +20,7 @@ export const items = [
     ),
   },
   {
-    title: "OrderRequests",
+    title: "Order Items",
     path: "/AdminPages/AdminOne/OrderRequests",
     icon: (
       <SvgIcon fontSize="small">
@@ -48,7 +48,7 @@ export const items = [
   },
 
   {
-    title: "Department Items",
+    title: "Department Inventory",
     path: "/AdminPages/AdminOne/Items",
     icon: (
       <SvgIcon fontSize="small">

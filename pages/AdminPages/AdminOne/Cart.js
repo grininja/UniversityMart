@@ -125,7 +125,7 @@ const Page = (props) => {
                     alert(createOrderResult.data.message);
                   }}
                 >
-                  Checkout
+                  Submit Request
                 </Button>
               </div>
             </Stack>

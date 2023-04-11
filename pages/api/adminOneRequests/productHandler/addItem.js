@@ -14,7 +14,9 @@ const handler = async (req, res) => {
         category,
         adminOneId,
         InstituteId,
+        serialId,
       } = req.body;
+      console.log(req.body);
       const checkAdminOne = await AdminOne.findOne({
         _id: adminOneId,
         Institute: InstituteId,
@@ -32,6 +34,7 @@ const handler = async (req, res) => {
           quantity: quantity,
           category: category,
           department: checkAdminOne.department,
+          serialId: serialId,
         });
         await createItem.save();
         return res.status(200).send({ message: "Item saved successfully" });

@@ -21,8 +21,8 @@ const Home = () => (
       <Container maxWidth="xl">
         <Image
           src="/images/welcomeadmin1.svg"
-          height={32}
-          width={32}
+          layout="fill"
+          objectFit="contain"
           alt="Follow us on Twitter"
         />
         {/* <Grid container spacing={3}>
