@@ -19,11 +19,19 @@ import {
   TextField,
 } from "@mui/material";
 import apiCall from "@/helper/apiCall";
-
+import Image from "next/image";
 export const CartItem = (props) => {
   const { item, AdminOne, Department, Institute } = props;
   const router = useRouter();
   const [QuantityValue, setQuantityValue] = useState(item.quantity);
+  var decodedUrlImage = "";
+  // console.log(item)
+  if (item.detail.photo !== "") {
+    let bufferObj = Buffer.from(item.detail.photo, "base64");
+
+    // Decoding base64 into String
+    decodedUrlImage = bufferObj.toString("utf8");
+  }
   return (
     <Card
       sx={{
@@ -48,7 +56,13 @@ export const CartItem = (props) => {
                 pb: 3,
               }}
             >
-              <Avatar src={item.photo} variant="square" />
+              <Image
+                alt="Product Image"
+                src={decodedUrlImage}
+                variant="square"
+                height={200}
+                width={200}
+              />
             </Box>
           </Stack>
           <Stack alignItems="center" direction="column" spacing={1}>

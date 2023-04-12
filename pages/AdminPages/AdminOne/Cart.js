@@ -24,18 +24,19 @@ import { getServerSession } from "next-auth/next";
 import { useRouter } from "next/router";
 import { useState } from "react";
 const Page = (props) => {
-  const { AdminOneId, cartItems, DepartmentId, InstituteId } = props;
-  // console.log(cartItems);
-  const [remarksValue, setRemarksValue] = useState("");
-  // console.log(InstituteId);
-  const [tagValue, setTagValue] = useState("");
-  const router = useRouter();
   const { status } = useSession({
     required: true,
     onUnauthenticated() {
       router.push("/auth/loginUser");
     },
   });
+  const { AdminOneId, cartItems, DepartmentId, InstituteId } = props;
+  // console.log(cartItems);
+  const [remarksValue, setRemarksValue] = useState("");
+  // console.log(InstituteId);
+  const [tagValue, setTagValue] = useState("");
+  const router = useRouter();
+// console.log(cartItems)
 
   return (
     <div>

@@ -23,7 +23,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { Layout as AdminOneDashBoardLayout } from "../../../../layouts/AdminOneDashboard/layout";
 import { useSession } from "next-auth/react";
-
+import Image from "next/image";
 //under consturuction image upload
 
 // const UploadPicture = () => {
@@ -83,6 +83,7 @@ import { useSession } from "next-auth/react";
 // };
 
 const EditItem = ({ adminOneId, InstituteId, Item }) => {
+  console.log(Item);
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
@@ -91,6 +92,7 @@ const EditItem = ({ adminOneId, InstituteId, Item }) => {
       quantity: Item.quantity,
       description: Item.description,
       category: Item.category,
+      serialNumber: Item.serialId,
     },
     validationSchema: Yup.object({
       name: Yup.string().max(255).required("Product name is required"),
@@ -100,6 +102,7 @@ const EditItem = ({ adminOneId, InstituteId, Item }) => {
         .max(255)
         .required("Product description is required"),
       category: Yup.string().max(255),
+      serialNumber: Yup.string().required("Product serial number is required"),
     }),
     onSubmit: async (values, helpers) => {
       try {
@@ -126,7 +129,7 @@ const EditItem = ({ adminOneId, InstituteId, Item }) => {
       }
     },
   });
-
+  // console.log(formik.values);
   return (
     <form autoComplete="off" noValidate onSubmit={formik.handleSubmit}>
       <Card>
@@ -134,6 +137,26 @@ const EditItem = ({ adminOneId, InstituteId, Item }) => {
         <CardContent sx={{ pt: 0 }}>
           <Box sx={{ m: -1.5 }}>
             <Grid container spacing={3}>
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Item Serial Number"
+                  name="serialNumber"
+                  // onChange={formik.handleChange}
+                  // onBlur={formik.handleBlur}
+                  // required
+                  value={formik.values.serialNumber}
+                  // helperText={
+                  //   formik.touched.serialNumber && formik.errors.serialNumber
+                  // }
+                  // error={
+                  //   !!(
+                  //     formik.touched.serialNumber && formik.errors.serialNumber
+                  //   )
+                  // }
+                  disabled
+                />
+              </Grid>
               <Grid xs={12} md={6}>
                 <TextField
                   fullWidth
@@ -205,14 +228,21 @@ const EditItem = ({ adminOneId, InstituteId, Item }) => {
 };
 
 const Page = (props) => {
-  const { InstituteId, DepartmentId, AdminOneId, product } = props;
-  const router = useRouter();
   const { status } = useSession({
     required: true,
     onUnauthenticated() {
       router.push("/auth/loginUser");
     },
   });
+  const { InstituteId, DepartmentId, AdminOneId, product } = props;
+  const router = useRouter();
+  var decodedUrlImage = "";
+  if (product.photo !== "") {
+    let bufferObj = Buffer.from(product.photo, "base64");
+
+    // Decoding base64 into String
+    decodedUrlImage = bufferObj.toString("utf8");
+  }
 
   return (
     <div>
@@ -235,6 +265,34 @@ const Page = (props) => {
               <Grid container spacing={3}>
                 <Grid xs={12} md={6} lg={4}>
                   {/* <UploadPicture /> */}
+                  <CardContent>
+                    <Box
+                      sx={{
+                        alignItems: "center",
+                        display: "flex",
+                        flexDirection: "column",
+                      }}
+                    >
+                      {/* <Button component="label"> */}
+                      <Image
+                        src={decodedUrlImage}
+                        alt="click here"
+                        height={300}
+                        width={300}
+                        mb={2}
+                      />
+                      {/* <input
+                          type="file"
+                          hidden
+                          onChange={(e) => setFile(e.target.files[0])}
+                          id="select-image"
+                        />
+                      </Button>
+                      {file && file.name !== null && (
+                        <Typography>{file.name}</Typography>
+                      )} */}
+                    </Box>
+                  </CardContent>
                 </Grid>
                 <Grid xs={12} md={6} lg={8}>
                   <EditItem
