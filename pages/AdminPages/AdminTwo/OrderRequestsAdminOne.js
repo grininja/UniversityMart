@@ -109,7 +109,7 @@ const Page = (props) => {
             </Stack>
             <Stack justifyContent="space-between" direction="row">
               <Card sx={{ p: 2 }}>
-                <OutlinedInput
+                {/* <OutlinedInput
                   defaultValue=""
                   fullWidth
                   placeholder="Search Order Requests"
@@ -121,7 +121,7 @@ const Page = (props) => {
                     </InputAdornment>
                   }
                   sx={{ maxWidth: 500 }}
-                />
+                /> */}
               </Card>
               <Stack justifyContent="center">
                 <Typography>Show pending only</Typography>

@@ -55,6 +55,8 @@ export const OrderRequestsTable = (props) => {
                 <TableCell>Remarks</TableCell>
                 <TableCell>Department</TableCell>
                 <TableCell>Status</TableCell>
+                <TableCell>Requested Date</TableCell>
+
                 <TableCell>Delete</TableCell>
               </TableRow>
             </TableHead>
@@ -63,6 +65,7 @@ export const OrderRequestsTable = (props) => {
                 items.length > 0 &&
                 items.map((item) => {
                   const isSelected = selected.includes(item._id);
+                  
                   return (
                     ((onlyPending && item.status === "pending") ||
                       onlyPending === false) && (
@@ -89,7 +92,7 @@ export const OrderRequestsTable = (props) => {
                             {item.status}
                           </SeverityPill>
                         </TableCell>
-                        {/* <TableCell>{createdAt}</TableCell> */}
+                        <TableCell>{item.createdAt}</TableCell>
                         <TableCell>
                           <Button
                             color="inherit"

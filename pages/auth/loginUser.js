@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { authOptions } from "../api/auth/[...nextauth]";
+import { getServerSession } from "next-auth/next";
 import {
   Alert,
   Box,
@@ -235,6 +237,35 @@ function LoginUser(props) {
 }
 
 export async function getServerSideProps(context) {
+  const session = await getServerSession(context.req, context.res, authOptions);
+  console.log(session);
+  if (session !== null) {
+    const getRole = await apiCall(
+      `${process.env.BASE_URL}/api/manageUser/checkRoleIfSession?emailId=${session.user.email}`,
+      "GET",
+      {},
+      null
+    );
+    //  console.log(getRole.data.message)
+    const role = getRole.data.message;
+    if (role === "admin1") {
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/AdminPages/AdminOne/Home",
+        },
+        props: {},
+      };
+    } else if (role === "admin2") {
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/AdminPages/AdminTwo/Home",
+        },
+        props: {},
+      };
+    }
+  }
   try {
     const res = await apiCall(
       `${process.env.BASE_URL}/api/institute/getAllInstitutes`,

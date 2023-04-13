@@ -13,8 +13,7 @@ import apiCall from "@/helper/apiCall";
 import { useSession } from "next-auth/react";
 import { Layout as AdminOneDashBoardLayout } from "../../../layouts/AdminOneDashboard/layout";
 import { OrderTable } from "../../../sections/AdminOne/orderrequest-table";
-import { OrderSearch } from "../../../sections/AdminOne/orderrequest-search";
-import { applyPagination } from "../../../utils/apply-pagination";
+// import { OrderSearch } from "../../../sections/AdminOne/orderrequest-search";
 import { authOptions } from "../../api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 import { useRouter } from "next/router";
@@ -97,7 +96,7 @@ const Page = (props) => {
                 </Button>
               </div>
             </Stack>
-            <OrderSearch />
+            {/* <OrderSearch /> */}
             {Orders && Orders.length > 0 && (
               <OrderTable
                 count={Orders.length}

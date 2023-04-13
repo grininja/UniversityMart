@@ -45,6 +45,7 @@ export const OrderTable = (props) => {
 
   const selectedSome = selected.length > 0 && selected.length < items.length;
   const selectedAll = items.length > 0 && selected.length === items.length;
+  
 
   return (
     <Card>
@@ -57,6 +58,7 @@ export const OrderTable = (props) => {
                 <TableCell>Remarks</TableCell>
                 <TableCell>Tag</TableCell>
                 <TableCell>Status</TableCell>
+                <TableCell>Order Date</TableCell>
                 <TableCell>Delete</TableCell>
               </TableRow>
             </TableHead>
@@ -65,6 +67,8 @@ export const OrderTable = (props) => {
                 items.length > 0 &&
                 items.map((item) => {
                   const isSelected = selected.includes(item.id);
+                  // var date=new Date(item.createdAt);
+                  // dt = datetime.strptime(datestring, '%Y-%m-%d %H:%M:%S')
                   return (
                     <TableRow hover key={item.id}>
                       <TableCell>
@@ -83,7 +87,7 @@ export const OrderTable = (props) => {
                           {item.status}
                         </SeverityPill>
                       </TableCell>
-                      {/* <TableCell>{createdAt}</TableCell> */}
+                      <TableCell>{item.createdAt}</TableCell>
                       <TableCell>
                         <Button
                           color="inherit"
