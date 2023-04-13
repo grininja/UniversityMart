@@ -61,6 +61,7 @@ const SignUpSeller = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
+      console.log(values)
       const result = await apiCall(
         `${process.env.BASE_URL}/api/creation/createSeller`,
         "POST",

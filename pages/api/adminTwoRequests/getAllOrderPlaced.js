@@ -33,7 +33,8 @@ const handler = async (req, res) => {
           paymentActivated: item.PaymentActivated,
           productId:item.Product,
           SellerPaymentId:aboutSeller.stripeId,
-          totalQuantity: item.Quantity
+          totalQuantity: item.Quantity,
+          orderDate:item.createdAt
         };
         newRes.push(newDesc);
       }

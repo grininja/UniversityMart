@@ -39,7 +39,7 @@ export const AllOrderTable = (props) => {
   const router = useRouter();
   const selectedSome = selected.length > 0 && selected.length < items.length;
   const selectedAll = items.length > 0 && selected.length === items.length;
-
+  //  console.log(items)
   return (
     <Card>
       <Scrollbar>
@@ -49,10 +49,11 @@ export const AllOrderTable = (props) => {
               <TableRow>
                 <TableCell>OrderId</TableCell>
                 <TableCell>Product Name</TableCell>
-                {/* <TableCell>Seller Name</TableCell> */}
+                <TableCell>Order Date</TableCell>
                 <TableCell>Status</TableCell>
                 <TableCell>Seller Remarks</TableCell>
                 <TableCell>Price</TableCell>
+                {/* <TableCell></TableCell> */}
                 <TableCell>Payment</TableCell>
               </TableRow>
             </TableHead>
@@ -83,7 +84,7 @@ export const AllOrderTable = (props) => {
                           </Stack>
                         </TableCell>
                         <TableCell>{item.productName}</TableCell>
-                        {/* <TableCell>{item.sellerName}</TableCell> */}
+                        <TableCell>{item.orderDate}</TableCell>
                         <TableCell>
                           <SeverityPill color={statusMap[item.OrderStatus]}>
                             {item.OrderStatus}

@@ -70,13 +70,13 @@ export const items = [
       </SvgIcon>
     ),
   },
-  {
-    title: "Account",
-    path: "/AdminPages/AdminTwo/account",
-    icon: (
-      <SvgIcon fontSize="small">
-        <UserIcon />
-      </SvgIcon>
-    ),
-  },
+  // {
+  //   title: "Account",
+  //   path: "/AdminPages/AdminTwo/account",
+  //   icon: (
+  //     <SvgIcon fontSize="small">
+  //       <UserIcon />
+  //     </SvgIcon>
+  //   ),
+  // },
 ];

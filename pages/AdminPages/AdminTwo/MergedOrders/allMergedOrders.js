@@ -20,39 +20,6 @@ import { authOptions } from "../../api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 import { useRouter } from "next/router";
 import MagnifyingGlassIcon from "@heroicons/react/24/solid/MagnifyingGlassIcon";
-import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
-
-// const AllOrdersSearch = () => (
-//   <Card sx={{ p: 2 }}>
-//     <OutlinedInput
-//       defaultValue=""
-//       fullWidth
-//       placeholder="Search Order Requests"
-//       startAdornment={
-//         <InputAdornment position="start">
-//           <SvgIcon color="action" fontSize="small">
-//             <MagnifyingGlassIcon />
-//           </SvgIcon>
-//         </InputAdornment>
-//       }
-//       sx={{ maxWidth: 500 }}
-//     />
-//   </Card>
-// );
-
-// const now = new Date();
-
-// const useCustomers = (page, rowsPerPage) => {
-//   return useMemo(() => {
-//     return applyPagination(data, page, rowsPerPage);
-//   }, [page, rowsPerPage]);
-// };
-
-// const useCustomerIds = (customers) => {
-//   return useMemo(() => {
-//     return customers.map((customer) => customer.id);
-//   }, [customers]);
-// };
 
 const Page = (props) => {
   const router = useRouter();
@@ -79,7 +46,7 @@ const Page = (props) => {
   return (
     <>
       <Head>
-        <title>AllOrders | UniversityMart</title>
+        <title>All Merged Orders | UniversityMart</title>
       </Head>
       <Box
         component="main"
@@ -92,7 +59,7 @@ const Page = (props) => {
           <Stack spacing={3}>
             <Stack direction="row" justifyContent="space-between" spacing={4}>
               <Stack spacing={1}>
-                <Typography variant="h4">Order Placed </Typography>
+                <Typography variant="h4">Merged By Seller </Typography>
               </Stack>
             </Stack>
             <div>
@@ -137,14 +104,14 @@ const Page = (props) => {
                 />
               </Card>
               <Stack justifyContent="center">
-                <Typography>Show pending only</Typography>
+                {/* <Typography>Show pending only</Typography>
                 <Switch
                   checked={checked}
                   onChange={(event) => {
                     setChecked(event.target.checked);
                   }}
                   inputProps={{ "aria-label": "controlled" }}
-                />
+                /> */}
               </Stack>
             </Stack>
             {AllOrders && AllOrders.length > 0 && (

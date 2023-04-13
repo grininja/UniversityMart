@@ -6,6 +6,7 @@ const handler = async (req, res) => {
     if (req.method === "POST") {
       await dbConnect();
       const { EmailId, Phone, Gstin, Address, Name } = req.body;
+      // console.log(req.body);
       const checkEmail = await SellerModel.findOne({ email: EmailId });
       if (checkEmail !== null) {
         return res.status(200).send({ message: "Seller already exists" });
@@ -18,9 +19,13 @@ const handler = async (req, res) => {
       if (checkGstin !== null) {
         return res.status(200).send({ message: "Seller already exists" });
       }
-      const checkRoles = await checkForRoles(checkEmail._id, EmailId);
-      if (checkRoles === false) {
-        return res.status(200).send({ message: "Already some roles assigned" });
+      if (checkEmail !== null) {
+        const checkRoles = await checkForRoles(checkEmail._id, EmailId);
+        if (checkRoles === false) {
+          return res
+            .status(200)
+            .send({ message: "Already some roles assigned" });
+        }
       }
       const newSeller = new SellerModel({
         name: Name,

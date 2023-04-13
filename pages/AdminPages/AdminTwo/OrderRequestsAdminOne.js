@@ -92,7 +92,7 @@ const Page = (props) => {
           <Stack spacing={3}>
             <Stack direction="row" justifyContent="space-between" spacing={4}>
               <Stack spacing={1}>
-                <Typography variant="h4">Order Requests </Typography>
+                <Typography variant="h4">Product Requests </Typography>
               </Stack>
               <div>
                 <Button
