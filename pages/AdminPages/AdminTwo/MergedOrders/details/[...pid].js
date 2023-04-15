@@ -14,45 +14,13 @@ import {
 } from "@mui/material";
 import apiCall from "@/helper/apiCall";
 import { useSession } from "next-auth/react";
-import { Layout as AdminTwoDashboard } from "../../../layouts/AdminTwoDashboard/layout";
-import { AllOrderTable } from "../../../sections/AdminTwo/allOrderPlacedTable";
-import { authOptions } from "../../api/auth/[...nextauth]";
+import { Layout as AdminTwoDashboard } from "../../../../../layouts/AdminTwoDashboard/layout";
+import { AllOrderTable } from "../../../../../sections/AdminTwo/mergedOrderTable";
+import { authOptions } from "../../../../api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 import { useRouter } from "next/router";
 import MagnifyingGlassIcon from "@heroicons/react/24/solid/MagnifyingGlassIcon";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
-
-// const AllOrdersSearch = () => (
-//   <Card sx={{ p: 2 }}>
-//     <OutlinedInput
-//       defaultValue=""
-//       fullWidth
-//       placeholder="Search Order Requests"
-//       startAdornment={
-//         <InputAdornment position="start">
-//           <SvgIcon color="action" fontSize="small">
-//             <MagnifyingGlassIcon />
-//           </SvgIcon>
-//         </InputAdornment>
-//       }
-//       sx={{ maxWidth: 500 }}
-//     />
-//   </Card>
-// );
-
-// const now = new Date();
-
-// const useCustomers = (page, rowsPerPage) => {
-//   return useMemo(() => {
-//     return applyPagination(data, page, rowsPerPage);
-//   }, [page, rowsPerPage]);
-// };
-
-// const useCustomerIds = (customers) => {
-//   return useMemo(() => {
-//     return customers.map((customer) => customer.id);
-//   }, [customers]);
-// };
 
 const Page = (props) => {
   const router = useRouter();
@@ -62,9 +30,9 @@ const Page = (props) => {
       router.push("/auth/loginUser");
     },
   });
-  //   const { InstituteId, AllOrders, AdminTwoId } = props;
-  const { InstituteId, AllOrders, AdminTwoId, AdminTwoEmail } = props;
-  //   console.log(AllOrders);
+  //   const { InstituteId, ordersList, AdminTwoId } = props;
+  const { ordersList } = props;
+  //   console.log(ordersList);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [checked, setChecked] = useState(false);
@@ -79,7 +47,7 @@ const Page = (props) => {
   return (
     <>
       <Head>
-        <title>AllOrders | UniversityMart</title>
+        <title>ordersList | UniversityMart</title>
       </Head>
       <Box
         component="main"
@@ -92,42 +60,14 @@ const Page = (props) => {
           <Stack spacing={3}>
             <Stack direction="row" justifyContent="space-between" spacing={4}>
               <Stack spacing={1}>
-                <Typography variant="h4">Order Placed </Typography>
+                <Typography variant="h4">Order Details </Typography>
               </Stack>
             </Stack>
             <div>
-              <Button
-                startIcon={
-                  <SvgIcon fontSize="small">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-6 h-6"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M9 9V4.5M9 9H4.5M9 9L3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9h4.5M15 9V4.5M15 9l5.25-5.25M15 15h4.5M15 15v4.5m0-4.5l5.25 5.25"
-                      />
-                    </svg>
-                  </SvgIcon>
-                }
-                variant="contained"
-                onClick={() => {
-                  router.push(
-                    "/AdminPages/AdminTwo/MergedOrders/MergedOrderBySeller"
-                  );
-                }}
-              >
-                Merge Orders
-              </Button>
             </div>
             <Stack justifyContent="space-between" direction="row">
               <Card sx={{ p: 2 }}>
-                <OutlinedInput
+                {/* <OutlinedInput
                   defaultValue=""
                   fullWidth
                   placeholder="Search Order Requests"
@@ -139,9 +79,9 @@ const Page = (props) => {
                     </InputAdornment>
                   }
                   sx={{ maxWidth: 500 }}
-                />
+                /> */}
               </Card>
-              <Stack justifyContent="center">
+              {/* <Stack justifyContent="center">
                 <Typography>Show pending only</Typography>
                 <Switch
                   checked={checked}
@@ -150,21 +90,16 @@ const Page = (props) => {
                   }}
                   inputProps={{ "aria-label": "controlled" }}
                 />
-              </Stack>
+              </Stack> */}
             </Stack>
-            {AllOrders && AllOrders.length > 0 && (
+            {ordersList && ordersList.length > 0 && (
               <AllOrderTable
-                count={AllOrders.length}
-                items={AllOrders}
+                count={ordersList.length}
+                items={ordersList}
                 onPageChange={handlePageChange}
                 onRowsPerPageChange={handleRowsPerPageChange}
                 page={page}
                 rowsPerPage={rowsPerPage}
-                instituteId={InstituteId}
-                adminTwoId={AdminTwoId}
-                key={AllOrders._id}
-                onlyPending={checked}
-                CustomerEmail={AdminTwoEmail}
               />
             )}
           </Stack>
@@ -180,16 +115,10 @@ export default Page;
 
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
-  // console.log(session);
-  if (session === null) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/auth/loginUser",
-      },
-      props: {},
-    };
-  }
+  //   console.log(session);
+  //   console.log(context.query)
+  const sellerId = context.query.pid[0];
+  const dateValue = context.query.pid[1];
   try {
     const getAdminTwo = await apiCall(
       `${process.env.BASE_URL}/api/institute/adminHandler/adminTwoHandler/adminTwoByEmail?AdminTwoEmail=${session.user.email}`,
@@ -210,22 +139,12 @@ export async function getServerSideProps(context) {
         props: {},
       };
     }
-    //   console.log(getAdminTwo.data.message._id);
-    const InstituteId = getAdminTwo.data.message.Institute;
-    const allOrderPlaced = await apiCall(
-      `${process.env.BASE_URL}/api/adminTwoRequests/getAllOrderPlaced?AdminTwoId=${getAdminTwo.data.message._id}`,
-      "GET",
-      {},
-      null
+    const getOrderByDateAndSeller = await apiCall(
+      `${process.env.BASE_URL}/api/adminTwoRequests/getOrderByDateSeller?SellerId=${sellerId}&CustomerId=${getAdminTwo.data.message._id}&dateValue=${dateValue}`
     );
-
-    // console.log(allOrderPlaced.data.message)
     return {
       props: {
-        InstituteId: InstituteId,
-        AllOrders: allOrderPlaced.data.message,
-        AdminTwoId: getAdminTwo.data.message._id,
-        AdminTwoEmail: session.user.email,
+         ordersList:getOrderByDateAndSeller.data.message
       },
     };
   } catch (e) {

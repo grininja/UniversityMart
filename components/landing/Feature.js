@@ -23,7 +23,7 @@ const FeatureBox = (props) => {
               <div>
                 <Image
                   src={feature.img}
-                  alt=""
+                  alt="feature image"
                   className="img-fluid d-block mx-auto"
                   
                 />
@@ -64,7 +64,7 @@ const FeatureBox = (props) => {
               <div>
                 <Image
                   src={feature.img}
-                  alt=""
+                  alt="feature image"
                   className="img-fluid d-block mx-auto"
                 />
               </div>

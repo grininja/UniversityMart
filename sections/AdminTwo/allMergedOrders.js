@@ -41,11 +41,11 @@ export const AllOrderTable = (props) => {
   const res = [];
   for (var key in items) {
     for (var key2 in items[key]) {
-      res.push([key, key2,items[key][key2][0].sellerName]);
+      res.push([key, key2, items[key][key2][0].sellerName]);
     }
   }
-//   console.log(items)
-//   console.log(res);
+  //   console.log(items)
+  //   console.log(res);
   return (
     <Card>
       <Scrollbar>
@@ -66,18 +66,26 @@ export const AllOrderTable = (props) => {
                   <TableRow hover key={item._id}>
                     <TableCell>
                       <Stack alignItems="center" direction="row" spacing={2}>
-                        <Link
+                        {/* <Link
                           href={`/AdminPages/AdminTwo/SellerOrderDetails/${item.OrderId}`}
-                        >
-                          <Typography variant="subtitle2">{item[1]}</Typography>
-                        </Link>
+                        > */}
+                        <Typography variant="subtitle2">{item[1]}</Typography>
+                        {/* </Link> */}
                       </Stack>
                     </TableCell>
                     <TableCell>{item[2]}</TableCell>
                     <TableCell>{item[0]}</TableCell>
                     <TableCell>
                       {
-                        <Button color="secondary" variant="outlined">
+                        <Button
+                          color="secondary"
+                          variant="outlined"
+                          onClick={() => {
+                            router.push(
+                              `/AdminPages/AdminTwo/MergedOrders/details/${item[1]}/${item[0]}`
+                            );
+                          }}
+                        >
                           Show Details
                         </Button>
                       }
