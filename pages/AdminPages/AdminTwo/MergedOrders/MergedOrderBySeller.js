@@ -14,46 +14,14 @@ import {
 } from "@mui/material";
 import apiCall from "@/helper/apiCall";
 import { useSession } from "next-auth/react";
-import { Layout as AdminTwoDashboard } from "../../../layouts/AdminTwoDashboard/layout";
-import { AllOrderTable } from "../../../sections/AdminTwo/allOrderPlacedTable";
-import { authOptions } from "../../api/auth/[...nextauth]";
+import { Layout as AdminTwoDashboard } from "../../../../layouts/AdminTwoDashboard/layout";
+import { AllOrderTable } from "../../../../sections/AdminTwo/allMergedOrders";
+import { authOptions } from "../../../api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 import { useRouter } from "next/router";
 import MagnifyingGlassIcon from "@heroicons/react/24/solid/MagnifyingGlassIcon";
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
-
-// const AllOrdersSearch = () => (
-//   <Card sx={{ p: 2 }}>
-//     <OutlinedInput
-//       defaultValue=""
-//       fullWidth
-//       placeholder="Search Order Requests"
-//       startAdornment={
-//         <InputAdornment position="start">
-//           <SvgIcon color="action" fontSize="small">
-//             <MagnifyingGlassIcon />
-//           </SvgIcon>
-//         </InputAdornment>
-//       }
-//       sx={{ maxWidth: 500 }}
-//     />
-//   </Card>
-// );
-
-// const now = new Date();
-
-// const useCustomers = (page, rowsPerPage) => {
-//   return useMemo(() => {
-//     return applyPagination(data, page, rowsPerPage);
-//   }, [page, rowsPerPage]);
-// };
-
-// const useCustomerIds = (customers) => {
-//   return useMemo(() => {
-//     return customers.map((customer) => customer.id);
-//   }, [customers]);
-// };
-
+import moment from "moment";
 const Page = (props) => {
   const router = useRouter();
   const { status } = useSession({
@@ -62,10 +30,18 @@ const Page = (props) => {
       router.push("/auth/loginUser");
     },
   });
-  //   const { InstituteId, AllOrders, AdminTwoId } = props;
-  const { InstituteId, AllOrders, AdminTwoId, AdminTwoEmail } = props;
-  //   console.log(AllOrders);
+
+  const {
+    InstituteId,
+    // AllOrders,
+    AdminTwoId,
+    AdminTwoEmail,
+    AllAcceptedOrders,
+    AllDates,
+  } = props;
+
   const [page, setPage] = useState(0);
+//   console.log(AllAcceptedOrders);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [checked, setChecked] = useState(false);
   const handlePageChange = useCallback((event, value) => {
@@ -96,7 +72,7 @@ const Page = (props) => {
               </Stack>
             </Stack>
             <div>
-              <Button
+              {/* <Button
                 startIcon={
                   <SvgIcon fontSize="small">
                     <svg
@@ -118,7 +94,7 @@ const Page = (props) => {
                 variant="contained"
               >
                 Merge Orders
-              </Button>
+              </Button> */}
             </div>
             <Stack justifyContent="space-between" direction="row">
               <Card sx={{ p: 2 }}>
@@ -137,28 +113,27 @@ const Page = (props) => {
                 />
               </Card>
               <Stack justifyContent="center">
-                <Typography>Show pending only</Typography>
+                {/* <Typography>Show pending only</Typography>
                 <Switch
                   checked={checked}
                   onChange={(event) => {
                     setChecked(event.target.checked);
                   }}
                   inputProps={{ "aria-label": "controlled" }}
-                />
+                /> */}
               </Stack>
             </Stack>
-            {AllOrders && AllOrders.length > 0 && (
+            {AllDates > 0 && (
               <AllOrderTable
-                count={AllOrders.length}
-                items={AllOrders}
+                count={AllDates}
+                items={AllAcceptedOrders}
                 onPageChange={handlePageChange}
                 onRowsPerPageChange={handleRowsPerPageChange}
                 page={page}
                 rowsPerPage={rowsPerPage}
                 instituteId={InstituteId}
                 adminTwoId={AdminTwoId}
-                key={AllOrders._id}
-                onlyPending={checked}
+                // onlyPending={checked}
                 CustomerEmail={AdminTwoEmail}
               />
             )}
@@ -175,7 +150,6 @@ export default Page;
 
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
-  // console.log(session);
   if (session === null) {
     return {
       redirect: {
@@ -213,14 +187,35 @@ export async function getServerSideProps(context) {
       {},
       null
     );
-    
-  // console.log(allOrderPlaced.data.message)
+    // const allAcceptedOrders = [];
+    var dateWiseGroup = {};
+    var countDates = 0;
+    for (var i = 0; i < allOrderPlaced.data.message.length; i++) {
+      const el = allOrderPlaced.data.message[i];
+      const SellerId = allOrderPlaced.data.message[i].sellerId;
+      var formatted_date = moment(el.orderDate).format("YYYY-MM-DD");
+      if (formatted_date in dateWiseGroup) {
+        if (SellerId in dateWiseGroup[formatted_date]) {
+          dateWiseGroup[formatted_date][SellerId].push(el);
+        } else {
+          dateWiseGroup[formatted_date][SellerId] = [];
+        }
+      } else {
+        dateWiseGroup[formatted_date] = {};
+        countDates += 1;
+        dateWiseGroup[formatted_date][SellerId] = [];
+        dateWiseGroup[formatted_date][SellerId].push(el);
+      }
+    }
+
     return {
       props: {
         InstituteId: InstituteId,
-        AllOrders: allOrderPlaced.data.message,
+        // AllOrders: allOrderPlaced.data.message,
         AdminTwoId: getAdminTwo.data.message._id,
         AdminTwoEmail: session.user.email,
+        AllAcceptedOrders: dateWiseGroup,
+        AllDates: countDates,
       },
     };
   } catch (e) {
