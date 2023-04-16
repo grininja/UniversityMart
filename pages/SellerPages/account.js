@@ -55,7 +55,7 @@ export async function getServerSideProps(context) {
     return {
       redirect: {
         permanent: false,
-        destination: "/auth/loginInstitute",
+        destination: "/auth/loginSeller",
       },
       props: {},
     };
@@ -68,6 +68,19 @@ export async function getServerSideProps(context) {
       {},
       null
     );
+    if (
+      findSeller.data.message === null &&
+      findSeller.data.message === undefined &&
+      findSeller.data.message === ""
+    ) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/auth/loginSeller",
+        },
+        props: {},
+      };
+    }
     // console.log(findSeller);
     return {
       props: {
@@ -79,9 +92,9 @@ export async function getServerSideProps(context) {
     return {
       redirect: {
         permanent: false,
-        destination: "/auth/loginInstitute",
+        destination: "/auth/loginSeller",
       },
-      props: { error: "something happened" },
+      props: {},
     };
   }
 }

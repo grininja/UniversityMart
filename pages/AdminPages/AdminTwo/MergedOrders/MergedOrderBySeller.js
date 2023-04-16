@@ -150,6 +150,7 @@ export default Page;
 
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
+  // console.log(session);
   if (session === null) {
     return {
       redirect: {
@@ -166,6 +167,7 @@ export async function getServerSideProps(context) {
       {},
       null
     );
+    console.log(getAdminTwo.data.message);
     if (
       getAdminTwo.data.message === null &&
       getAdminTwo.data.message === undefined &&

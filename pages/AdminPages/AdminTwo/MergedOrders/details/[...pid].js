@@ -115,6 +115,15 @@ export default Page;
 
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
+  if (session === null) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/auth/loginUser",
+      },
+      props: {},
+    };
+  }
   //   console.log(session);
   //   console.log(context.query)
   const sellerId = context.query.pid[0];
