@@ -57,7 +57,7 @@ export const AllOrderTable = (props) => {
                 <TableCell>Seller Name</TableCell>
                 <TableCell>Order Date</TableCell>
                 <TableCell>See Details</TableCell>
-                <TableCell>Generate Inovice</TableCell>
+                {/* <TableCell>Generate Inovice</TableCell> */}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -91,13 +91,13 @@ export const AllOrderTable = (props) => {
                       }
                     </TableCell>
 
-                    <TableCell>
+                    {/* <TableCell>
                       {
                         <Button color="secondary" variant="outlined">
                           Generate Inovice
                         </Button>
                       }
-                    </TableCell>
+                    </TableCell> */}
                   </TableRow>
                 );
               })}

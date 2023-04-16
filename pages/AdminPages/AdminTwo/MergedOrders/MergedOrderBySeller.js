@@ -41,7 +41,7 @@ const Page = (props) => {
   } = props;
 
   const [page, setPage] = useState(0);
-//   console.log(AllAcceptedOrders);
+  //   console.log(AllAcceptedOrders);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [checked, setChecked] = useState(false);
   const handlePageChange = useCallback((event, value) => {
@@ -68,7 +68,7 @@ const Page = (props) => {
           <Stack spacing={3}>
             <Stack direction="row" justifyContent="space-between" spacing={4}>
               <Stack spacing={1}>
-                <Typography variant="h4">Order Placed </Typography>
+                <Typography variant="h4">Merged Accepted Orders </Typography>
               </Stack>
             </Stack>
             <div>
@@ -192,19 +192,21 @@ export async function getServerSideProps(context) {
     var countDates = 0;
     for (var i = 0; i < allOrderPlaced.data.message.length; i++) {
       const el = allOrderPlaced.data.message[i];
-      const SellerId = allOrderPlaced.data.message[i].sellerId;
-      var formatted_date = moment(el.orderDate).format("YYYY-MM-DD");
-      if (formatted_date in dateWiseGroup) {
-        if (SellerId in dateWiseGroup[formatted_date]) {
-          dateWiseGroup[formatted_date][SellerId].push(el);
+      if (el.OrderStatus === "accepted") {
+        const SellerId = allOrderPlaced.data.message[i].sellerId;
+        var formatted_date = moment(el.orderDate).format("YYYY-MM-DD");
+        if (formatted_date in dateWiseGroup) {
+          if (SellerId in dateWiseGroup[formatted_date]) {
+            dateWiseGroup[formatted_date][SellerId].push(el);
+          } else {
+            dateWiseGroup[formatted_date][SellerId] = [];
+          }
         } else {
+          dateWiseGroup[formatted_date] = {};
+          countDates += 1;
           dateWiseGroup[formatted_date][SellerId] = [];
+          dateWiseGroup[formatted_date][SellerId].push(el);
         }
-      } else {
-        dateWiseGroup[formatted_date] = {};
-        countDates += 1;
-        dateWiseGroup[formatted_date][SellerId] = [];
-        dateWiseGroup[formatted_date][SellerId].push(el);
       }
     }
 

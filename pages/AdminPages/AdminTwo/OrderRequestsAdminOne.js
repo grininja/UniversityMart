@@ -94,7 +94,7 @@ const Page = (props) => {
               <Stack spacing={1}>
                 <Typography variant="h4">Product Requests </Typography>
               </Stack>
-              <div>
+              {/* <div>
                 <Button
                   startIcon={
                     <SvgIcon fontSize="small">
@@ -105,7 +105,7 @@ const Page = (props) => {
                 >
                   Merge pending Orders
                 </Button>
-              </div>
+              </div> */}
             </Stack>
             <Stack justifyContent="space-between" direction="row">
               <Card sx={{ p: 2 }}>

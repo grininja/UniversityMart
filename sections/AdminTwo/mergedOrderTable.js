@@ -11,6 +11,7 @@ import {
   Typography,
   Button,
 } from "@mui/material";
+import Image from "next/image";
 import { Scrollbar } from "../../components/scrollbar";
 import Link from "next/link";
 import { SeverityPill } from "../../components/severity-pill";
@@ -32,8 +33,11 @@ export const AllOrderTable = (props) => {
     rowsPerPage = 0,
   } = props;
   const router = useRouter();
-//   const selectedSome = selected.length > 0 && selected.length < items.length;
-//   const selectedAll = items.length > 0 && selected.length === items.length;
+
+  // console.log(item)
+
+  //   const selectedSome = selected.length > 0 && selected.length < items.length;
+  //   const selectedAll = items.length > 0 && selected.length === items.length;
   //  console.log(items)
   return (
     <Card>
@@ -47,6 +51,7 @@ export const AllOrderTable = (props) => {
                 <TableCell>Seller</TableCell>
                 <TableCell>Quantity Ordered</TableCell>
                 <TableCell>Seller Remarks</TableCell>
+                <TableCell>Order Total</TableCell>
                 <TableCell>Expected Delivery</TableCell>
               </TableRow>
             </TableHead>
@@ -56,21 +61,30 @@ export const AllOrderTable = (props) => {
                 items.map((item) => {
                   //   const isSelected = selected.includes(item._id);
                   // console.log(item.productDescription);
+                  var decodedUrlImage = "";
+                  if (item.ImageUrl !== "") {
+                    let bufferObj = Buffer.from(item.ImageUrl, "base64");
 
+                    // Decoding base64 into String
+                    decodedUrlImage = bufferObj.toString("utf8");
+                  }
                   return (
                     <TableRow hover key={item._id}>
                       <TableCell>
                         <Stack alignItems="center" direction="row" spacing={2}>
-                          <Typography variant="subtitle2">
-                            {"product photo"}
-                          </Typography>
+                          <Image
+                            src={decodedUrlImage}
+                            height={30}
+                            width={30}
+                            alt="product image"
+                          />
                         </Stack>
                       </TableCell>
-                      <TableCell>{"product name"}</TableCell>
-                      <TableCell>{item.Seller}</TableCell>
+                      <TableCell>{item.ProductName}</TableCell>
+                      <TableCell>{item.SellerDetails.name}</TableCell>
                       <TableCell>{item.Quantity}</TableCell>
                       <TableCell>{item.RemarksSeller}</TableCell>
-                      {/* <TableCell>{item.orderTotal}</TableCell> */}
+                      <TableCell>{item.ProductPrice * item.Quantity}</TableCell>
                       <TableCell>{item.ExpectedDelivery}</TableCell>
                     </TableRow>
                   );
