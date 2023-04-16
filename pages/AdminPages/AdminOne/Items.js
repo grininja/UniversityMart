@@ -82,7 +82,7 @@ const Page = (props) => {
                 </Button>
               </div>
             </Stack>
-            <ItemSearch />
+            {/* <ItemSearch /> */}
             <Grid container spacing={3}>
               {itemsList.map((product) => (
                 <Grid xs={12} md={6} lg={4} key={product._id}>

@@ -112,7 +112,7 @@ const Page = ({
                 </Button>
               </div>
             </Stack>
-            <AdminSearch />
+            {/* <AdminSearch /> */}
             <AdminTable
               count={data.length}
               items={admins}

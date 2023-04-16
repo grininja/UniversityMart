@@ -36,7 +36,7 @@ const Page = ({ departments, instituteName, institueId }) => {
           <Stack spacing={3}>
             <Stack direction="row" justifyContent="space-between" spacing={4}>
               <Stack spacing={1}>
-                <Typography variant="h4">Companies</Typography>
+                <Typography variant="h4">Departments</Typography>
                 <Stack alignItems="center" direction="row" spacing={1}></Stack>
               </Stack>
               <div>
@@ -53,7 +53,7 @@ const Page = ({ departments, instituteName, institueId }) => {
                 </Button>
               </div>
             </Stack>
-            <CompaniesSearch />
+            {/* <CompaniesSearch /> */}
             <Grid container spacing={3}>
               {departments.map((department) => (
                 <Grid xs={12} md={6} lg={4} key={department._id}>

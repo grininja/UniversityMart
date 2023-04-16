@@ -20,7 +20,7 @@ export const items = [
     ),
   },
   {
-    title: "Order Items",
+    title: "Request Items",
     path: "/AdminPages/AdminOne/OrderRequests",
     icon: (
       <SvgIcon fontSize="small">
