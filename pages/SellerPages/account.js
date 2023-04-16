@@ -6,7 +6,7 @@ import {
   Typography,
   Unstable_Grid2 as Grid,
 } from "@mui/material";
-import { Layout as WebAdminDashboard } from "../../layouts/WebAdminDashboard/layout";
+import { Layout as WebAdminDashboard } from "../../layouts/SellerDashboard/layout";
 // import { AccountProfile } from "../../sections/WebAdmin/account-profile";
 import { AccountProfileDetails } from "../../sections/Seller/account-profile-details";
 import { authOptions } from "../api/auth/[...nextauth]";
