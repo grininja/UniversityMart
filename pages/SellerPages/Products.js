@@ -62,7 +62,7 @@ const Page = (props) => {
                 </Button>
               </div>
             </Stack>
-            <ProductSearch />
+            {/* <ProductSearch /> */}
             <Grid container spacing={3}>
               {products.map((product) => (
                 <Grid xs={12} md={6} lg={4} key={product._id}>

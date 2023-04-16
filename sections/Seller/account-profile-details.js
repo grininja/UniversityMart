@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState } from "react";
 import {
   Box,
   Button,
@@ -8,168 +8,127 @@ import {
   CardHeader,
   Divider,
   TextField,
-  Unstable_Grid2 as Grid
-} from '@mui/material';
+  Unstable_Grid2 as Grid,
+} from "@mui/material";
+import apiCall from "@/helper/apiCall";
+import { useRouter } from "next/router";
 
-const states = [
-  {
-    value: 'alabama',
-    label: 'Alabama'
-  },
-  {
-    value: 'new-york',
-    label: 'New York'
-  },
-  {
-    value: 'san-francisco',
-    label: 'San Francisco'
-  },
-  {
-    value: 'los-angeles',
-    label: 'Los Angeles'
-  }
-];
-
-export const AccountProfileDetails = () => {
+export const AccountProfileDetails = ({ SellerDetails }) => {
+  const router = useRouter();
   const [values, setValues] = useState({
-    firstName: 'Anika',
-    lastName: 'Visser',
-    email: 'demo@devias.io',
-    phone: '',
-    state: 'los-angeles',
-    country: 'USA'
+    name: SellerDetails.name,
+    email: SellerDetails.email,
+    phone: SellerDetails.phone,
+    address: SellerDetails.address,
+    gstin: SellerDetails.gstin,
+    stripeId: SellerDetails.stripeId,
   });
 
-  const handleChange = useCallback(
-    (event) => {
-      setValues((prevState) => ({
-        ...prevState,
-        [event.target.name]: event.target.value
-      }));
-    },
-    []
-  );
+  const handleChange = useCallback((event) => {
+    setValues((prevState) => ({
+      ...prevState,
+      [event.target.name]: event.target.value,
+    }));
+  }, []);
 
-  const handleSubmit = useCallback(
-    (event) => {
-      event.preventDefault();
-    },
-    []
-  );
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const response = await apiCall(
+      `${process.env.BASE_URL}/api/seller/updateSellerDetails`,
+      "POST",
+      {
+        SellerId: SellerDetails._id,
+        name: values.name,
+        email: values.email,
+        phone: values.phone,
+        address: values.address,
+        gstin: values.gstin,
+        stripeId: values.stripeId,
+      },
+      null
+    );
+    alert(response.data.message);
+    router.reload();
+  };
 
   return (
-    <form
-      autoComplete="off"
-      noValidate
-      onSubmit={handleSubmit}
-    >
+    <form autoComplete="off" noValidate onSubmit={handleSubmit}>
       <Card>
-        <CardHeader
-          subheader="The information can be edited"
-          title="Profile"
-        />
+        <CardHeader subheader="The information can be edited" title="Profile" />
         <CardContent sx={{ pt: 0 }}>
           <Box sx={{ m: -1.5 }}>
-            <Grid
-              container
-              spacing={3}
-            >
-              <Grid
-                xs={12}
-                md={6}
-              >
+            <Grid container spacing={3}>
+              <Grid xs={12} md={6}>
                 <TextField
                   fullWidth
                   helperText="Please specify the first name"
-                  label="First name"
-                  name="firstName"
+                  label="Name"
+                  name="name"
                   onChange={handleChange}
                   required
-                  value={values.firstName}
+                  value={values.name}
                 />
               </Grid>
-              <Grid
-                xs={12}
-                md={6}
-              >
-                <TextField
-                  fullWidth
-                  label="Last name"
-                  name="lastName"
-                  onChange={handleChange}
-                  required
-                  value={values.lastName}
-                />
-              </Grid>
-              <Grid
-                xs={12}
-                md={6}
-              >
+              <Grid xs={12} md={6}>
                 <TextField
                   fullWidth
                   label="Email Address"
                   name="email"
+                  disabled
                   onChange={handleChange}
                   required
                   value={values.email}
                 />
               </Grid>
-              <Grid
-                xs={12}
-                md={6}
-              >
+
+              <Grid xs={12} md={6}>
                 <TextField
                   fullWidth
                   label="Phone Number"
                   name="phone"
                   onChange={handleChange}
-                  type="number"
+                  type="string"
                   value={values.phone}
                 />
               </Grid>
-              <Grid
-                xs={12}
-                md={6}
-              >
+              <Grid xs={12} md={6}>
                 <TextField
                   fullWidth
-                  label="Country"
-                  name="country"
+                  label="Address"
+                  name="address"
                   onChange={handleChange}
                   required
-                  value={values.country}
+                  value={values.address}
                 />
               </Grid>
-              <Grid
-                xs={12}
-                md={6}
-              >
+              <Grid xs={12} md={6}>
                 <TextField
                   fullWidth
-                  label="Select State"
-                  name="state"
+                  label="GSTIN"
+                  name="gstin"
                   onChange={handleChange}
-                  required
-                  select
-                  SelectProps={{ native: true }}
-                  value={values.state}
-                >
-                  {states.map((option) => (
-                    <option
-                      key={option.value}
-                      value={option.value}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </TextField>
+                  type="string"
+                  value={values.gstin}
+                />
+              </Grid>
+              <Grid xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  label="Stripe Id"
+                  name="stripe_id"
+                  onChange={handleChange}
+                  type="string"
+                  value={values.stripeId}
+                  disabled
+                />
               </Grid>
             </Grid>
           </Box>
         </CardContent>
         <Divider />
-        <CardActions sx={{ justifyContent: 'flex-end' }}>
-          <Button variant="contained">
+        <CardActions sx={{ justifyContent: "flex-end" }}>
+          <Button variant="contained" type="submit">
+            {" "}
             Save details
           </Button>
         </CardActions>
