@@ -59,7 +59,7 @@ export const OrderTable = (props) => {
                 <TableCell>Tag</TableCell>
                 <TableCell>Status</TableCell>
                 <TableCell>Order Date</TableCell>
-                <TableCell>Delete</TableCell>
+                {/* <TableCell>Delete</TableCell> */}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -88,7 +88,7 @@ export const OrderTable = (props) => {
                         </SeverityPill>
                       </TableCell>
                       <TableCell>{item.createdAt}</TableCell>
-                      <TableCell>
+                      {/* <TableCell>
                         <Button
                           color="inherit"
                           startIcon={
@@ -108,7 +108,7 @@ export const OrderTable = (props) => {
                             Delete
                           </Typography>
                         </Button>
-                      </TableCell>
+                      </TableCell> */}
                     </TableRow>
                   );
                 })}
