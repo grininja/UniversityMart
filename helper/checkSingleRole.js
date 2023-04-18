@@ -10,6 +10,7 @@ const checkForRoles = async (userId, emailId) => {
   const val1 = checkRole1 == null ? 0 : 1;
   const val2 = checkRole2 == null ? 0 : 1;
   const val3 = checkRole3 == null ? 0 : 1;
+  console.log(val1, val2, val3);
   if (val1 + val2 + val3 > 0) {
     return false;
   }

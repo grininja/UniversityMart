@@ -10,6 +10,7 @@ const handler = async (req, res) => {
       var OrderRequests = await OrderRequestAdminOne.find({
         Institute: InstituteID,
       });
+      // console.log(OrderRequests);
       var result = [];
       for (var i = 0; i < OrderRequests.length; i++) {
         const departmentId = OrderRequests[i].Department;

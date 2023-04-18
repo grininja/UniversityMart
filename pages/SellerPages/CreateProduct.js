@@ -344,8 +344,8 @@ export async function getServerSideProps(context) {
     );
     // console.log(getSeller)
     if (
-      getSeller.data.message === null &&
-      getSeller.data.message === undefined &&
+      getSeller.data.message === null ||
+      getSeller.data.message === undefined ||
       getSeller.data.message === ""
     ) {
       return {

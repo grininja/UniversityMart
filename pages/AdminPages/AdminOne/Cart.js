@@ -172,7 +172,7 @@ export async function getServerSideProps(context) {
   }
   try {
     const getAdminOne = await apiCall(
-      `${process.env.BASE_URL}/api/institute/adminHandler/adminOneHandler/adminOneByEmail?=${session.user.email}`,
+      `${process.env.BASE_URL}/api/institute/adminHandler/adminOneHandler/adminOneByEmail?EmailId=${session.user.email}`,
       "GET",
       {},
       null

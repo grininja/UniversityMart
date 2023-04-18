@@ -169,8 +169,8 @@ export async function getServerSideProps(context) {
     );
     console.log(getAdminTwo.data.message);
     if (
-      getAdminTwo.data.message === null &&
-      getAdminTwo.data.message === undefined &&
+      getAdminTwo.data.message === null ||
+      getAdminTwo.data.message === undefined ||
       getAdminTwo.data.message === ""
     ) {
       return {

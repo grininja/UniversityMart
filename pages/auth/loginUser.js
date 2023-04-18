@@ -26,6 +26,15 @@ import apiCall from "@/helper/apiCall";
 import Autocomplete from "@mui/material/Autocomplete";
 
 var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+function ValidateEmail(mail) 
+{
+ if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
+  {
+    return (true)
+  }
+    // alert("You have entered an invalid email address!")
+    return (false)
+} 
 
 const roleOptions = [
   {
@@ -52,7 +61,8 @@ const Login = ({ email, institute, role }) => (
         email === null ||
         email === undefined ||
         email === "" ||
-        email.match(pattern) === null
+        ValidateEmail(email)===false
+        // email.match(pattern) === null
       ) {
         alert("valid email is required");
         return;

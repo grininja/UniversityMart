@@ -43,6 +43,7 @@ const createAdminFunction = async (
   department,
   router
 ) => {
+  console.log(instituteId)
   const user = await apiCall(
     "/api/manageUser/createUser",
     "POST",
@@ -52,14 +53,14 @@ const createAdminFunction = async (
     },
     null
   );
-  const userId = user.data.userId;
-
+  const userIdPerson = user.data.userId;
+  // consol
   if (role === "admin1") {
     const res = await apiCall(
       `${process.env.BASE_URL}/api/institute/adminHandler/adminOneHandler/createAdminOne`,
       "POST",
       {
-        userId: userId,
+        userId: userIdPerson,
         instituteId: instituteId,
         departMent: department,
       },
@@ -71,7 +72,7 @@ const createAdminFunction = async (
     const res = await apiCall(
       `${process.env.BASE_URL}/api/institute/adminHandler/adminTwoHandler/createAdminTwo`,
       "POST",
-      { userId: userId, instituteId: instituteId },
+      { userId: userIdPerson, instituteId: instituteId },
       null
     );
     alert(res.data.message);
@@ -205,8 +206,8 @@ export async function getServerSideProps(context) {
       null
     );
     if (
-      findInstutitute.data.message === null &&
-      findInstutitute.data.message === undefined &&
+      findInstutitute.data.message === null ||
+      findInstutitute.data.message === undefined ||
       findInstutitute.data.message === ""
     ) {
       return {

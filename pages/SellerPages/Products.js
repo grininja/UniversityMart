@@ -110,8 +110,8 @@ export async function getServerSideProps(context) {
       null
     );
     if (
-      getSeller.data.message === null &&
-      getSeller.data.message === undefined &&
+      getSeller.data.message === null ||
+      getSeller.data.message === undefined ||
       getSeller.data.message === ""
     ) {
       return {

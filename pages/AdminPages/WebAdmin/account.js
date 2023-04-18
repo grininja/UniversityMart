@@ -32,7 +32,10 @@ const Page = ({ institueDetail }) => (
           <div>
             <Grid container spacing={3}>
               <Grid xs={12} md={6} lg={4}>
-                <AccountProfile InstituteId={institueDetail._id} imageUrl={institueDetail.logoUrl}/>
+                <AccountProfile
+                  InstituteId={institueDetail._id}
+                  imageUrl={institueDetail.logoUrl}
+                />
               </Grid>
               <Grid xs={12} md={6} lg={8}>
                 <AccountProfileDetails InstituteDetail={institueDetail} />
@@ -69,6 +72,19 @@ export async function getServerSideProps(context) {
       null
     );
 
+    if (
+      findInstutitute.data.message === null ||
+      findInstutitute.data.message === undefined ||
+      findInstutitute.data.message === ""
+    ) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: "/auth/loginInstitute",
+        },
+        props: {},
+      };
+    }
     return {
       props: {
         institueDetail: findInstutitute.data.message,

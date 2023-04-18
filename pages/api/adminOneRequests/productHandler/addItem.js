@@ -16,7 +16,7 @@ const handler = async (req, res) => {
         InstituteId,
         serialId,
       } = req.body;
-      console.log(req.body);
+      // console.log(req.body);
       const checkAdminOne = await AdminOne.findOne({
         _id: adminOneId,
         Institute: InstituteId,

@@ -176,9 +176,10 @@ export async function getServerSideProps(context) {
       {},
       null
     );
+    console.log(getAdminTwo.data.message);
     if (
-      getAdminTwo.data.message === null &&
-      getAdminTwo.data.message === undefined &&
+      getAdminTwo.data.message === null ||
+      getAdminTwo.data.message === undefined ||
       getAdminTwo.data.message === ""
     ) {
       return {
@@ -205,7 +206,7 @@ export async function getServerSideProps(context) {
       },
     };
   } catch (e) {
-    console.log(e);
+    // console.log(e);
     return {
       redirect: {
         permanent: false,

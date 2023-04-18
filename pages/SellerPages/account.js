@@ -69,8 +69,8 @@ export async function getServerSideProps(context) {
       null
     );
     if (
-      findSeller.data.message === null &&
-      findSeller.data.message === undefined &&
+      findSeller.data.message === null ||
+      findSeller.data.message === undefined ||
       findSeller.data.message === ""
     ) {
       return {

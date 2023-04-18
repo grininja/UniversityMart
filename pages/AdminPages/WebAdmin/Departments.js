@@ -101,8 +101,8 @@ export async function getServerSideProps(context) {
       null
     );
     if (
-      findInstutitute.data.message === null &&
-      findInstutitute.data.message === undefined &&
+      findInstutitute.data.message === null ||
+      findInstutitute.data.message === undefined ||
       findInstutitute.data.message === ""
     ) {
       return {
