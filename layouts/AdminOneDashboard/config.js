@@ -56,13 +56,13 @@ export const items = [
       </SvgIcon>
     ),
   },
-  {
-    title: "Account",
-    path: "/AdminPages/AdminOne/account",
-    icon: (
-      <SvgIcon fontSize="small">
-        <UserIcon />
-      </SvgIcon>
-    ),
-  },
+  // {
+  //   title: "Account",
+  //   path: "/AdminPages/AdminOne/account",
+  //   icon: (
+  //     <SvgIcon fontSize="small">
+  //       <UserIcon />
+  //     </SvgIcon>
+  //   ),
+  // },
 ];
