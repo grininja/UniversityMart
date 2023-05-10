@@ -23,7 +23,7 @@ const handler = async (req, res) => {
       });
 
       if (checkAdminOne !== null) {
-        const checkIfItemExists = await Item.findOne({ name: name });
+        const checkIfItemExists = await Item.findOne({ serialId: serialId });
         if (checkIfItemExists !== null) {
           return res.status(404).send({ message: "Item already exists" });
         }

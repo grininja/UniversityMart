@@ -33,6 +33,8 @@ import {
   CardContent,
   Hidden,
 } from "@mui/material";
+import Image from "next/image";
+
 import { setDate } from "date-fns";
 const OrderDetails = ({ sellerId, OrderDescription }) => {
   const [remarksValue, setRemarksValue] = useState("");
@@ -44,6 +46,7 @@ const OrderDetails = ({ sellerId, OrderDescription }) => {
     let bufferObj = Buffer.from(product.OrderDetail.photoUrl, "base64");
     decodedUrlImage = bufferObj.toString("utf8");
   }
+  // console.log(decodedUrlImage);
   return (
     <Box sx={{ m: { xs: 1, sm: 2, md: 3 }, maxWidth: 1000, mx: "auto" }}>
       <Card>
@@ -127,25 +130,37 @@ const OrderDetails = ({ sellerId, OrderDescription }) => {
           <List>
             <ListItem>
               <ListItemAvatar sx={{ mr: 2 }}>
-                {product.OrderDetail.photoUrl ? (
-                  <Box
-                    component="img"
+                {decodedUrlImage !== "" ? (
+                  // <Box
+                  //   component="img"
+                  //   src={decodedUrlImage}
+                  //   sx={{
+                  //     borderRadius: 1,
+                  //     height: 48,
+                  //     width: 48,
+                  //   }}
+                  // />
+                  <Image
                     src={decodedUrlImage}
-                    sx={{
-                      borderRadius: 1,
-                      height: 48,
-                      width: 48,
-                    }}
+                    width={100}
+                    height={100}
+                    alt="Product Image"
                   />
                 ) : (
-                  <Box
-                    sx={{
-                      borderRadius: 1,
-                      backgroundColor: "neutral.200",
-                      height: 48,
-                      width: 48,
-                    }}
+                  <Image
+                    src={decodedUrlImage}
+                    width={100}
+                    height={100}
+                    alt="Product Image"
                   />
+                  // <Box
+                  //   sx={{
+                  //     borderRadius: 1,
+                  //     backgroundColor: "neutral.200",
+                  //     height: 48,
+                  //     width: 48,
+                  //   }}
+                  // />
                 )}
               </ListItemAvatar>
               <Grid xs={12} justifyContent="center">

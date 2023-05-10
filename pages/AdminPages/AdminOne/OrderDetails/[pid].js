@@ -24,38 +24,58 @@ import {
   Typography,
   Unstable_Grid2 as Grid,
 } from "@mui/material";
+import Image from "next/image";
 
 const OverViewOrder = (props) => {
   const { products = [] } = props;
-  console.log(products);
+  // console.log(products);
+
   return (
     <Card>
       <CardHeader title="Order Details" />
       <List>
         {products.map((product, index) => {
+          var decodedUrlImage = "";
+          if (product && product.detail.photo !== "") {
+            let bufferObj = Buffer.from(product.detail.photo, "base64");
+            decodedUrlImage = bufferObj.toString("utf8");
+          }
+          console.log(decodedUrlImage);
           const hasDivider = index < products.length - 1;
           return (
             <ListItem divider={hasDivider} key={product.id}>
               <ListItemAvatar>
-                {product.detail.photo ? (
-                  <Box
-                    component="img"
-                    src={product.detail.photo}
-                    sx={{
-                      borderRadius: 1,
-                      height: 48,
-                      width: 48,
-                    }}
+                {decodedUrlImage !== "" ? (
+                  // <Box
+                  //   component="img"
+                  //   src={product.detail.photo}
+                  //   sx={{
+                  //     borderRadius: 1,
+                  //     height: 48,
+                  //     width: 48,
+                  //   }}
+                  // />
+                  <Image
+                    src={decodedUrlImage}
+                    width={100}
+                    height={100}
+                    alt="Product Image"
                   />
                 ) : (
-                  <Box
-                    sx={{
-                      borderRadius: 1,
-                      backgroundColor: "neutral.200",
-                      height: 48,
-                      width: 48,
-                    }}
+                  <Image
+                    src={decodedUrlImage}
+                    width={100}
+                    height={100}
+                    alt="Product Image"
                   />
+                  // <Box
+                  //   sx={{
+                  //     borderRadius: 1,
+                  //     backgroundColor: "neutral.200",
+                  //     height: 48,
+                  //     width: 48,
+                  //   }}
+                  // />
                 )}
               </ListItemAvatar>
               <ListItemText
