@@ -42,7 +42,7 @@
     "mdb-react-ui-kit": "^5.1.0",
     "moment": "^2.29.4",
     "mongodb": "^4.14.0",
-    "mongoose": "^6.8.4",
+    "mongoose": "^6.11.3",
     "next": "13.1.2",
     "next-auth": "^4.19.2",
     "next-compose-plugins": "^2.2.1",
